@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">cmu</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <!-- 星期 -->
+    <string name="Mon">一</string>
+    <string name="Tue">二</string>
+    <string name="Wed">三</string>
+    <string name="Thu">四</string>
+    <string name="Fri">五</string>
+    <string name="Sat">六</string>
+    <string name="Sun">日</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="dialogtitle">歡迎來使用這個App\n這個App可以讓您設定每日吃了多少有害物質</string>
+    <string name="title_activity_gpsfragment">Map</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="gps">GPS</string>
+    <string name="search">Search</string>
+    <string name="title_activity_article_command">ArticleCommandActivity</string>
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="tw.edu.fcu.recommendedfood">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name="tw.edu.fcu.recommendedfood.Activity.MainActivity"
+            android:label="美食推薦">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="tw.edu.fcu.recommendedfood.Activity.FoodRecorderActivity" />
+        <activity
+            android:name="tw.edu.fcu.recommendedfood.Activity.FoodTextSeachActivity"
+            android:windowSoftInputMode="stateAlwaysVisible"/>
+        <activity android:name="tw.edu.fcu.recommendedfood.Activity.FoodGpsSearchActivity" />
+        <activity android:name="tw.edu.fcu.recommendedfood.Activity.ArticleBlogActivity" />
+        <activity
+            android:name="tw.edu.fcu.recommendedfood.Activity.ArticleSeachAll"
+            android:windowSoftInputMode="stateAlwaysVisible">
+        </activity>
+        <activity
+            android:name="tw.edu.fcu.recommendedfood.Activity.ArticleCommandActivity"
+            android:windowSoftInputMode="stateAlwaysVisible">
+        </activity>
+    </application>
+
+</manifest>
