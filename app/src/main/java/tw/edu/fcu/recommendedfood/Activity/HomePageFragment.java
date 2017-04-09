@@ -22,6 +22,7 @@ public class HomePageFragment extends Fragment {
     private ArrayList<Fragment> fragmentArrayList = new ArrayList<Fragment>();
     private ViewPager viewPager;
     private TabLayout mTabLayout;
+    private String[] mTitles = {"收藏","文章","朋友"};
 
     public HomePageFragment() {
         // Required empty public constructor
@@ -35,7 +36,6 @@ public class HomePageFragment extends Fragment {
         initFragment();
         initView(viewGroup);
 
-
         return viewGroup;
     }
 
@@ -43,7 +43,7 @@ public class HomePageFragment extends Fragment {
     public void initView(ViewGroup viewGroup){//不一定要用viewGroup，也可以直接使用getView()
         viewPager = (ViewPager) viewGroup.findViewById(R.id.viewpager);
         mTabLayout = (TabLayout) viewGroup.findViewById(R.id.tabs);
-        viewPager.setAdapter(new SimpleFragmentPagerAdapter(getChildFragmentManager(),fragmentArrayList));
+        viewPager.setAdapter(new SimpleFragmentPagerAdapter(getChildFragmentManager(),fragmentArrayList,mTitles));
         mTabLayout.setupWithViewPager(viewPager);
     }
 
@@ -58,9 +58,12 @@ public class HomePageFragment extends Fragment {
     //設定viewpager的adapter
     class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
         ArrayList<Fragment> fragmentArrayList = new ArrayList<Fragment>();
-        public SimpleFragmentPagerAdapter(FragmentManager fm, ArrayList<Fragment> fragmentArrayList) {
+        String[] mTitles;
+
+        public SimpleFragmentPagerAdapter(FragmentManager fm, ArrayList<Fragment> fragmentArrayList, String[] mTitles) {
             super(fm);
             this.fragmentArrayList = fragmentArrayList;
+            this.mTitles = mTitles;
         }
 
         @Override
@@ -71,6 +74,11 @@ public class HomePageFragment extends Fragment {
         @Override
         public int getCount() {
             return fragmentArrayList.size();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mTitles[position];
         }
     }
 }

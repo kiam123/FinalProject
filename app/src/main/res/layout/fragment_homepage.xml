@@ -47,30 +47,67 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Kr Lee"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/layoutWithCircleDrawable"
+            android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginRight="8dp"
+            android:textSize="25dp"
+            app:layout_constraintTop_toBottomOf="@+id/layoutWithCircleDrawable"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="逢甲大學 資訊工程系"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:textSize="18dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+            app:layout_constraintVertical_bias="0.32"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp" />
 
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="#EEEEEE"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="parent"
+        <LinearLayout
+            android:layout_width="219dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tabIndicatorHeight="0dp"
-            app:tabSelectedTextColor="#000"
-            app:tabTextColor="#fff"
-            app:layout_constraintVertical_bias="0.473" />
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintVertical_bias="0.474">
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#EEEEEE"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.473"
+                app:tabIndicatorHeight="0dp"
+                app:tabSelectedTextColor="#000"
+                app:tabTextColor="#808080" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -103,7 +140,8 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/linearLayout2">
 
             <tw.edu.fcu.recommendedfood.Widget.ChildViewPager
                 android:id="@+id/viewpager"
