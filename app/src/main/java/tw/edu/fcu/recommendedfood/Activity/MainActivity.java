@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(new SimpleFragmentPagerAdapter(getSupportFragmentManager(),fragmentArrayList,this));
         mTabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
-        initEvent();
+        initTabLayoutEvent();
     }
 
     //初始化tab
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //設定滑動另一頁後的事件
-    private void initEvent() {
+    private void initTabLayoutEvent() {
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import tw.edu.fcu.recommendedfood.Adapter.ArticleAdapter;
 import tw.edu.fcu.recommendedfood.Data.ArticleData;
@@ -22,7 +23,6 @@ import tw.edu.fcu.recommendedfood.R;
  * A simple {@link Fragment} subclass.
  */
 public class ArticleFragment extends Fragment {
-    private ListView listView;
     private ListView listviewClassification;
     private DrawerLayout drawerlayout;
     private NavigationView navigationview;
@@ -31,6 +31,11 @@ public class ArticleFragment extends Fragment {
     private ArticleAdapter articleAdapter;
     private ImageView imgSearch;
     private ImageView imgCommand;
+    private TextView txtClassificationSet;
+    private TextView txtAll, txtChineseStyle, txtHongKongStyle, txtWesternStyle, txtNanyang, txtKoreanStyle,
+                        txtJapaneseStyle, txtDrink, txtDessert, txtFastFood, txtRecipe, txtBarbecue, txtConvenienceStore;
+    private String classification[] = {"全部", "中式", "港式", "西式", "南洋", "韓式", "日式",
+                                        "飲料", "點心", "速食", "食譜", "燒烤", "便利店"};
 
     public ArticleFragment() {
     }
@@ -38,8 +43,7 @@ public class ArticleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_article, container, false);
-
+        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_article, container, false);
         initView(viewGroup);
         initAdapter();
 
@@ -47,14 +51,15 @@ public class ArticleFragment extends Fragment {
     }
 
     //初始化view
-    public void initView(ViewGroup viewGroup){
+    public void initView(ViewGroup viewGroup) {
         imgToggle = (ImageView) viewGroup.findViewById(R.id.img_toggle);
         imgCommand = (ImageView) viewGroup.findViewById(R.id.img_command);
-        listView = (ListView) viewGroup.findViewById(R.id.listview);
         drawerlayout = ((DrawerLayout) viewGroup.findViewById(R.id.drawerlayout));//侧滑的根布局
         navigationview = ((NavigationView) viewGroup.findViewById(R.id.navigationview));//侧滑菜单布局
         imgSearch = (ImageView) viewGroup.findViewById(R.id.img_search);
-        listviewClassification = (ListView) viewGroup.findViewById(R.id.listview_classification);
+        txtClassificationSet = (TextView) viewGroup.findViewById(R.id.txt_classification_set);
+
+        initLayoutClassification(viewGroup);
 
         drawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);//函数来关闭手势滑动
         drawerlayout.addDrawerListener(drawerlayoutListerner);
@@ -63,32 +68,133 @@ public class ArticleFragment extends Fragment {
         imgCommand.setOnClickListener(imgCommandOnClickListener);
     }
 
-    public void initAdapter(){
-        articleAdapter = new ArticleAdapter(getActivity());
-        listView.setAdapter(articleAdapter);
-        listView.setOnItemClickListener(articleOnItemClickListener);
-        listviewClassification.setAdapter(articleAdapter);
-        //TODO listviewClassification 還沒完成 Adapter
+    public void initLayoutClassification(ViewGroup viewGroup){
+        txtAll = (TextView) viewGroup.findViewById(R.id.txt_all);
+        txtChineseStyle = (TextView) viewGroup.findViewById(R.id.txt_chinese_style);
+        txtHongKongStyle = (TextView) viewGroup.findViewById(R.id.txt_hong_kong_style);
+        txtWesternStyle = (TextView) viewGroup.findViewById(R.id.txt_western_style);
+        txtNanyang = (TextView) viewGroup.findViewById(R.id.txt_nanyang);
+        txtKoreanStyle = (TextView) viewGroup.findViewById(R.id.txt_korean_style);
+        txtJapaneseStyle = (TextView) viewGroup.findViewById(R.id.txt_japanese_style);
+        txtDrink = (TextView) viewGroup.findViewById(R.id.txt_drink);
+        txtDessert = (TextView) viewGroup.findViewById(R.id.txt_dessert);
+        txtFastFood = (TextView) viewGroup.findViewById(R.id.txt_fast_food);
+        txtRecipe = (TextView) viewGroup.findViewById(R.id.txt_recipe);
+        txtBarbecue = (TextView) viewGroup.findViewById(R.id.txt_barbecue);
+        txtConvenienceStore = (TextView) viewGroup.findViewById(R.id.txt_convenience_store);
 
-        articleAdapter.addItem(new ArticleData("1","標題","內容"));
-        articleAdapter.addItem(new ArticleData("2","標題","內容"));
-        articleAdapter.addItem(new ArticleData("3","標題","內容"));
-        articleAdapter.addItem(new ArticleData("4","標題","內容"));
-        articleAdapter.addItem(new ArticleData("5","標題","內容"));
-        articleAdapter.addItem(new ArticleData("6","標題","內容"));
-        articleAdapter.addItem(new ArticleData("7","標題","內容"));
+        txtAll.setOnClickListener(classificationOnClickListener);
+        txtChineseStyle.setOnClickListener(classificationOnClickListener);
+        txtHongKongStyle.setOnClickListener(classificationOnClickListener);
+        txtWesternStyle.setOnClickListener(classificationOnClickListener);
+        txtNanyang.setOnClickListener(classificationOnClickListener);
+        txtKoreanStyle.setOnClickListener(classificationOnClickListener);
+        txtJapaneseStyle.setOnClickListener(classificationOnClickListener);
+        txtDrink.setOnClickListener(classificationOnClickListener);
+        txtDessert.setOnClickListener(classificationOnClickListener);
+        txtFastFood.setOnClickListener(classificationOnClickListener);
+        txtRecipe.setOnClickListener(classificationOnClickListener);
+        txtBarbecue.setOnClickListener(classificationOnClickListener);
+        txtConvenienceStore.setOnClickListener(classificationOnClickListener);
+    }
+
+    private View.OnClickListener classificationOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.txt_all:
+                    txtClassificationSet.setText("全部");
+                    flag = false;
+                    drawerlayout.closeDrawers();
+                    break;
+                case R.id.txt_chinese_style:
+                    txtClassificationSet.setText("中式");
+                    flag = false;
+                    drawerlayout.closeDrawers();
+                    break;
+                case R.id.txt_hong_kong_style:
+                    txtClassificationSet.setText("港式");
+                    flag = false;
+                    drawerlayout.closeDrawers();
+                    break;
+                case R.id.txt_western_style:
+                    txtClassificationSet.setText("西式");
+                    flag = false;
+                    drawerlayout.closeDrawers();
+                    break;
+                case R.id.txt_nanyang:
+                    txtClassificationSet.setText("南洋");
+                    flag = false;
+                    drawerlayout.closeDrawers();
+                    break;
+                case R.id.txt_korean_style:
+                    txtClassificationSet.setText("韓式");
+                    flag = false;
+                    drawerlayout.closeDrawers();
+                    break;
+                case R.id.txt_japanese_style:
+                    txtClassificationSet.setText("日式");
+                    flag = false;
+                    drawerlayout.closeDrawers();
+                    break;
+                case R.id.txt_drink:
+                    txtClassificationSet.setText("飲料");
+                    flag = false;
+                    drawerlayout.closeDrawers();
+                    break;
+                case R.id.txt_dessert:
+                    txtClassificationSet.setText("點心");
+                    flag = false;
+                    drawerlayout.closeDrawers();
+                    break;
+                case R.id.txt_fast_food:
+                    txtClassificationSet.setText("速食");
+                    flag = false;
+                    drawerlayout.closeDrawers();
+                    break;
+                case R.id.txt_recipe:
+                    txtClassificationSet.setText("食譜");
+                    flag = false;
+                    drawerlayout.closeDrawers();
+                    break;
+                case R.id.txt_barbecue:
+                    txtClassificationSet.setText("燒烤");
+                    flag = false;
+                    drawerlayout.closeDrawers();
+                    break;
+                case R.id.txt_convenience_store:
+                    txtClassificationSet.setText("便利店");
+                    flag = false;
+                    drawerlayout.closeDrawers();
+                    break;
+            }
+        }
+    };
+
+    public void initAdapter() {
+        articleAdapter = new ArticleAdapter(getActivity());
+//        listviewClassification.setAdapter(articleAdapter);
+        //TODO listviewClassification 還沒完成 Adapter，也不一定要使用 Adapter
+
+        articleAdapter.addItem(new ArticleData("1", "標題", "內容"));
+        articleAdapter.addItem(new ArticleData("2", "標題", "內容"));
+        articleAdapter.addItem(new ArticleData("3", "標題", "內容"));
+        articleAdapter.addItem(new ArticleData("4", "標題", "內容"));
+        articleAdapter.addItem(new ArticleData("5", "標題", "內容"));
+        articleAdapter.addItem(new ArticleData("6", "標題", "內容"));
+        articleAdapter.addItem(new ArticleData("7", "標題", "內容"));
     }
 
     private AdapterView.OnItemClickListener articleOnItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
             Intent intent = new Intent();
-            intent.setClass(getActivity(),ArticleBlogActivity.class);
+            intent.setClass(getActivity(), ArticleBlogActivity.class);
             startActivity(intent);
         }
     };
 
-    private DrawerLayout.DrawerListener drawerlayoutListerner = new DrawerLayout.SimpleDrawerListener(){
+    private DrawerLayout.DrawerListener drawerlayoutListerner = new DrawerLayout.SimpleDrawerListener() {
         @Override
         public void onDrawerSlide(View drawerView, float slideOffset) {
             //slideOffset 变化范围0~1
@@ -137,7 +243,7 @@ public class ArticleFragment extends Fragment {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent();
-            intent.setClass(getActivity(),ArticleCommandActivity.class);
+            intent.setClass(getActivity(), ArticleCommandActivity.class);
             startActivity(intent);
         }
     };

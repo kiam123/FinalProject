@@ -15,6 +15,8 @@ import tw.edu.fcu.recommendedfood.R;
  * Created by kiam on 4/8/2017.
  */
 
+
+//TODO 這裡可能需要刪掉  如果沒用到
 public class ArticleClassificationAdapter extends BaseAdapter {
     LayoutInflater layoutInflater;
     ArrayList<ArticleClassificationData> articleClassificationDatas = new ArrayList<>();

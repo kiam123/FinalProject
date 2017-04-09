@@ -16,15 +16,20 @@ public class ArticleNewFragment extends Fragment {
 
 
     public ArticleNewFragment() {
-        // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_article_new, container, false);
+        ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_article_new, container, false);
+
+        initView(viewGroup);
+
+        return viewGroup;
     }
 
+    public void initView(ViewGroup viewGroup){
+
+    }
 }

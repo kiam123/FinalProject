@@ -64,7 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/layout_article_include" />
+        <include layout="@layout/layout_article" />
 
         <android.support.design.widget.NavigationView
             android:id="@+id/navigationview"
@@ -72,11 +72,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="left">
 
+            <include layout="@layout/layout_article_classification" />
 
-            <ListView
-                android:id="@+id/listview_classification"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
         </android.support.design.widget.NavigationView>
     </android.support.v4.widget.DrawerLayout>
 
