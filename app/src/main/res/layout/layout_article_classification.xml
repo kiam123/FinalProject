@@ -9,90 +9,116 @@
         android:id="@+id/txt_all"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
-        android:text="全部" />
+        android:text="全部"
+        android:textSize="20dp"/>
 
     <TextView
         android:id="@+id/txt_chinese_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
-        android:text="中式" />
+        android:text="中式"
+        android:textSize="20dp"/>
 
     <TextView
         android:id="@+id/txt_hong_kong_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
-        android:text="港式" />
+        android:text="港式"
+        android:textSize="20dp"/>
 
     <TextView
         android:id="@+id/txt_western_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
-        android:text="西式" />
+        android:text="西式"
+        android:textSize="20dp"/>
 
     <TextView
         android:id="@+id/txt_nanyang"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
-        android:text="南洋" />
+        android:text="南洋"
+        android:textSize="20dp"/>
 
     <TextView
         android:id="@+id/txt_korean_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
-        android:text="韓式" />
+        android:text="韓式"
+        android:textSize="20dp"/>
 
     <TextView
         android:id="@+id/txt_japanese_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
-        android:text="日式" />
+        android:text="日式"
+        android:textSize="20dp"/>
 
     <TextView
         android:id="@+id/txt_drink"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
-        android:text="飲料" />
+        android:text="飲料"
+        android:textSize="20dp"/>
 
     <TextView
         android:id="@+id/txt_dessert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
-        android:text="點心" />
+        android:text="點心"
+        android:textSize="20dp"/>
 
     <TextView
         android:id="@+id/txt_fast_food"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
-        android:text="速食" />
+        android:text="速食"
+        android:textSize="20dp"/>
 
     <TextView
         android:id="@+id/txt_recipe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
-        android:text="食譜" />
+        android:text="食譜"
+        android:textSize="20dp"/>
 
     <TextView
         android:id="@+id/txt_barbecue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
-        android:text="燒烤" />
+        android:text="燒烤"
+        android:textSize="20dp"/>
 
     <TextView
         android:id="@+id/txt_convenience_store"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
-        android:text="便利店" />
+        android:text="便利店"
+        android:textSize="20dp"/>
 </LinearLayout>

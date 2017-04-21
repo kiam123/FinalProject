@@ -27,6 +27,7 @@ public class ArticleClassificationAdapter extends BaseAdapter {
 
     public void addItem(ArticleClassificationData articleClassificationData){
         articleClassificationDatas.add(articleClassificationData);
+        this.notifyDataSetChanged();
     }
 
     private class ViewHolder{

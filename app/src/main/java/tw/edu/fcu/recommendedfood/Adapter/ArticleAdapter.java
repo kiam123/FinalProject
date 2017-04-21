@@ -26,6 +26,7 @@ public class ArticleAdapter extends BaseAdapter {
 
     public void addItem(ArticleData itemData){
         itemDatas.add(itemData);
+        this.notifyDataSetChanged();
     }
 
     private class ViewHolder{

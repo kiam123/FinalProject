@@ -4,7 +4,9 @@ package tw.edu.fcu.recommendedfood.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,6 +16,9 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import tw.edu.fcu.recommendedfood.Adapter.ArticleAdapter;
 import tw.edu.fcu.recommendedfood.Data.ArticleData;
@@ -31,11 +36,16 @@ public class ArticleFragment extends Fragment {
     private ArticleAdapter articleAdapter;
     private ImageView imgSearch;
     private ImageView imgCommand;
+    private TabLayout tabNotification;
+    private List<String> titles;
     private TextView txtClassificationSet;
+    private ArrayList fragmentArrayList;
+    private Fragment mCurrentFrgment;
+    private int currentIndex = 0;
     private TextView txtAll, txtChineseStyle, txtHongKongStyle, txtWesternStyle, txtNanyang, txtKoreanStyle,
-                        txtJapaneseStyle, txtDrink, txtDessert, txtFastFood, txtRecipe, txtBarbecue, txtConvenienceStore;
+            txtJapaneseStyle, txtDrink, txtDessert, txtFastFood, txtRecipe, txtBarbecue, txtConvenienceStore;
     private String classification[] = {"全部", "中式", "港式", "西式", "南洋", "韓式", "日式",
-                                        "飲料", "點心", "速食", "食譜", "燒烤", "便利店"};
+            "飲料", "點心", "速食", "食譜", "燒烤", "便利店"};
 
     public ArticleFragment() {
     }
@@ -46,7 +56,7 @@ public class ArticleFragment extends Fragment {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_article, container, false);
         initView(viewGroup);
         initAdapter();
-
+        initNotificationTab(viewGroup);
         return viewGroup;
     }
 
@@ -59,6 +69,11 @@ public class ArticleFragment extends Fragment {
         imgSearch = (ImageView) viewGroup.findViewById(R.id.img_search);
         txtClassificationSet = (TextView) viewGroup.findViewById(R.id.txt_classification_set);
 
+
+//        mTabLayout.addTab(mTabLayout.newTab().setText("Tab 1"));
+//        mTabLayout.addTab(mTabLayout.newTab().setText("Tab 2"));
+//        mTabLayout.addTab(mTabLayout.newTab().setText("Tab 3"));
+
         initLayoutClassification(viewGroup);
 
         drawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);//函数来关闭手势滑动
@@ -68,7 +83,8 @@ public class ArticleFragment extends Fragment {
         imgCommand.setOnClickListener(imgCommandOnClickListener);
     }
 
-    public void initLayoutClassification(ViewGroup viewGroup){
+
+    public void initLayoutClassification(ViewGroup viewGroup) {
         txtAll = (TextView) viewGroup.findViewById(R.id.txt_all);
         txtChineseStyle = (TextView) viewGroup.findViewById(R.id.txt_chinese_style);
         txtHongKongStyle = (TextView) viewGroup.findViewById(R.id.txt_hong_kong_style);
@@ -98,78 +114,128 @@ public class ArticleFragment extends Fragment {
         txtConvenienceStore.setOnClickListener(classificationOnClickListener);
     }
 
+    public void initNotificationTab(ViewGroup viewGroup) {
+        initFragment();
+        titles = new ArrayList<>();//因為imageview不能比較，所以就用textview的方法來比較
+        titles.add("熱門");
+        titles.add("最新");
+        tabNotification = (TabLayout) viewGroup.findViewById(R.id.tabs_notification);
+
+        tabNotification.addTab(tabNotification.newTab().setText(titles.get(0)));
+        tabNotification.addTab(tabNotification.newTab().setText(titles.get(1)));
+        tabNotification.addOnTabSelectedListener(tabNotificationOnTabSelectedListener);
+
+    }
+
+    private TabLayout.OnTabSelectedListener tabNotificationOnTabSelectedListener = new TabLayout.OnTabSelectedListener() {
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+            changeTab(tab.getPosition());
+        }
+
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {
+
+        }
+
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {
+
+        }
+    };
+
     private View.OnClickListener classificationOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            switch (view.getId()){
+            switch (view.getId()) {
                 case R.id.txt_all:
-                    txtClassificationSet.setText("全部");
-                    flag = false;
-                    drawerlayout.closeDrawers();
+                    loadClassification("全部");
                     break;
                 case R.id.txt_chinese_style:
-                    txtClassificationSet.setText("中式");
-                    flag = false;
-                    drawerlayout.closeDrawers();
+                    loadClassification("中式");
                     break;
                 case R.id.txt_hong_kong_style:
-                    txtClassificationSet.setText("港式");
-                    flag = false;
-                    drawerlayout.closeDrawers();
+                    loadClassification("港式");
                     break;
                 case R.id.txt_western_style:
-                    txtClassificationSet.setText("西式");
-                    flag = false;
-                    drawerlayout.closeDrawers();
+                    loadClassification("西式");
                     break;
                 case R.id.txt_nanyang:
-                    txtClassificationSet.setText("南洋");
-                    flag = false;
-                    drawerlayout.closeDrawers();
+                    loadClassification("南洋");
                     break;
                 case R.id.txt_korean_style:
-                    txtClassificationSet.setText("韓式");
-                    flag = false;
-                    drawerlayout.closeDrawers();
+                    loadClassification("韓式");
                     break;
                 case R.id.txt_japanese_style:
-                    txtClassificationSet.setText("日式");
-                    flag = false;
-                    drawerlayout.closeDrawers();
+                    loadClassification("日式");
                     break;
                 case R.id.txt_drink:
-                    txtClassificationSet.setText("飲料");
-                    flag = false;
-                    drawerlayout.closeDrawers();
+                    loadClassification("飲料");
                     break;
                 case R.id.txt_dessert:
-                    txtClassificationSet.setText("點心");
-                    flag = false;
-                    drawerlayout.closeDrawers();
+                    loadClassification("點心");
                     break;
                 case R.id.txt_fast_food:
-                    txtClassificationSet.setText("速食");
-                    flag = false;
-                    drawerlayout.closeDrawers();
+                    loadClassification("速食");
                     break;
                 case R.id.txt_recipe:
-                    txtClassificationSet.setText("食譜");
-                    flag = false;
-                    drawerlayout.closeDrawers();
+                    loadClassification("食譜");
                     break;
                 case R.id.txt_barbecue:
-                    txtClassificationSet.setText("燒烤");
-                    flag = false;
-                    drawerlayout.closeDrawers();
+                    loadClassification("燒烤");
                     break;
                 case R.id.txt_convenience_store:
-                    txtClassificationSet.setText("便利店");
-                    flag = false;
-                    drawerlayout.closeDrawers();
+                    loadClassification("便利店");
                     break;
             }
         }
     };
+
+    public void loadClassification(String name){
+        TabLayout.Tab tab = tabNotification.getTabAt(0);
+        tab.select();
+        initFragment();
+        changeTab(tab.getPosition());
+        txtClassificationSet.setText(name);
+        flag = false;
+        drawerlayout.closeDrawers();
+    }
+
+    private void initFragment(){
+        fragmentArrayList = null;
+//        mCurrentFrgment = null;
+        fragmentArrayList = new ArrayList<Fragment>(2);
+        fragmentArrayList.add(new ArticleHotFragment());
+        fragmentArrayList.add(new ArticleNewFragment());
+
+        changeTab(0);
+    }
+
+    public void changeTab(int index){
+        currentIndex = index;
+
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        //判断当前的Fragment是否为空，不为空则隐藏
+        if (mCurrentFrgment != null) {
+            ft.hide(mCurrentFrgment);
+        }
+        //先根据Tag从FragmentTransaction事物获取之前添加的Fragment
+        Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag(fragmentArrayList.get(currentIndex).getClass().getName());
+
+        if (fragment == null) {
+            //如fragment为空，则之前未添加此Fragment。便从集合中取出
+            fragment = (Fragment) fragmentArrayList.get(index);
+        }
+        mCurrentFrgment = fragment;
+
+        //判断此Fragment是否已经添加到FragmentTransaction事物中
+        if (!fragment.isAdded()) {
+            ft.replace(R.id.fragment, fragment, fragment.getClass().getName());
+        } else {
+            ft.show(fragment);
+        }
+        ft.commit();
+    }
 
     public void initAdapter() {
         articleAdapter = new ArticleAdapter(getActivity());
