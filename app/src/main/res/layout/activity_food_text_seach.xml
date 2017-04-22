@@ -34,15 +34,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_margin="5dp"
-                    android:src="@mipmap/ic_launcher" />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    android:background="#56AB55" />
+                    android:src="@drawable/ic_search_black_24dp" />
 
                 <tw.edu.fcu.recommendedfood.Widget.EditTextWidget
                     android:id="@+id/et_phoneNumber"

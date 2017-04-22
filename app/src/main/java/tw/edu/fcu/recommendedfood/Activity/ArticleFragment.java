@@ -1,8 +1,10 @@
 package tw.edu.fcu.recommendedfood.Activity;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -43,11 +45,17 @@ public class ArticleFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initFragment();
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_article, container, false);
         initView(viewGroup);
-        initFragment();
         initClassificationAdapter();
 
         return viewGroup;
@@ -132,7 +140,7 @@ public class ArticleFragment extends Fragment {
         //判断此Fragment是否已经添加到FragmentTransaction事物中
         if (!fragment.isAdded()) {
             ft.replace(R.id.fragment, fragment, fragment.getClass().getName());
-            ft.addToBackStack(null);
+//            ft.addToBackStack(null);
         } else {
             ft.show(fragment);
         }
@@ -193,4 +201,10 @@ public class ArticleFragment extends Fragment {
         }
     };
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        initFragment();
+    }
 }

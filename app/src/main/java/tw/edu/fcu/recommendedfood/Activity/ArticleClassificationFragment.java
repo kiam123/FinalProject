@@ -30,6 +30,7 @@ public class ArticleClassificationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_article_classification, container, false);
+        initNotificationTab(viewGroup);
 
         return viewGroup;
     }
