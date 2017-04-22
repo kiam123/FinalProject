@@ -37,6 +37,7 @@ public class ArticleFragment extends Fragment {
     private int currentIndex = 0;
     private ListView listviewClassification;
     private ArticleClassificationAdapter articleClassificationAdapter;
+    public static final String KEY_CLASSIFICATION = "KEY_CLASSIFICATION";
     private String classification[] = {"全部", "中式", "港式", "西式", "南洋", "韓式", "日式",
             "飲料", "點心", "速食", "食譜", "燒烤", "便利店"};
 
@@ -47,7 +48,6 @@ public class ArticleFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initFragment();
-
     }
 
     @Override
@@ -91,6 +91,7 @@ public class ArticleFragment extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
             loadClassification(position);
+
         }
     };
 
@@ -122,13 +123,12 @@ public class ArticleFragment extends Fragment {
     public void changeTab(int index){
         currentIndex = index;
 
-//        getChildFragmentManager()
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         //判断当前的Fragment是否为空，不为空则隐藏
         if (mCurrentFrgment != null) {
             ft.hide(mCurrentFrgment);
         }
-        //先根据Tag从FragmentTransaction事物获取之前添加的Fragment
+        //先根据currentIndex从FragmentTransaction事物获取之前添加的Fragment
         Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag(fragmentArrayList.get(currentIndex).getClass().getName());
 
         if (fragment == null) {
@@ -139,7 +139,10 @@ public class ArticleFragment extends Fragment {
 
         //判断此Fragment是否已经添加到FragmentTransaction事物中
         if (!fragment.isAdded()) {
-            ft.add(R.id.fragment, fragment, fragment.getClass().getName());
+            Bundle bundle = new Bundle();
+            bundle.putString(KEY_CLASSIFICATION, classification[currentIndex]);
+            fragment.setArguments(bundle);
+            ft.replace(R.id.fragment, fragment, fragment.getClass().getName());
 //            ft.addToBackStack(null);
         } else {
             ft.show(fragment);

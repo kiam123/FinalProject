@@ -15,11 +15,11 @@ import tw.edu.fcu.recommendedfood.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ArticleNewFragment extends Fragment {
+public class ArticleClassificationNewFragment extends Fragment {
     ArticleAdapter articleAdapter;
     ListView listView;
 
-    public ArticleNewFragment() {
+    public ArticleClassificationNewFragment() {
     }
 
 

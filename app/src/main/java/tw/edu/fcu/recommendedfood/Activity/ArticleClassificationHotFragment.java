@@ -2,6 +2,7 @@ package tw.edu.fcu.recommendedfood.Activity;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,14 +16,19 @@ import tw.edu.fcu.recommendedfood.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ArticleHotFragment extends Fragment {
+public class ArticleClassificationHotFragment extends Fragment {
     ArticleAdapter articleAdapter;
     ListView listView;
 
-    public ArticleHotFragment() {
+    public ArticleClassificationHotFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

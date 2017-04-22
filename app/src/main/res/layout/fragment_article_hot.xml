@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="tw.edu.fcu.recommendedfood.Activity.ArticleHotFragment">
+    tools:context="tw.edu.fcu.recommendedfood.Activity.ArticleClassificationHotFragment">
 
 
     <ListView

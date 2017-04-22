@@ -2,12 +2,14 @@ package tw.edu.fcu.recommendedfood.Activity;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,18 +23,33 @@ public class ArticleClassificationFragment extends Fragment {
     private List<String> titles;
     private TabLayout tabNotification;
     int currentIndex;
-
+    private TextView txtClassificationSet;
+    private Bundle bundle;
     public ArticleClassificationFragment() {
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        bundle = getArguments();
+
+       
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_article_classification, container, false);
+        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_article_classification, container, false);
+
+        initView(viewGroup);
+        txtClassificationSet.setText(bundle.getString(ArticleFragment.KEY_CLASSIFICATION));
         initNotificationTab(viewGroup);
 
         return viewGroup;
+    }
+
+    public void initView(ViewGroup viewGroup) {
+        txtClassificationSet = (TextView) viewGroup.findViewById(R.id.txt_classification_set);
     }
 
     public void initNotificationTab(ViewGroup viewGroup) {
@@ -64,7 +81,7 @@ public class ArticleClassificationFragment extends Fragment {
         }
     };
 
-    public void changeTab(int index){
+    public void changeTab(int index) {
         currentIndex = index;
 
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
