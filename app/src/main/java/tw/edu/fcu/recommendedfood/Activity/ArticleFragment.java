@@ -1,7 +1,6 @@
 package tw.edu.fcu.recommendedfood.Activity;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -30,7 +29,7 @@ public class ArticleFragment extends Fragment {
     private DrawerLayout drawerlayout;
     private NavigationView navigationview;
     private ImageView imgToggle;
-    private boolean flag = false;//侧滑菜单是否打开的标识
+    private boolean openDrawerLayout = false;//侧滑菜单是否打开的标识
     private ImageView imgSearch;
     private ImageView imgCommand;
     private ArrayList fragmentArrayList;
@@ -97,7 +96,7 @@ public class ArticleFragment extends Fragment {
 
     public void loadClassification(int position){
         changeTab(position);
-        flag = false;
+        openDrawerLayout = false;
         drawerlayout.closeDrawers();
     }
 
@@ -123,7 +122,8 @@ public class ArticleFragment extends Fragment {
     public void changeTab(int index){
         currentIndex = index;
 
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+//        getChildFragmentManager()
+        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         //判断当前的Fragment是否为空，不为空则隐藏
         if (mCurrentFrgment != null) {
             ft.hide(mCurrentFrgment);
@@ -139,7 +139,7 @@ public class ArticleFragment extends Fragment {
 
         //判断此Fragment是否已经添加到FragmentTransaction事物中
         if (!fragment.isAdded()) {
-            ft.replace(R.id.fragment, fragment, fragment.getClass().getName());
+            ft.add(R.id.fragment, fragment, fragment.getClass().getName());
 //            ft.addToBackStack(null);
         } else {
             ft.show(fragment);
@@ -161,21 +161,21 @@ public class ArticleFragment extends Fragment {
         @Override
         public void onDrawerClosed(View drawerView) {
             super.onDrawerClosed(drawerView);
-            flag = false;
+            openDrawerLayout = false;
         }
 
         //当侧滑菜单打开
         @Override
         public void onDrawerOpened(View drawerView) {
             super.onDrawerOpened(drawerView);
-            flag = true;
+            openDrawerLayout = true;
         }
     };
 
     private View.OnClickListener btnToggleListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (flag) {//如果是打开的,就关闭侧滑菜单
+            if (openDrawerLayout) {//如果是打开的,就关闭侧滑菜单
                 drawerlayout.closeDrawers();
             } else {
                 drawerlayout.openDrawer(Gravity.LEFT);//布局中设置从左边打开,这里也要设置为左边打开
@@ -201,10 +201,4 @@ public class ArticleFragment extends Fragment {
         }
     };
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        initFragment();
-    }
 }
