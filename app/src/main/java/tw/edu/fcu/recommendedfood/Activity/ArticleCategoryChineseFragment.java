@@ -16,9 +16,7 @@ import java.util.List;
 
 import tw.edu.fcu.recommendedfood.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+//TODO 不確定是否需要用到這個類別
 public class ArticleCategoryChineseFragment extends Fragment {
     private ArrayList fragmentArrayList;
     private Fragment mCurrentFrgment = null;
