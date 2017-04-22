@@ -16,7 +16,7 @@ public class FoodTextSeachActivity extends AppCompatActivity {
     }
 
     public void initView(){
-        listView = (ListView) findViewById(R.id.listview);
+        listView = (ListView) findViewById(R.id.listviewClassification);
     }
 
     public void imgBackAtivity(View view){

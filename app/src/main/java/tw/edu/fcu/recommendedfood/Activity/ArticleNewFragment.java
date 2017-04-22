@@ -35,7 +35,7 @@ public class ArticleNewFragment extends Fragment {
     }
 
     public void initView(ViewGroup viewGroup){
-        listView = (ListView) viewGroup.findViewById(R.id.listview);
+        listView = (ListView) viewGroup.findViewById(R.id.listviewClassification);
     }
 
     public void initAdapter(){

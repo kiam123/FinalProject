@@ -36,7 +36,7 @@ public class ArticleHotFragment extends Fragment {
     }
 
     public void initView(ViewGroup viewGroup){
-        listView = (ListView) viewGroup.findViewById(R.id.listview);
+        listView = (ListView) viewGroup.findViewById(R.id.listviewClassification);
     }
 
     public void initAdapter(){
@@ -50,5 +50,8 @@ public class ArticleHotFragment extends Fragment {
         articleAdapter.addItem(new ArticleData("5", "標題", "內容"));
         articleAdapter.addItem(new ArticleData("6", "標題", "內容"));
         articleAdapter.addItem(new ArticleData("7", "標題", "內容"));
+        articleAdapter.addItem(new ArticleData("8", "標題", "內容"));
+        articleAdapter.addItem(new ArticleData("9", "標題", "內容"));
+        articleAdapter.addItem(new ArticleData("10", "標題", "內容"));
     }
 }

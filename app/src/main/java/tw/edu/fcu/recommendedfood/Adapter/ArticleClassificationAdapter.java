@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -31,7 +32,7 @@ public class ArticleClassificationAdapter extends BaseAdapter {
     }
 
     private class ViewHolder{
-
+        TextView nameClassification;
     }
 
     @Override
@@ -54,15 +55,15 @@ public class ArticleClassificationAdapter extends BaseAdapter {
         ViewHolder viewHolder;
 
         if(convertView == null){
-            convertView = layoutInflater.inflate(R.layout.layout_article_adapter, null);
+            convertView = layoutInflater.inflate(R.layout.layout_article_classification_adapter, null);
             viewHolder = new ViewHolder();
-
+            viewHolder.nameClassification = (TextView) convertView.findViewById(R.id.nameClassification);
             convertView.setTag(viewHolder);
         }else {
             viewHolder = (ViewHolder)convertView.getTag();
         }
 
-
+        viewHolder.nameClassification.setText(articleClassificationDatas.get(position).getNameClassification());
         return convertView;
     }
 }
