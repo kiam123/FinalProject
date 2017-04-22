@@ -50,7 +50,6 @@
                     android:maxLength="11" />
 
             </RelativeLayout>
-
         </LinearLayout>
 
         <ImageView
