@@ -33,7 +33,7 @@ public class ArticleClassificationHotFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_article_hot, container, false);
+        ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_article_classification_hot, container, false);
 
         initView(viewGroup);
         initAdapter();

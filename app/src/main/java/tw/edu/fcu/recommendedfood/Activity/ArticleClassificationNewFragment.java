@@ -26,7 +26,7 @@ public class ArticleClassificationNewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_article_new, container, false);
+        ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_article_classification_new, container, false);
 
         initView(viewGroup);
         initAdapter();

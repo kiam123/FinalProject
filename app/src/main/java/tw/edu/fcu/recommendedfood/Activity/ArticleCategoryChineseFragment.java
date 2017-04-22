@@ -16,33 +16,37 @@ import java.util.List;
 
 import tw.edu.fcu.recommendedfood.R;
 
-
-public class ArticleClassificationFragment extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class ArticleCategoryChineseFragment extends Fragment {
     private ArrayList fragmentArrayList;
-    private Fragment mCurrentFrgment;
+    private Fragment mCurrentFrgment = null;
     private List<String> titles;
     private TabLayout tabNotification;
     int currentIndex;
     private TextView txtClassificationSet;
     private Bundle bundle;
-    public ArticleClassificationFragment() {
+
+    public ArticleCategoryChineseFragment() {
+        // Required empty public constructor
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        initFragment();
         bundle = getArguments();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_article_classification, container, false);
+        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_article_category_chinese, container, false);
 
         initView(viewGroup);
         initNotificationTab(viewGroup);
-        initFragment();
+
 
         return viewGroup;
     }
@@ -92,14 +96,17 @@ public class ArticleClassificationFragment extends Fragment {
     public void changeTab(int index) {
         currentIndex = index;
 
+        String []title = {"ch_hot","ch_new"};
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         //判断当前的Fragment是否为空，不为空则隐藏
         if (mCurrentFrgment != null) {
             ft.hide(mCurrentFrgment);
         }
-        //先根据Tag从FragmentTransaction事物获取之前添加的Fragment
-        Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag(fragmentArrayList.get(currentIndex).getClass().getName());
 
+
+        //先根据Tag从FragmentTransaction事物获取之前添加的Fragment
+//        Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag(fragmentArrayList.get(currentIndex).getClass().getName());
+        Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag(title[currentIndex]);
         if (fragment == null) {
             //如fragment为空，则之前未添加此Fragment。便从集合中取出
             fragment = (Fragment) fragmentArrayList.get(index);
@@ -108,7 +115,7 @@ public class ArticleClassificationFragment extends Fragment {
 
         //判断此Fragment是否已经添加到FragmentTransaction事物中
         if (!fragment.isAdded()) {
-            ft.add(R.id.classification_fragment, fragment, fragment.getClass().getName());
+            ft.add(R.id.chinese_fragment, fragment, fragment.getClass().getName());
         } else {
             ft.show(fragment);
         }

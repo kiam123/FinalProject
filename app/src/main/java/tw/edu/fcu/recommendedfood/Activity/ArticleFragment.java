@@ -8,6 +8,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -128,15 +129,25 @@ public class ArticleFragment extends Fragment {
         if (mCurrentFrgment != null) {
             ft.hide(mCurrentFrgment);
         }
-        //先根据currentIndex从FragmentTransaction事物获取之前添加的Fragment
+
+        //先根据Tag从FragmentTransaction事物获取之前添加的Fragment
         Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag(fragmentArrayList.get(currentIndex).getClass().getName());
+        if (mCurrentFrgment != null) {
+            Log.v("tag1",""+mCurrentFrgment.toString());
+        }
+        Log.v("tag2",""+fragmentArrayList.get(currentIndex).getClass().getName());
 
         if (fragment == null) {
             //如fragment为空，则之前未添加此Fragment。便从集合中取出
             fragment = (Fragment) fragmentArrayList.get(index);
         }
         mCurrentFrgment = fragment;
+        if (mCurrentFrgment != null) {
+            Log.v("tag3",""+mCurrentFrgment.toString());
 
+            if (fragment != null)
+                Log.v("tag4",""+fragment.toString());
+        }
         //判断此Fragment是否已经添加到FragmentTransaction事物中
         if (!fragment.isAdded()) {
             Bundle bundle = new Bundle();
