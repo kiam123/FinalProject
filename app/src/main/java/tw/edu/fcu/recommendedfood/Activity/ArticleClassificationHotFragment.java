@@ -1,12 +1,14 @@
 package tw.edu.fcu.recommendedfood.Activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import tw.edu.fcu.recommendedfood.Adapter.ArticleAdapter;
@@ -48,6 +50,7 @@ public class ArticleClassificationHotFragment extends Fragment {
     public void initAdapter(){
         articleAdapter = new ArticleAdapter(getActivity());
         listView.setAdapter(articleAdapter);
+        listView.setOnItemClickListener(articleBlogOnItemClickListener);
 
         articleAdapter.addItem(new ArticleData("1", "標題", "內容"));
         articleAdapter.addItem(new ArticleData("2", "標題", "內容"));
@@ -60,4 +63,13 @@ public class ArticleClassificationHotFragment extends Fragment {
         articleAdapter.addItem(new ArticleData("9", "標題", "內容"));
         articleAdapter.addItem(new ArticleData("10", "標題", "內容"));
     }
+
+    private AdapterView.OnItemClickListener articleBlogOnItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            Intent intent = new Intent();
+            intent.setClass(getActivity(),ArticleBlogActivity.class);
+            startActivity(intent);
+        }
+    };
 }
