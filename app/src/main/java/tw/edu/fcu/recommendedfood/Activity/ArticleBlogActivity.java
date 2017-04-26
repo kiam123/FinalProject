@@ -55,7 +55,6 @@ public class ArticleBlogActivity extends AppCompatActivity {
                 "<a href=\"http://i.imgur.com/XOdIVZB.jpg\">http://i.imgur.com/XOdIVZB.jpg</a><br><br/>" +
                 "<img src='http://i.imgur.com/XOdIVZB.jpg' /><br><br/>";
 
-        
 //        html =    "表特首po，手機排版傷眼見諒。\n" +
 //                "本魯的好友，一開始認識就覺得很正，但是又不知道正在哪，所以歸類為樸素系的正妹。\n" +
 //                "\n" +
