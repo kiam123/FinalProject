@@ -5,28 +5,47 @@ package tw.edu.fcu.recommendedfood.Data;
  */
 
 public class ArticleBlogData {
+    String avatar;
     String title;
-    String content;
-    String img;
+    String author;
+    String time;
+    String htmlContent;
     int type;
 
-    public ArticleBlogData(String title, String content, String img, int type) {
+    public ArticleBlogData(String title, String author, String time, String htmlContent, int type) {
         this.title = title;
-        this.content = content;
-        this.img = img;
+        this.author = author;
+        this.time = time;
+        this.htmlContent = htmlContent;
         this.type = type;
+    }
+
+    public ArticleBlogData(int type, String avatar, String author, String htmlContent, String time) {
+        this.avatar = avatar;
+        this.author = author;
+        this.time = time;
+        this.htmlContent = htmlContent;
+        this.type = type;
+    }
+
+    public String getAvatar() {
+        return avatar;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getContent() {
-        return content;
+    public String getAuthor() {
+        return author;
     }
 
-    public String getImg() {
-        return img;
+    public String getTime() {
+        return time;
+    }
+
+    public String getHtmlContent() {
+        return htmlContent;
     }
 
     public int getType() {

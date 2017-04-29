@@ -1,6 +1,6 @@
 package tw.edu.fcu.recommendedfood.Activity;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -112,10 +112,10 @@ public class FoodCalendarViewFragment extends Fragment {
         int[] titles = new int[] { R.string.Sun, R.string.Mon, R.string.Tue,
                 R.string.Wed, R.string.Thu, R.string.Fri, R.string.Sat };
 
-        private Activity activity;
+        private Context activity;
 
         // construct
-        public TitleGridAdapter(Activity a) {
+        public TitleGridAdapter(Context a) {
             activity = a;
         }
 
@@ -136,22 +136,22 @@ public class FoodCalendarViewFragment extends Fragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            LinearLayout iv = new LinearLayout(activity);
+            LinearLayout linearLayout = new LinearLayout(activity);
             TextView txtDay = new TextView(activity);
             txtDay.setFocusable(false);
             txtDay.setBackgroundColor(Color.TRANSPARENT);
             txtDay.setHeight(100);
-            iv.setOrientation(LinearLayout.VERTICAL);
+            linearLayout.setOrientation(LinearLayout.VERTICAL);
 
             txtDay.setGravity(Gravity.CENTER);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 
             txtDay.setTextColor(Color.GRAY);
 
             txtDay.setText((Integer) getItem(position));
-            iv.addView(txtDay, lp);
-            return iv;
+            linearLayout.addView(txtDay, layoutParams);
+            return linearLayout;
         }
     }
 }

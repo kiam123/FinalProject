@@ -1,41 +1,35 @@
 package tw.edu.fcu.recommendedfood.Activity;
 
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
-import android.text.Spanned;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
-
+import tw.edu.fcu.recommendedfood.Adapter.ArticleBlogAdapter;
+import tw.edu.fcu.recommendedfood.Data.ArticleBlogData;
 import tw.edu.fcu.recommendedfood.R;
 
 public class ArticleBlogActivity extends AppCompatActivity {
     ImageView imageView;
     TextView textView;
     String html;
+    ListView listview;
+    ArticleBlogAdapter articleBlogAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_blog);
 
-        imageView = (ImageView) findViewById(R.id.imageView);
+//        imageView = (ImageView) findViewById(R.id.imageView);
 //        html =    "<h1>this is h1</h1>"
 //                + "<p>This text is normal</p>"
 //                + "<a href=\"http://i.imgur.com/RyFb0yU.jpg\">http://i.imgur.com/RyFb0yU.jpg</a> "
 //                + "<img src='http://i.imgur.com/RyFb0yU.jpg' />";
 
         html =  "<html> <body>" +
-                "<h1>表特首po，手機排版傷眼見諒。</h1>" +
+                "<p>表特首po，手機排版傷眼見諒。</p>" +
                 "<p>本魯的好友，一開始認識就覺得很正，但是又不知道正在哪，所以歸類為樸素系的正妹。</p>" +
                 "<p>可以不愛，但請別傷害。<p>" +
                 "<a href=\"http://i.imgur.com/WBpYpsI.jpg\">http://i.imgur.com/WBpYpsI.jpg</a> <br>" +
@@ -62,87 +56,28 @@ public class ArticleBlogActivity extends AppCompatActivity {
                 "風格都不同，有機會再分享。" +
                 "</body> </html>";
 
-        this.textView = (TextView)this.findViewById(R.id.txt_blog_content);
-        PicassoImageGetter picassoImageGetter = new PicassoImageGetter(textView,imageView.getResources(), Picasso.with(this));
-        Spanned htmlSpan = Html.fromHtml(html, picassoImageGetter, null);
-        textView.setText(htmlSpan);
+//        this.textView = (TextView)this.findViewById(R.id.txt_blog_content);
+//        PicassoImageGetter picassoImageGetter = new PicassoImageGetter(textView,imageView.getResources(), Picasso.with(this));
+//        Spanned htmlSpan = Html.fromHtml(html, picassoImageGetter, null);
+//        textView.setText(htmlSpan);
+
+        initView();
+        initAdapter();
     }
 
-    public class PicassoImageGetter implements Html.ImageGetter {
-        final Resources resources;
-        final Picasso pablo;
-        final TextView textView;
-        final CropSquareTransformation cropSquareTransformation = new CropSquareTransformation();
+    public void initView(){
+        listview = (ListView)findViewById(R.id.listview);
+    }
 
-        public PicassoImageGetter(final TextView textView, final Resources resources, final Picasso pablo) {
-            this.textView = textView;
-            this.resources = resources;
-            this.pablo = pablo;
-        }
-
-        @Override
-        public Drawable getDrawable(final String source) {
-            final BitmapDrawablePlaceHolder result = new BitmapDrawablePlaceHolder();
-
-            new AsyncTask<Void, Void, Bitmap>() {
-                @Override
-                protected Bitmap doInBackground(final Void... meh) {
-                    try {
-                        return pablo.load(source).get();
-                    } catch (Exception e) {
-                        return null;
-                    }
-                }
-
-                @Override
-                protected void onPostExecute(final Bitmap bitmap) {
-                    try {
-                        final BitmapDrawable drawable = new BitmapDrawable(resources, bitmap);
-
-                        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-
-                        result.setDrawable(drawable);
-                        result.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-
-                        textView.setText(textView.getText()); // invalidate() doesn't work correctly...
-                    } catch (Exception e) {
-                /* nom nom nom*/
-                    }
-                }
-
-            }.execute((Void) null);
-
-            return result;
-        }
-
-        public class BitmapDrawablePlaceHolder extends BitmapDrawable {
-            protected Drawable drawable;
-
-            @Override
-            public void draw(final Canvas canvas) {
-                if (drawable != null) {
-                    drawable.draw(canvas);
-                }
-            }
-
-            public void setDrawable(Drawable drawable) {
-                this.drawable = drawable;
-            }
-        }
-
-        public class CropSquareTransformation implements Transformation {
-            @Override public Bitmap transform(Bitmap source) {
-                int size = Math.min(source.getWidth(), source.getHeight());
-                int x = (source.getWidth() - size) / 2;
-                int y = (source.getHeight() - size) / 2;
-                Bitmap result = Bitmap.createBitmap(source, x, y, size, size);
-                if (result != source) {
-                    source.recycle();
-                }
-                return result;
-            }
-            @Override public String key() { return "square()"; }
-        }
-
+    public void initAdapter(){
+        articleBlogAdapter = new ArticleBlogAdapter(ArticleBlogActivity.this);
+        listview.setAdapter(articleBlogAdapter);
+//        ArticleBlogData(int type, String avatar, String author, String htmlContent, String time)
+        articleBlogAdapter.addItem(new ArticleBlogData("[正妹] 樸素系筋開腰軟正妹","guominhon (guominhong)","Thu Apr 20 08:20:46 2017",html,0));
+        articleBlogAdapter.addItem(new ArticleBlogData(1,"","Jimreveller","哪裡樸素不知能否解釋一下","04/20 08:23"));
+        articleBlogAdapter.addItem(new ArticleBlogData(1,"","fawangching","正","04/20 08:42"));
+        articleBlogAdapter.addItem(new ArticleBlogData(1,"","swatch44","想跟她一起劈腿","04/20 08:43"));
+        articleBlogAdapter.addItem(new ArticleBlogData(1,"","Jimreveller","行 推","04/20 08:45"));
+        articleBlogAdapter.addItem(new ArticleBlogData(1,"","yoyonigo","第一張","04/20 08:45"));
     }
 }
