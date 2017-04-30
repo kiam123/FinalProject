@@ -46,7 +46,7 @@
                     <!--android:background="#56AB55" />-->
 
                 <tw.edu.fcu.recommendedfood.Widget.EditTextWidget
-                    android:id="@+id/et_phoneNumber"
+                    android:id="@+id/et_search_food"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"

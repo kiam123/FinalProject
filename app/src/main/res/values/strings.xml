@@ -20,4 +20,6 @@
     <string name="gps">GPS</string>
     <string name="search">Search</string>
     <string name="title_activity_article_command">ArticleCommandActivity</string>
+    <string name="title_activity_food_gps_search">Map</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

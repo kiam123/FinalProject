@@ -3,6 +3,7 @@ package tw.edu.fcu.recommendedfood.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 
 import tw.edu.fcu.recommendedfood.R;
 
@@ -19,12 +20,12 @@ public class ArticleCommandActivity extends AppCompatActivity {
 
     }
 
-    public void imgBackAtivity(View view){
+    public void imgDoneCommand(View view){
+        //TODO 需要做完發文以後，部落格要做更新
         finish();
     }
 
-    public void imgDoneCommand(View view){
-        //TODO 需要做完發文以後，部落格要做更新
+    public void imgBackAtivity(View view){
         finish();
     }
 }

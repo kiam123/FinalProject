@@ -5,14 +5,25 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
         <activity
-            android:name="tw.edu.fcu.recommendedfood.Activity.MainActivity"
+            android:name=".Activity.MainActivity"
             android:label="美食推薦">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,20 +31,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="tw.edu.fcu.recommendedfood.Activity.FoodRecorderActivity" />
+        <activity android:name=".Activity.FoodRecorderActivity" />
         <activity
-            android:name="tw.edu.fcu.recommendedfood.Activity.FoodTextSeachActivity"
-            android:windowSoftInputMode="stateAlwaysVisible"/>
-        <activity android:name="tw.edu.fcu.recommendedfood.Activity.FoodGpsSearchActivity" />
-        <activity android:name="tw.edu.fcu.recommendedfood.Activity.ArticleBlogActivity" />
+            android:name=".Activity.FoodTextSeachActivity"
+            android:windowSoftInputMode="stateAlwaysVisible" />
+        <activity android:name=".Activity.ArticleBlogActivity" />
         <activity
-            android:name="tw.edu.fcu.recommendedfood.Activity.ArticleSeachAll"
-            android:windowSoftInputMode="stateAlwaysVisible">
-        </activity>
+            android:name=".Activity.ArticleSeachAll"
+            android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
-            android:name="tw.edu.fcu.recommendedfood.Activity.ArticleCommandActivity"
-            android:windowSoftInputMode="stateAlwaysVisible">
-        </activity>
+            android:name=".Activity.ArticleCommandActivity"
+            android:windowSoftInputMode="stateAlwaysVisible" />
+        <activity android:name=".Activity.FoodGpsSearchActivity"></activity>
+        <activity android:name=".Activity.FoodGpsShopActivity"></activity>
     </application>
 
 </manifest>
