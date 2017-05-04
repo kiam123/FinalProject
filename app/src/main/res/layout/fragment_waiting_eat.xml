@@ -1,9 +1,49 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="tw.edu.fcu.recommendedfood.Activity.WaitingEatFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical|end">
+
+        <ImageView
+            android:id="@+id/img_search_item"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            app:srcCompat="@android:drawable/ic_menu_search" />
+
+        <ImageView
+            android:id="@+id/img_add_item"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            app:srcCompat="@android:drawable/ic_menu_add" />
+
+        <ImageView
+            android:id="@+id/img_revert_item"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:visibility="gone"
+            app:srcCompat="@android:drawable/ic_menu_revert" />
+
+        <ImageView
+            android:id="@+id/img_delete_item"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:visibility="gone"
+            app:srcCompat="@android:drawable/ic_menu_delete" />
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/item_list"
