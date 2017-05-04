@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:padding="6sp"
     android:spacing="3sp"
-    tools:context="com.example.yan.die_eat.WaitingEatColorActivity">
+    tools:context="tw.edu.fcu.recommendedfood.Activity.WaitingEatColorActivity">
 
     <LinearLayout
         android:id="@+id/color_gallery"

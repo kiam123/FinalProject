@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     android:background="@drawable/rectangle_drawable"
-    tools:context="com.example.yan.die_eat.WaitingEatAboutActivity">
+    tools:context="tw.edu.fcu.recommendedfood.Activity.WaitingEatAboutActivity">
 
 
     <Button
