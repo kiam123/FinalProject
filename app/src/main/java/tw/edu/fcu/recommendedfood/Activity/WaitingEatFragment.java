@@ -60,6 +60,8 @@ public class WaitingEatFragment extends Fragment {
         ViewGroup viewGroup =(ViewGroup)inflater.inflate(R.layout.fragment_waiting_eat, container, false);
 
         initViews(viewGroup);
+        initAdapter();
+        initControllers();
 
         return viewGroup;
     }
