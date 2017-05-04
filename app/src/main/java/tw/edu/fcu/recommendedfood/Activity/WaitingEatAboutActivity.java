@@ -14,7 +14,7 @@ public class WaitingEatAboutActivity extends Activity {
         super.onCreate(savedInstanceState);
         // 取消元件的應用程式標題
       //  requestWindowFeature(Window.FEATURE_NO_TITLE);
-       // setContentView(R.layout.activity_about);
+       // setContentView(R.layout.activity_waitting_eat_about);
     }
 
     // 結束按鈕
