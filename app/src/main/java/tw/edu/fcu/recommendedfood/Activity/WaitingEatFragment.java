@@ -59,6 +59,7 @@ public class WaitingEatFragment extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup viewGroup =(ViewGroup)inflater.inflate(R.layout.fragment_waiting_eat, container, false);
 
+        initViews(viewGroup);
 
         return viewGroup;
     }
