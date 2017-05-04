@@ -44,6 +44,8 @@
             android:windowSoftInputMode="stateAlwaysVisible" />
         <activity android:name=".Activity.FoodGpsSearchActivity"></activity>
         <activity android:name=".Activity.FoodGpsShopActivity"></activity>
+
+
     </application>
 
 </manifest>
