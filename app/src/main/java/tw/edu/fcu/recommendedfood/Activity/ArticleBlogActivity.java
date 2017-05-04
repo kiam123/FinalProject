@@ -2,8 +2,6 @@ package tw.edu.fcu.recommendedfood.Activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,12 +21,6 @@ public class ArticleBlogActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_blog);
-
-//        imageView = (ImageView) findViewById(R.id.imageView);
-//        html =    "<h1>this is h1</h1>"
-//                + "<p>This text is normal</p>"
-//                + "<a href=\"http://i.imgur.com/RyFb0yU.jpg\">http://i.imgur.com/RyFb0yU.jpg</a> "
-//                + "<img src='http://i.imgur.com/RyFb0yU.jpg' />";
 
         html =  "<html> <body>" +
                 "<p>表特首po，手機排版傷眼見諒。</p>" +
@@ -58,11 +50,6 @@ public class ArticleBlogActivity extends AppCompatActivity {
                 "風格都不同，有機會再分享。" +
                 "</body> </html>";
 
-//        this.textView = (TextView)this.findViewById(R.id.txt_blog_content);
-//        PicassoImageGetter picassoImageGetter = new PicassoImageGetter(textView,imageView.getResources(), Picasso.with(this));
-//        Spanned htmlSpan = Html.fromHtml(html, picassoImageGetter, null);
-//        textView.setText(htmlSpan);
-
         initView();
         initAdapter();
     }
@@ -70,18 +57,18 @@ public class ArticleBlogActivity extends AppCompatActivity {
     public void initView(){
         listview = (ListView)findViewById(R.id.listview);
 
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                view.setSelected(true);
-            }
-        });
+//        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                view.setSelected(true);
+//            }
+//        });
     }
 
     public void initAdapter(){
         articleBlogAdapter = new ArticleBlogAdapter(ArticleBlogActivity.this);
         listview.setAdapter(articleBlogAdapter);
-//        ArticleBlogData(int type, String avatar, String author, String htmlContent, String time)
+
         articleBlogAdapter.addItem(new ArticleBlogData("[正妹] 樸素系筋開腰軟正妹","guominhon (guominhong)","Thu Apr 20 08:20:46 2017",html,0));
         articleBlogAdapter.addItem(new ArticleBlogData(1,"","Jimreveller","哪裡樸素不知能否解釋一下","04/20 08:23"));
         articleBlogAdapter.addItem(new ArticleBlogData(1,"","fawangching","正","04/20 08:42"));
