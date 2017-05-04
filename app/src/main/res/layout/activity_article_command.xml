@@ -80,7 +80,7 @@
             android:orientation="vertical">
 
             <tw.edu.fcu.recommendedfood.Widget.EditTextWidget
-                android:id="@+id/editText"
+                android:id="@+id/edt_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -93,7 +93,7 @@
                 android:textSize="25dp" />
 
             <tw.edu.fcu.recommendedfood.Widget.EditTextWidget
-                android:id="@+id/et_msg"
+                android:id="@+id/edt_msg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -103,6 +103,7 @@
                 android:lines="15"
                 android:paddingLeft="10dp"
                 android:scrollbars="vertical"
+                android:maxLines="1"
                 android:textSize="20sp" />
 
             <LinearLayout

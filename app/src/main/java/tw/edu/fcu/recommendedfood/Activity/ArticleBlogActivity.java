@@ -2,6 +2,8 @@ package tw.edu.fcu.recommendedfood.Activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -67,6 +69,13 @@ public class ArticleBlogActivity extends AppCompatActivity {
 
     public void initView(){
         listview = (ListView)findViewById(R.id.listview);
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                view.setSelected(true);
+            }
+        });
     }
 
     public void initAdapter(){
