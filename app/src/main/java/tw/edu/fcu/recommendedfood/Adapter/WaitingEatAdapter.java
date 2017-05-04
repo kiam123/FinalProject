@@ -53,7 +53,7 @@ public class WaitingEatAdapter extends ArrayAdapter<WaitingEatData> {
         // 讀取記事顏色、已選擇、標題與日期時間元件
         RelativeLayout typeColor = (RelativeLayout) itemView.findViewById(R.id.relative_type_color);
         ImageView selectedItem = (ImageView) itemView.findViewById(R.id.img_selected_item);
-        TextView titleView = (TextView) itemView.findViewById(R.id.txt_title_text);
+        TextView titleView = (TextView) itemView.findViewById(R.id.edt_title_text);
         TextView dateView = (TextView) itemView.findViewById(R.id.txt_date_text);
 
         // 設定記事顏色

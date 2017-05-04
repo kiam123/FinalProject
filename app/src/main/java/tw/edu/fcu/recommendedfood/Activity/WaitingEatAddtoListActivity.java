@@ -103,7 +103,7 @@ public class WaitingEatAddtoListActivity extends AppCompatActivity {
     }
 
     private void processViews() {
-        edtTitleText = (EditText) findViewById(R.id.txt_title_text);
+        edtTitleText = (EditText) findViewById(R.id.edt_title_text);
         edtContentText = (EditText) findViewById(R.id.edt_content_text);
     }
 

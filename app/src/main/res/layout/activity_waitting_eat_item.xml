@@ -16,7 +16,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <EditText
-            android:id="@+id/txt_title_text"
+            android:id="@+id/edt_title_text"
             android:hint="@string/enter_title"
             android:background="@drawable/rectangle_drawable"
             android:padding="6sp"
