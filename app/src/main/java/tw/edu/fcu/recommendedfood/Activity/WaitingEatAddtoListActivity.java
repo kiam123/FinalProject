@@ -14,6 +14,10 @@ import android.widget.EditText;
 
 import java.util.Date;
 
+import tw.edu.fcu.recommendedfood.Data.WaitingEatColors;
+import tw.edu.fcu.recommendedfood.Data.WaitingEatData;
+import tw.edu.fcu.recommendedfood.R;
+
 public class WaitingEatAddtoListActivity extends AppCompatActivity {
 
     private EditText edtTitleText, edtContentText;
@@ -31,7 +35,7 @@ public class WaitingEatAddtoListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item);
+        setContentView(R.layout.activity_waitting_eat_item);
 
         processViews();
 

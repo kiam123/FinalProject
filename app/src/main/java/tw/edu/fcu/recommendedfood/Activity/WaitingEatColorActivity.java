@@ -11,6 +11,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import tw.edu.fcu.recommendedfood.Data.WaitingEatColors;
+import tw.edu.fcu.recommendedfood.R;
+
 public class WaitingEatColorActivity extends Activity {
 
     private LinearLayout colorGallery;
@@ -18,7 +21,7 @@ public class WaitingEatColorActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_color);
+        setContentView(R.layout.activity_waitting_eat_color);
 
         processViews();
 
