@@ -70,14 +70,14 @@
         android:layout_width = "match_parent"
         android:layout_height="1dp"/>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical">-->
 
             <tw.edu.fcu.recommendedfood.Widget.EditTextWidget
                 android:id="@+id/edt_title"
@@ -126,8 +126,8 @@
             </LinearLayout>
 
 
-        </LinearLayout>
-    </ScrollView>
+        <!--</LinearLayout>-->
+    <!--</ScrollView>-->
 
 
     <!--<EditText-->

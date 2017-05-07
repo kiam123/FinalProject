@@ -1,8 +1,7 @@
-package xyz.maxime_brgt.testretrofit;
+package tw.edu.fcu.recommendedfood.ImgurLib;
 
 
 import okhttp3.MultipartBody;
-
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

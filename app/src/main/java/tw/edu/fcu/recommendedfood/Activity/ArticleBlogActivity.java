@@ -11,8 +11,6 @@ import tw.edu.fcu.recommendedfood.Data.ArticleBlogData;
 import tw.edu.fcu.recommendedfood.R;
 
 public class ArticleBlogActivity extends AppCompatActivity {
-    ImageView imageView;
-    TextView textView;
     String html;
     ListView listview;
     ArticleBlogAdapter articleBlogAdapter;

@@ -1,4 +1,4 @@
-package xyz.maxime_brgt.testretrofit;
+package tw.edu.fcu.recommendedfood.ImgurLib;
 
 import android.content.ContentUris;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package xyz.maxime_brgt.testretrofit;
+package tw.edu.fcu.recommendedfood.ImgurLib;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
 import java.lang.ref.WeakReference;
+
+import tw.edu.fcu.recommendedfood.R;
 
 /**
  * Created by maxim on 28/02/2017.

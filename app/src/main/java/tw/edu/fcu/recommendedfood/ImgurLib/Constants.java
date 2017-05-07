@@ -1,4 +1,4 @@
-package xyz.maxime_brgt.testretrofit;
+package tw.edu.fcu.recommendedfood.ImgurLib;
 
 /**
  * Created by maxim on 27/02/2017.
