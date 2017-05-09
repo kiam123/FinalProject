@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/editor_base_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="tw.edu.fcu.recommendedfood.Activity.ArticleCommandActivity">
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,8 +24,8 @@
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="25dp"
-                app:srcCompat="@android:drawable/btn_dialog"
-                android:onClick="imgBackAtivity"/>
+                android:onClick="imgBackAtivity"
+                app:srcCompat="@android:drawable/btn_dialog" />
         </LinearLayout>
 
         <LinearLayout
@@ -41,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="發文"
-                android:textSize="16dp"/>
+                android:textSize="16dp" />
 
         </LinearLayout>
 
@@ -57,92 +56,94 @@
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="25dp"
-                android:src="@drawable/ic_done_black_18dp"
-                android:onClick="imgDoneCommand"/>
+                android:onClick="imgDoneCommand"
+                android:src="@drawable/ic_done_black_18dp" />
         </LinearLayout>
 
     </LinearLayout>
 
-    <View
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="#DDDDDD"
-        android:layout_width = "match_parent"
-        android:layout_height="1dp"/>
+    <EditText
+        android:id="@+id/edt_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|left"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="#ffffff"
+        android:hint="点击输入标题"
+        android:lines="1"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:textColorHint="#bfbfbf"
+        android:textSize="18sp" />
 
-    <!--<ScrollView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="#bfbfbf" />
 
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:orientation="vertical">-->
+    <!--如果要軟鍵盤升起來不會遮到下面的layout-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:weightSum="1">
 
-            <tw.edu.fcu.recommendedfood.Widget.EditTextWidget
-                android:id="@+id/edt_title"
-                android:layout_width="match_parent"
+        <!--可能需要用到PictureAndEditorView-->
+        <tw.edu.fcu.recommendedfood.Widget.RichTextEditor
+            android:id="@+id/edt_msg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffffff"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:lines="15"
+            android:scrollbars="vertical"
+            android:textColorHint="#bfbfbf"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#afafaf" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <ImageView
+                android:id="@+id/img_editor_gallery"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:ems="10"
-                android:gravity="left|top"
-                android:hint="文章標題"
-                android:lines="1"
-                android:paddingLeft="10dp"
-                android:scrollbars="vertical"
-                android:textSize="25dp" />
+                android:contentDescription="选择图片"
+                android:onClick="OnGalleryClick"
+                android:src="@drawable/editor_gellary_enable_selector" />
 
-            <tw.edu.fcu.recommendedfood.Widget.EditTextWidget
-                android:id="@+id/edt_msg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:ems="10"
-                android:gravity="left|top"
-                android:hint="內容..."
-                android:lines="15"
-                android:paddingLeft="10dp"
-                android:scrollbars="vertical"
-                android:maxLines="1"
-                android:textSize="20sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/img_camera"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="bottom"
-                android:orientation="horizontal">
+                android:contentDescription="选择图片"
+                android:onClick="OnGalleryClick"
+                android:src="@drawable/take_picture_icon"
+                android:layout_weight="0.11" />
+        </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="TextView" />
-                </LinearLayout>
-            </LinearLayout>
-
-
-        <!--</LinearLayout>-->
-    <!--</ScrollView>-->
-
-
-    <!--<EditText-->
-        <!--android:id="@+id/editText2"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="20dp"-->
-        <!--android:background="@null"-->
-        <!--android:ems="10"-->
-        <!--android:gravity="left|top"-->
-        <!--android:lines="9"-->
-        <!--android:hint="內容..."-->
-        <!--android:inputType="textPersonName"-->
-        <!--android:paddingLeft="10dp"-->
-        <!--android:textSize="17dp" />-->
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#afafaf" />
+    </LinearLayout>
 
 </LinearLayout>
