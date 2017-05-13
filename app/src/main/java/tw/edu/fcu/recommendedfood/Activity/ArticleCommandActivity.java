@@ -30,7 +30,7 @@ public class ArticleCommandActivity extends AppCompatActivity {
     private EditText edtTitle;
     private RichTextEditor edtMsg;
     private String arr[];
-//    private ImageView imgEditorGallery;
+    //    private ImageView imgEditorGallery;
     String title;
     String msg = "";
 
@@ -63,7 +63,7 @@ public class ArticleCommandActivity extends AppCompatActivity {
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
                         // Capture soft enters in a singleLine EditText that is the last EditText
                         // This one is useful for the new list case, when there are no existing ListItems
-                        edtMsg.clearFocus();
+//                        edtMsg.clearFocus();
                         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
                     } else if (actionId == EditorInfo.IME_ACTION_NEXT) {
@@ -106,7 +106,7 @@ public class ArticleCommandActivity extends AppCompatActivity {
     }
 
     public void imgDoneCommand(View view) {
-        commitMsg();
+//        commitMsg();
 //        finish();
     }
 
@@ -121,12 +121,12 @@ public class ArticleCommandActivity extends AppCompatActivity {
         }
     }
 
-    public void OnGalleryClick(View view){
-        if(view.getId() == R.id.img_editor_gallery) {
+    public void OnGalleryClick(View view) {
+        if (view.getId() == R.id.img_editor_gallery) {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");// 相片类型
             startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE);
-        }else if(view.getId() == R.id.img_camera){
+        } else if (view.getId() == R.id.img_camera) {
             openCamera();
         }
     }
@@ -140,10 +140,12 @@ public class ArticleCommandActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_PICK_IMAGE) {
             Uri uri = data.getData();
             insertBitmap(getRealFilePath(uri));
+            //TODO 可能要用File來存下uri
         } else if (requestCode == REQUEST_CODE_CAPTURE_CAMEIA) {
             insertBitmap(mCurrentPhotoFile.getAbsolutePath());
         }
     }
+
     private void insertBitmap(String imagePath) {
         edtMsg.insertImage(imagePath);
     }
@@ -175,7 +177,7 @@ public class ArticleCommandActivity extends AppCompatActivity {
         return intent;
     }
 
-        public String getRealFilePath(final Uri uri) {
+    public String getRealFilePath(final Uri uri) {
         if (null == uri) {
             return null;
         }
@@ -188,7 +190,7 @@ public class ArticleCommandActivity extends AppCompatActivity {
             data = uri.getPath();
         } else if (ContentResolver.SCHEME_CONTENT.equals(scheme)) {
             Cursor cursor = getContentResolver().query(uri,
-                    new String[] { MediaStore.Images.ImageColumns.DATA }, null, null, null);
+                    new String[]{MediaStore.Images.ImageColumns.DATA}, null, null, null);
             if (null != cursor) {
                 if (cursor.moveToFirst()) {
                     int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
