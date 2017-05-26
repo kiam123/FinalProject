@@ -8,6 +8,6 @@
         android:bottomLeftRadius="5sp"
         android:bottomRightRadius="5sp" />
 
-    <solid android:color="#DDDDDD"/>
+    <solid android:color="#F5F5F5"/> //代吃名單 設定listview的背景顏色
 
 </shape>

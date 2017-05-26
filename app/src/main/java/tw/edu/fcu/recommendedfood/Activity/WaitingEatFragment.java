@@ -30,11 +30,6 @@ import tw.edu.fcu.recommendedfood.R;
 public class WaitingEatFragment extends Fragment {
 
     private ListView listView;
-    private TextView showAppName;
-
-    // 刪除原來的宣告
-    //private ArrayList<String> data = new ArrayList<>();
-    //private ArrayAdapter<String> adapter;
 
     // ListView使用的自定Adapter物件
     private WaitingEatAdapter waitingEatAdapter;
@@ -49,7 +44,6 @@ public class WaitingEatFragment extends Fragment {
 
     public WaitingEatFragment() {
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,7 +60,6 @@ public class WaitingEatFragment extends Fragment {
 
     private void initViews(ViewGroup viewGroup) {
         listView = (ListView) viewGroup.findViewById(R.id.item_list);
-        //    showAppName = (TextView) findViewById(R.id.showAppName);
     }
 
     public void initAdapter() {
