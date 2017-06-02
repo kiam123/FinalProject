@@ -15,7 +15,7 @@ import retrofit2.http.Query;
  * Created by maxim on 21/02/2017.
  */
 
-interface ImgurService {
+public interface ImgurService {
     @Multipart
     @Headers({
             "Authorization: Client-ID 0b5e46b0ac7b39f"

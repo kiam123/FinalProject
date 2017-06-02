@@ -2,7 +2,6 @@ package tw.edu.fcu.recommendedfood.Activity;
 
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -11,26 +10,28 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import retrofit2.Call;
+import tw.edu.fcu.recommendedfood.ImgurLib.DocumentHelper;
+import tw.edu.fcu.recommendedfood.ImgurLib.ImageResponse;
+import tw.edu.fcu.recommendedfood.ImgurLib.ImgurService;
+import tw.edu.fcu.recommendedfood.ImgurLib.NotificationHelper;
 import tw.edu.fcu.recommendedfood.R;
 import tw.edu.fcu.recommendedfood.Widget.RichTextEditor;
+
 
 public class ArticleCommandActivity extends AppCompatActivity {
     private EditText edtTitle;
     private RichTextEditor edtMsg;
     private String arr[];
-    //    private ImageView imgEditorGallery;
     String title;
     String msg = "";
 
@@ -39,8 +40,13 @@ public class ArticleCommandActivity extends AppCompatActivity {
     private static final File PHOTO_DIR = new File(
             Environment.getExternalStorageDirectory() + "/DCIM/Camera");
     private File mCurrentPhotoFile;// 照相机拍照得到的图片
-    String imageEncoded;
-    List<String> imagesEncodedList;
+
+    List<String> comments;
+
+
+    File chosenFile;
+    private Uri returnUri;
+    Call<ImageResponse> call;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,65 +56,78 @@ public class ArticleCommandActivity extends AppCompatActivity {
         initView();
     }
 
-    //TODO 之後發文的時候會使用setOnEditorActionListener
     public void initView() {
         edtTitle = (EditText) findViewById(R.id.edt_title);
         edtMsg = (RichTextEditor) findViewById(R.id.edt_msg);
-//        imgEditorGallery = (ImageView) findViewById(R.id.img_editor_gallery);
-
-        edtMsg.firstEdit.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event == null) {
-                    if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        // Capture soft enters in a singleLine EditText that is the last EditText
-                        // This one is useful for the new list case, when there are no existing ListItems
-//                        edtMsg.clearFocus();
-                        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
-                    } else if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                        // Capture soft enters in other singleLine EditTexts
-                    } else if (actionId == EditorInfo.IME_ACTION_GO) {
-                    } else {
-                        // Let the system handle all other null KeyEvents
-                        return false;
-                    }
-                } else if (actionId == EditorInfo.IME_NULL) {
-                    // Capture most soft enters in multi-line EditTexts and all hard enters;
-                    // They supply a zero actionId and a valid keyEvent rather than
-                    // a non-zero actionId and a null event like the previous cases.
-                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                        // We capture the event when the key is first pressed.
-                        StringBuffer tempMsg = new StringBuffer(v.getText().toString());
-                        tempMsg.append("\n");
-                        Log.v("tempMsg", tempMsg.toString());
-
-                        arr = tempMsg.toString().split("\n");
-                        for (int i = 0; i < arr.length; i++) {
-                            Log.v("testing", arr.length + " " + i + " " + "" + arr[i] + "");
-                        }
-
-                        msg = tempMsg.toString();
-                        v.setText(msg);
-                        edtMsg.firstEdit.setSelection(msg.length());
-                    } else {
-                        // We consume the event when the key is released.
-                        return true;
-                    }
-                } else {
-                    // We let the system handle it when the listener is triggered by something that
-                    // wasn't an enter.
-                    return false;
-                }
-                return true;
-            }
-        });
     }
 
     public void imgDoneCommand(View view) {
 //        commitMsg();
 //        finish();
+        comments = new ArrayList<>();
+        //TODO 可能要把檔案
+
+        final NotificationHelper notificationHelper = new NotificationHelper(this.getApplicationContext());
+        notificationHelper.createUploadingNotification();
+
+        ImgurService imgurService = ImgurService.retrofit.create(ImgurService.class);
+
+        for (int i = 0; i < edtMsg.buildEditData().size(); i++) {
+            if (edtMsg.checkImageExist(i)) {
+                //TODO 可能要用File來存下uri
+                returnUri = Uri.parse(edtMsg.buildEditData().get(i).imagePath);
+                chosenFile = new File(returnUri+"");
+
+
+                edtMsg.dataList.get(i).imagePath = "<img src=\"http://i.imgur.com/RyFb0yU.jpg\"/>";//http://i.imgur.com/RyFb0yU.jpg
+//                Log.v("edt123",edtMsg.dataList.get(i).imagePath);
+                comments.add("<img src=\"http://i.imgur.com/RyFb0yU.jpg\"/>");
+//                call = imgurService.postImage("", "", "", "",
+//                        MultipartBody.Part.createFormData(
+//                                "image",
+//                                chosenFile.getName(),
+//                                RequestBody.create(MediaType.parse("image/*"), chosenFile)
+//                        ));
+//
+//                final int temp = i;
+//                call.enqueue(new Callback<ImageResponse>() {
+//                    @Override
+//                    public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
+//                        if (response == null) {
+//                            notificationHelper.createFailedUploadNotification();
+//                            return;
+//                        }
+//                        if (response.isSuccessful()) {
+//                            Toast.makeText(ArticleCommandActivity.this, "http://imgur.com/" + response.body().data.id, Toast.LENGTH_SHORT)
+//                                    .show();
+//                            Log.v("Picture", "http://imgur.com/" + response.body().data.id);
+////                              下面有錯
+//                            edtMsg.dataList.get(temp).imagePath = <img src="http://imgur.com/" + response.body().data.id"/>;
+//                            notificationHelper.createUploadedNotification(response.body());
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<ImageResponse> call, Throwable t) {
+//                        Toast.makeText(ArticleCommandActivity.this, "An unknown error has occured.", Toast.LENGTH_SHORT)
+//                                .show();
+//                        notificationHelper.createFailedUploadNotification();
+//                        t.printStackTrace();
+//                    }
+//                });
+            }else{
+                comments.add("<p>" +edtMsg.buildEditData().get(i).inputStr+"</p><br>");
+//                edtMsg.dataList.get(i).inputStr = "<p>" +edtMsg.buildEditData().get(i).inputStr+"</p><br>";
+//                Log.v("edt123",edtMsg.dataList.get(i).inputStr);
+            }
+        }
+        for (int i = 0; i < comments.size(); i++) {
+//            RichTextEditor.EditData editData = edtMsg.buildEditData().get(i);
+//            Log.v("edit_text", "" + editData.toString());
+            Log.v("edit_text", "" + comments.get(i));
+        }
     }
+
 
     public void commitMsg() {
         title = "<p>" + edtTitle.getText().toString() + "</p>";
@@ -138,9 +157,14 @@ public class ArticleCommandActivity extends AppCompatActivity {
         }
 
         if (requestCode == REQUEST_CODE_PICK_IMAGE) {
-            Uri uri = data.getData();
-            insertBitmap(getRealFilePath(uri));
-            //TODO 可能要用File來存下uri
+            returnUri = data.getData();
+            insertBitmap(getRealFilePath(returnUri));
+
+            Log.v("filePath", ""+returnUri);
+            String filePath;
+            filePath = DocumentHelper.getPath(this, returnUri);
+            Log.v("filePath", filePath);
+            chosenFile = new File(filePath);
         } else if (requestCode == REQUEST_CODE_CAPTURE_CAMEIA) {
             insertBitmap(mCurrentPhotoFile.getAbsolutePath());
         }

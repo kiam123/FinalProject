@@ -1,10 +1,14 @@
 package tw.edu.fcu.recommendedfood.Activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ImageView;
+import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import tw.edu.fcu.recommendedfood.Adapter.ArticleBlogAdapter;
 import tw.edu.fcu.recommendedfood.Data.ArticleBlogData;
@@ -14,6 +18,10 @@ public class ArticleBlogActivity extends AppCompatActivity {
     String html;
     ListView listview;
     ArticleBlogAdapter articleBlogAdapter;
+    LinearLayout lnLayout1;
+    LinearLayout lnLayout2;
+    EditText edtReply;
+    EditText edtReply2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +57,29 @@ public class ArticleBlogActivity extends AppCompatActivity {
                 "</body> </html>";
 
         initView();
+        setListenerToRootView();
         initAdapter();
     }
 
     public void initView(){
         listview = (ListView)findViewById(R.id.listview);
+        lnLayout1 = (LinearLayout)findViewById(R.id.ln_layout1);
+        lnLayout2 = (LinearLayout)findViewById(R.id.ln_layout2);
+        edtReply = (EditText)findViewById(R.id.edt_reply);
+        edtReply2 = (EditText)findViewById(R.id.edt_reply2);
+
+        edtReply.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                lnLayout1.setVisibility(View.GONE);
+                lnLayout2.setVisibility(View.VISIBLE);
+                if (edtReply2.requestFocus()) {
+                    InputMethodManager imm = (InputMethodManager)
+                            getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(edtReply2, InputMethodManager.SHOW_IMPLICIT);
+                }
+            }
+        });
 
 //        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
@@ -73,5 +99,34 @@ public class ArticleBlogActivity extends AppCompatActivity {
         articleBlogAdapter.addItem(new ArticleBlogData(1,"","swatch44","想跟她一起劈腿","04/20 08:43"));
         articleBlogAdapter.addItem(new ArticleBlogData(1,"","Jimreveller","行 推","04/20 08:45"));
         articleBlogAdapter.addItem(new ArticleBlogData(1,"","yoyonigo","第一張","04/20 08:45"));
+    }
+
+    boolean isOpened = false;
+
+    public void setListenerToRootView() {
+        final View activityRootView = getWindow().getDecorView().findViewById(android.R.id.content);
+        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int heightDiff = activityRootView.getRootView().getHeight() - activityRootView.getHeight();
+                if (heightDiff > 100) { // 99% of the time the height diff will be due to a keyboard.
+
+                    if (isOpened == false) {
+                        //Do two things, make the view top visible and the editText smaller
+                        lnLayout1.setVisibility(View.GONE);
+                        lnLayout2.setVisibility(View.VISIBLE);
+                        if (edtReply2.requestFocus()) {
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.showSoftInput(edtReply2, InputMethodManager.SHOW_IMPLICIT);
+                        }
+                    }
+                    isOpened = true;
+                } else if (isOpened == true) {
+                    lnLayout1.setVisibility(View.VISIBLE);
+                    lnLayout2.setVisibility(View.GONE);
+                    isOpened = false;
+                }
+            }
+        });
     }
 }
