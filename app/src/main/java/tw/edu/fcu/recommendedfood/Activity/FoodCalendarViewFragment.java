@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,7 +18,9 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import tw.edu.fcu.recommendedfood.Adapter.CalendarGridViewAdapter;
 import tw.edu.fcu.recommendedfood.R;
@@ -25,12 +28,15 @@ import tw.edu.fcu.recommendedfood.Utils.Utils;
 
 public class FoodCalendarViewFragment extends Fragment {
     public static final String ARG_PAGE = "page";
+    public static final String KEY_MONTH = "MONTH";
 
     private int mPageNumber;
 
     private Calendar mCalendar;
 
     private CalendarGridViewAdapter calendarGridViewAdapter;
+
+    String month;
 
     public static Fragment create(int pageNumber) {
         FoodCalendarViewFragment fragment = new FoodCalendarViewFragment();
@@ -53,7 +59,7 @@ public class FoodCalendarViewFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout containing a title and body text.
         ViewGroup rootView = (ViewGroup) inflater.inflate(
@@ -75,7 +81,12 @@ public class FoodCalendarViewFragment extends Fragment {
                 view.setBackgroundColor(getActivity().getResources().getColor(
                         R.color.selection));
 
+                Date date = (Date) calendarGridViewAdapter.getItem(position);
+                SimpleDateFormat df = new SimpleDateFormat("yyyy");
+                df.format(date);
+
                 Intent intent = new Intent();
+                intent.putExtra("DATE",date.getDate()+"/"+(date.getMonth()+1)+"/"+df.format(date));
                 intent.setClass(getActivity(),FoodRecorderActivity.class);
                 startActivity(intent);
             }
@@ -150,6 +161,7 @@ public class FoodCalendarViewFragment extends Fragment {
             txtDay.setTextColor(Color.GRAY);
 
             txtDay.setText((Integer) getItem(position));
+
             linearLayout.addView(txtDay, layoutParams);
             return linearLayout;
         }

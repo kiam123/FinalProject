@@ -24,6 +24,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
     private Calendar calStartDate = Calendar.getInstance();// 当前显示的日历
     private Calendar calToday = Calendar.getInstance(); // 今日
     private int iMonthViewCurrentMonth = 0; // 当前视图月
+
     // 根据改变的日期更新日历
     // 填充日历控件用
     private void UpdateStartDateForMonth() {
@@ -50,7 +51,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
 
     }
     ArrayList<Date> titles;
-    private ArrayList<Date> getDates() {
+    public ArrayList<Date> getDates() {
 
         UpdateStartDateForMonth();
 
