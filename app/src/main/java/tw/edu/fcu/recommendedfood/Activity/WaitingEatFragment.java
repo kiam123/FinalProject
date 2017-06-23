@@ -66,9 +66,9 @@ public class WaitingEatFragment extends Fragment {
         // 加入範例資料
         waitingEatDatas = new ArrayList<WaitingEatData>();
 
-        waitingEatDatas.add(new WaitingEatData(1, new Date().getTime(), WaitingEatColors.RED, "吃KFC", "想吃蛋塔", "", "", 0, 0, 0));
-        waitingEatDatas.add(new WaitingEatData(2, new Date().getTime(), WaitingEatColors.BLUE, "麥當勞", "勁辣雞腿堡", "", "", 0, 0, 0));
-        waitingEatDatas.add(new WaitingEatData(3, new Date().getTime(), WaitingEatColors.GREEN, "香香滷味", "便宜好吃", "", "", 0, 0, 0));
+        waitingEatDatas.add(new WaitingEatData(1, new Date().getTime(), WaitingEatColors.RED, "吃KFC", "想吃蛋塔", "", 0, 0, 0));
+        waitingEatDatas.add(new WaitingEatData(2, new Date().getTime(), WaitingEatColors.BLUE, "麥當勞", "勁辣雞腿堡", "", 0, 0, 0));
+        waitingEatDatas.add(new WaitingEatData(3, new Date().getTime(), WaitingEatColors.GREEN, "香香滷味", "便宜好吃", "", 0, 0, 0));
 
         // 建立自定Adapter物件
         waitingEatAdapter = new WaitingEatAdapter(getActivity(), R.layout.layout_waiting_eat_singleitem, waitingEatDatas);

@@ -9,14 +9,13 @@ import java.util.Locale;
 
 public class WaitingEatData implements java.io.Serializable {
 
-    // 編號、日期時間、顏色、標題、內容、照相檔案名稱、錄音檔案名稱、經度、緯度、修改、已選擇
+    // 編號、日期時間、顏色、標題、內容、照相檔案名稱、經度、緯度、修改、已選擇
     private long id;
     private long datetime;
     private WaitingEatColors color;
     private String title;
     private String content;
     private String fileName;
-    private String recFileName;
     private double latitude;
     private double longitude;
     private long lastModify;
@@ -29,15 +28,13 @@ public class WaitingEatData implements java.io.Serializable {
     }
 
     public WaitingEatData(long id, long datetime, WaitingEatColors color, String title,
-                          String content, String fileName, String recFileName,
-                          double latitude, double longitude, long lastModify) {
+                          String content, String fileName,double latitude, double longitude, long lastModify) {
         this.id = id;
         this.datetime = datetime;
         this.color = color;
         this.title = title;
         this.content = content;
         this.fileName = fileName;
-        this.recFileName = recFileName;
         this.latitude = latitude;
         this.longitude = longitude;
         this.lastModify = lastModify;
@@ -104,14 +101,6 @@ public class WaitingEatData implements java.io.Serializable {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
-    }
-
-    public String getRecFileName() {
-        return recFileName;
-    }
-
-    public void setRecFileName(String recFileName) {
-        this.recFileName = recFileName;
     }
 
     public double getLatitude() {

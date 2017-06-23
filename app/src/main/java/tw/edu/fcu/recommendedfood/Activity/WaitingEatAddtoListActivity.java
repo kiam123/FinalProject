@@ -17,6 +17,7 @@ import java.util.Date;
 import tw.edu.fcu.recommendedfood.Data.WaitingEatColors;
 import tw.edu.fcu.recommendedfood.Data.WaitingEatData;
 import tw.edu.fcu.recommendedfood.R;
+import tw.edu.fcu.recommendedfood.Server.WaitingEatDBHelper;
 
 public class WaitingEatAddtoListActivity extends AppCompatActivity {
 
@@ -24,19 +25,20 @@ public class WaitingEatAddtoListActivity extends AppCompatActivity {
 
     // 啟動功能用的請求代碼
     private static final int START_CAMERA = 0;
-    private static final int START_RECORD = 1;
-    private static final int START_LOCATION = 2;
-    private static final int START_ALARM = 3;
-    private static final int START_COLOR = 4;
+    private static final int START_LOCATION = 1;
+    private static final int START_ALARM = 2;
+    private static final int START_COLOR = 3;
 
     // 記事物件
     private WaitingEatData waitingEatData;
+    WaitingEatDBHelper myDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waitting_eat_item);
-
+      //  SQLite還沒寫完
+        // myDb = new WaitingEatDBHelper(this);
         processViews();
 
         // 取得Intent物件
@@ -63,8 +65,6 @@ public class WaitingEatAddtoListActivity extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case START_CAMERA:
-                    break;
-                case START_RECORD:
                     break;
                 case START_LOCATION:
                     break;
@@ -146,8 +146,6 @@ public class WaitingEatAddtoListActivity extends AppCompatActivity {
         switch (id) {
             case R.id.take_picture:
                 break;
-            case R.id.record_sound:
-                break;
             case R.id.set_location:
                 break;
             case R.id.set_alarm:
@@ -161,4 +159,8 @@ public class WaitingEatAddtoListActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }

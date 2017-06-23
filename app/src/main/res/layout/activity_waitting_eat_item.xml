@@ -62,10 +62,7 @@
                         android:onClick="clickFunction"
                         android:src="@drawable/take_picture_icon" />
 
-                    <ImageButton
-                        android:id="@+id/record_sound"
-                        android:onClick="clickFunction"
-                        android:src="@drawable/record_sound_icon" />
+
 
                     <ImageButton
                         android:id="@+id/set_location"

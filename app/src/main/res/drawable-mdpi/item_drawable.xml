@@ -6,9 +6,6 @@
         android:radius="100dip"/>
     <solid
         android:color="#AAAAAA" /> //圓裡的填充顏色
-    <stroke
-        android:width="2dip"
-        android:color="#FFF" />
     <padding
         android:left="6dip"
         android:right="6dip"
