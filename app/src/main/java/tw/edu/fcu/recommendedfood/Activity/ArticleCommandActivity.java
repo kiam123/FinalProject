@@ -81,7 +81,7 @@ public class ArticleCommandActivity extends AppCompatActivity {
 
                 edtMsg.dataList.get(i).imagePath = "<img src=\"http://i.imgur.com/RyFb0yU.jpg\"/>";//http://i.imgur.com/RyFb0yU.jpg
 //                Log.v("edt123",edtMsg.dataList.get(i).imagePath);
-                comments.add("<img src=\"http://i.imgur.com/RyFb0yU.jpg\"/>");
+                comments.add("<img src=\"http://i.imgur.com/RyFb0yU.jpg\"/><br>");
 //                call = imgurService.postImage("", "", "", "",
 //                        MultipartBody.Part.createFormData(
 //                                "image",

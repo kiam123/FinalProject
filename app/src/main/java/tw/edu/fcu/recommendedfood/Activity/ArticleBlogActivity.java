@@ -31,7 +31,7 @@ public class ArticleBlogActivity extends AppCompatActivity {
         html =  "<html> <body>" +
                 "<p>表特首po，手機排版傷眼見諒。</p>" +
                 "<p>本魯的好友，一開始認識就覺得很正，但是又不知道正在哪，所以歸類為樸素系的正妹。</p>" +
-                "<p>可以不愛，但請別傷害。<p>" +
+                "<p>可以不愛，但請別傷害。</p>" +
                 "<a href=\"http://i.imgur.com/WBpYpsI.jpg\">http://i.imgur.com/WBpYpsI.jpg</a> <br>" +
                 "<img src='http://i.imgur.com/WBpYpsI.jpg' /> <br>" +
                 "<a href=\"http://i.imgur.com/5zYT6cb.jpg\">http://i.imgur.com/5zYT6cb.jpg</a> <br>" +
@@ -50,10 +50,10 @@ public class ArticleBlogActivity extends AppCompatActivity {
                 "<img src='http://i.imgur.com/Bus1uwx.jpg' /> <br>" +
                 "<a href=\"http://i.imgur.com/XOdIVZB.jpg\">http://i.imgur.com/XOdIVZB.jpg</a> <br>" +
                 "<img src='http://i.imgur.com/XOdIVZB.jpg' /> <br>" +
-                "我樸素的定義是不濃豔、不浮誇，相比如今大多網美。" +
-                "原標題（樸素系筋開腰軟正妹），不過大部分人對樸素的定義都不同，故在此改掉。" +
-                "正妹我朋友是中國廣東珠海人，沒有混血，家裡還有3個姊姊，四姐妹神態相似但是各個" +
-                "風格都不同，有機會再分享。" +
+                "<p>我樸素的定義是不濃豔、不浮誇，相比如今大多網美。</p>" +
+                "<p>原標題（樸素系筋開腰軟正妹），不過大部分人對樸素的定義都不同，故在此改掉。</p>" +
+                "<p>正妹我朋友是中國廣東珠海人，沒有混血，家裡還有3個姊姊，四姐妹神態相似但是各個</p>" +
+                "<p>風格都不同，有機會再分享。</p>" +
                 "</body> </html>";
 
         initView();

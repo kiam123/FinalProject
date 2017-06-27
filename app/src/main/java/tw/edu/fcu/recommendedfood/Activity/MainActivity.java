@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tw.edu.fcu.recommendedfood.R;
+import tw.edu.fcu.recommendedfood.Server.PostServer;
 
 public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
@@ -46,8 +48,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        postToServer();
         initFragment();
         initView();
+    }
+
+    public void postToServer() {
+        new PostServer(){
+            @Override
+            public void onResponse(String response) {
+                super.onResponse(response);
+                Log.v("testing123",response);
+            }
+        }.execute();
     }
 
     //初始化每個view

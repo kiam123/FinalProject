@@ -48,7 +48,7 @@ public class ArticleFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initFragment();
+        initClassificationFragment();
     }
 
     @Override
@@ -102,7 +102,7 @@ public class ArticleFragment extends Fragment {
         drawerlayout.closeDrawers();
     }
 
-    private void initFragment(){
+    private void initClassificationFragment(){
         fragmentArrayList = new ArrayList<Fragment>(13);
         fragmentArrayList.add(new ArticleClassificationFragment());
         fragmentArrayList.add(new ArticleClassificationFragment());
@@ -165,6 +165,7 @@ public class ArticleFragment extends Fragment {
         @Override
         public void onDrawerSlide(View drawerView, float slideOffset) {
             //slideOffset 变化范围0~1
+
             View contentView = drawerlayout.getChildAt(0);//获得content
             View leftView = drawerView;
 

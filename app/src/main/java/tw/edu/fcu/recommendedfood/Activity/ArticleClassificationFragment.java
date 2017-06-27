@@ -25,6 +25,14 @@ public class ArticleClassificationFragment extends Fragment {
     int currentIndex;
     private TextView txtClassificationSet;
     private Bundle bundle;
+
+    public static Fragment create(int pageNumber) {
+        ArticleClassificationFragment fragment = new ArticleClassificationFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     public ArticleClassificationFragment() {
     }
 
