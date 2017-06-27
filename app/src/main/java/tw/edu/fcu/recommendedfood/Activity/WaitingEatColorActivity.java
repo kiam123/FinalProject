@@ -21,7 +21,7 @@ public class WaitingEatColorActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_waitting_eat_color);
+        setContentView(R.layout.activity_waiting_eat_color);
 
         processViews();
 
@@ -47,6 +47,7 @@ public class WaitingEatColorActivity extends Activity {
     }
 
     private class ColorListener implements OnClickListener {
+      //  String action = WaitingEatColorActivity.this.getIntent().getAction();
 
         @Override
         public void onClick(View view) {

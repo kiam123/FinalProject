@@ -57,12 +57,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <ImageButton
-                        android:id="@+id/take_picture"
-                        android:onClick="clickFunction"
-                        android:src="@drawable/take_picture_icon" />
-
-
 
                     <ImageButton
                         android:id="@+id/set_location"

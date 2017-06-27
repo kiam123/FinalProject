@@ -7,7 +7,9 @@ package tw.edu.fcu.recommendedfood.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
@@ -24,10 +26,9 @@ public class WaitingEatAddtoListActivity extends AppCompatActivity {
     private EditText edtTitleText, edtContentText;
 
     // 啟動功能用的請求代碼
-    private static final int START_CAMERA = 0;
-    private static final int START_LOCATION = 1;
-    private static final int START_ALARM = 2;
-    private static final int START_COLOR = 3;
+    private static final int START_LOCATION = 0;
+    private static final int START_ALARM = 1;
+    private static final int START_COLOR = 2;
 
     // 記事物件
     private WaitingEatData waitingEatData;
@@ -36,7 +37,7 @@ public class WaitingEatAddtoListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_waitting_eat_item);
+        setContentView(R.layout.activity_waiting_eat_item);
       //  SQLite還沒寫完
         // myDb = new WaitingEatDBHelper(this);
         processViews();
@@ -57,6 +58,12 @@ public class WaitingEatAddtoListActivity extends AppCompatActivity {
         // 新增記事
         else {
             waitingEatData = new WaitingEatData();
+            // 建立SharedPreferences物件
+            SharedPreferences sharedPreferences =
+                    PreferenceManager.getDefaultSharedPreferences(this);
+            // 讀取設定的預設顏色
+            int color = sharedPreferences.getInt("DEFAULT_COLOR", -1);
+            waitingEatData.setColor(getColors(color));
         }
     }
 
@@ -64,8 +71,6 @@ public class WaitingEatAddtoListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
-                case START_CAMERA:
-                    break;
                 case START_LOCATION:
                     break;
                 case START_ALARM:
@@ -80,7 +85,7 @@ public class WaitingEatAddtoListActivity extends AppCompatActivity {
         }
     }
 
-    private WaitingEatColors getColors(int color) {
+    public static  WaitingEatColors getColors(int color) {
         WaitingEatColors result = WaitingEatColors.LIGHTGREY;
 
         if (color == WaitingEatColors.BLUE.parseColor()) {
@@ -144,8 +149,6 @@ public class WaitingEatAddtoListActivity extends AppCompatActivity {
         int id = view.getId();
 
         switch (id) {
-            case R.id.take_picture:
-                break;
             case R.id.set_location:
                 break;
             case R.id.set_alarm:
