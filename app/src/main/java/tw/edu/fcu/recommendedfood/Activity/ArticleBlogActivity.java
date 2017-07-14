@@ -56,6 +56,8 @@ public class ArticleBlogActivity extends AppCompatActivity {
                 "<p>風格都不同，有機會再分享。</p>" +
                 "</body> </html>";
 
+        //
+
         initView();
         setListenerToRootView();
         initAdapter();

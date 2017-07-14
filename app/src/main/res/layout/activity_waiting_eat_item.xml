@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:stretchColumns="1"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
     tools:context="tw.edu.fcu.recommendedfood.Activity.WaitingEatAddtoListActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="48dp"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@color/colorPrimary"
-            android:orientation="horizontal">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="25dp"
+            android:onClick="imgBack"
+            android:src="@drawable/ic_arrow_back_white_18dp" />
+    </LinearLayout>
 
-            <ImageView
-                android:onClick="imgBack"
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="25dp"
-                android:src="@drawable/ic_arrow_back_white_18dp" />
 
-        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:weightSum="1">
 
         <EditText
             android:id="@+id/edt_title_text"
@@ -36,68 +38,69 @@
             android:padding="6sp"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <LinearLayout
+        <EditText
+            android:id="@+id/edt_content_text"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:weightSum="1">
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:layout_margin="2sp"
+            android:background="@drawable/rectangle_drawable"
+            android:gravity="left"
+            android:hint="@string/enter_content"
+            android:lines="15"
+            android:padding="6sp"
+            android:scrollbars="vertical"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <EditText
-                android:id="@+id/edt_content_text"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="top"
-                android:layout_margin="2sp"
-                android:background="@drawable/rectangle_drawable"
-                android:gravity="left"
-                android:hint="@string/enter_content"
-                android:padding="6sp"
-                android:lines="15"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:orientation="vertical">
-
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:stretchColumns="*">
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-
-                    <ImageButton
-                        android:id="@+id/set_location"
-                        android:onClick="clickFunction"
-                        android:src="@drawable/location_icon" />
-
-                    <ImageButton
-                        android:id="@+id/set_alarm"
-                        android:onClick="clickFunction"
-                        android:src="@drawable/alarm_icon" />
-
-                    <ImageButton
-                        android:id="@+id/select_color"
-                        android:onClick="clickFunction"
-                        android:src="@drawable/select_color_icon" />
-
-                    <Button
-                        android:id="@+id/ok_teim"
-                        android:layout_margin="2sp"
-                        android:onClick="onSubmit"
-                        android:padding="6sp"
-                        android:text="@android:string/ok"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
-                </TableRow>
-            </TableLayout>
-
-        </LinearLayout>
     </LinearLayout>
 
-</TableLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+
+            <ImageButton
+                android:id="@+id/set_location"
+                android:onClick="clickFunction"
+                android:src="@drawable/location_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <ImageButton
+                android:id="@+id/set_alarm"
+                android:onClick="clickFunction"
+                android:src="@drawable/alarm_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <ImageButton
+                android:id="@+id/select_color"
+                android:onClick="clickFunction"
+                android:src="@drawable/select_color_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/ok_teim"
+                android:layout_margin="2sp"
+                android:onClick="onSubmit"
+                android:padding="6sp"
+                android:text="@android:string/ok"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

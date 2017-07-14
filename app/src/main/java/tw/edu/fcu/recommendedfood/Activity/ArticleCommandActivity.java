@@ -62,8 +62,8 @@ public class ArticleCommandActivity extends AppCompatActivity {
     }
 
     public void imgDoneCommand(View view) {
-//        commitMsg();
-//        finish();
+        boolean succuss = false;
+        String shortSentences = "";
         comments = new ArrayList<>();
         //TODO 可能要把檔案
 
@@ -98,6 +98,7 @@ public class ArticleCommandActivity extends AppCompatActivity {
 //                            return;
 //                        }
 //                        if (response.isSuccessful()) {
+//                            succuss = true;
 //                            Toast.makeText(ArticleCommandActivity.this, "http://imgur.com/" + response.body().data.id, Toast.LENGTH_SHORT)
 //                                    .show();
 //                            Log.v("Picture", "http://imgur.com/" + response.body().data.id);
@@ -126,18 +127,17 @@ public class ArticleCommandActivity extends AppCompatActivity {
 //            Log.v("edit_text", "" + editData.toString());
             Log.v("edit_text", "" + comments.get(i));
         }
+
+
+        //TODO 還沒完成短語的字串切割
+        if(succuss == true) {
+//        commitMsg(comments,shortSentences);
+//        finish();
+        }
     }
 
+    public void commitMsg(List<String> comments,String shortSentences) {
 
-    public void commitMsg() {
-        title = "<p>" + edtTitle.getText().toString() + "</p>";
-//        msg = edtMsg.getText().toString() + "\n";
-        arr = msg.split("\n");
-        Log.v("testing", title);
-
-        for (int i = 0; i < arr.length; i++) {
-            Log.v("testing", "<p>" + arr[i] + "</p><br>");
-        }
     }
 
     public void OnGalleryClick(View view) {
