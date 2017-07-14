@@ -32,14 +32,11 @@ public class WaitingEatAddtoListActivity extends AppCompatActivity {
 
     // 記事物件
     private WaitingEatData waitingEatData;
-    WaitingEatDBHelper myDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting_eat_item);
-      //  SQLite還沒寫完
-        // myDb = new WaitingEatDBHelper(this);
         processViews();
 
         // 取得Intent物件
@@ -162,8 +159,11 @@ public class WaitingEatAddtoListActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    public void imgBack(View view){
+        finish();
     }
+    //@Override
+   // protected void onResume() {
+     //   super.onResume();
+    //}
 }

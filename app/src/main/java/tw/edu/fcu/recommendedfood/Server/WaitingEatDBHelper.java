@@ -22,9 +22,16 @@ public class WaitingEatDBHelper extends SQLiteOpenHelper implements Serializable
         super(context, DATABASE_NAME, null, VERSION);
     }
 
+    //建構子
+    public WaitingEatDBHelper(Context context) {
+        super(context, DATABASE_NAME, null, VERSION);
+    }
+
     public static SQLiteDatabase getDb(Context context){
         if (db == null || !db.isOpen()){
-            db = new WaitingEatDBHelper(context,DATABASE_NAME,null,VERSION).getWritableDatabase();
+
+//            db=new WaitingEatDBHelper(context,DATABASE_NAME,null,VERSION);
+          //  db = new WaitingEatDBHelper(context,DATABASE_NAME,null,VERSION).getWritableDatabase();
         }
         return db;
     }

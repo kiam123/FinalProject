@@ -23,6 +23,7 @@ import tw.edu.fcu.recommendedfood.Adapter.WaitingEatAdapter;
 import tw.edu.fcu.recommendedfood.Data.WaitingEatColors;
 import tw.edu.fcu.recommendedfood.Data.WaitingEatData;
 import tw.edu.fcu.recommendedfood.R;
+import tw.edu.fcu.recommendedfood.Server.WaitingEatDBItem;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +43,8 @@ public class WaitingEatFragment extends Fragment {
     // 已選擇項目數量
     private int selectedCount = 0;
 
+    private WaitingEatDBItem waitingEatDBItem;
+
     public WaitingEatFragment() {
     }
 
@@ -52,9 +55,8 @@ public class WaitingEatFragment extends Fragment {
 
         initViews(viewGroup);
         initOptionsMenu(viewGroup);
-        initAdapter();
         initControllers();
-
+        initAdapter();
         return viewGroup;
     }
 
@@ -63,13 +65,13 @@ public class WaitingEatFragment extends Fragment {
     }
 
     public void initAdapter() {
-        // 加入範例資料
-        waitingEatDatas = new ArrayList<WaitingEatData>();
+        waitingEatDBItem = new WaitingEatDBItem(getActivity());
 
-    //    waitingEatDatas.add(new WaitingEatData(1, new Date().getTime(), WaitingEatColors.RED, "吃KFC", "想吃蛋塔", "", 0, 0, 0));
-      //  waitingEatDatas.add(new WaitingEatData(2, new Date().getTime(), WaitingEatColors.BLUE, "麥當勞", "勁辣雞腿堡", "", 0, 0, 0));
-      //  waitingEatDatas.add(new WaitingEatData(3, new Date().getTime(), WaitingEatColors.GREEN, "香香滷味", "便宜好吃", "", 0, 0, 0));
-
+//        if(waitingEatDBItem.getCount()==0){
+//            waitingEatDBItem.sample();
+//        }
+        //取得所有記事資料
+        waitingEatDatas = waitingEatDBItem.getAll();
         // 建立自定Adapter物件
         waitingEatAdapter = new WaitingEatAdapter(getActivity(), R.layout.layout_waiting_eat_singleitem, waitingEatDatas);
         listView.setAdapter(waitingEatAdapter);
@@ -80,19 +82,13 @@ public class WaitingEatFragment extends Fragment {
         // 如果被啟動的Activity元件傳回確定的結果
         if (resultCode == Activity.RESULT_OK) {
             // 讀取記事物件
-            WaitingEatData item = (WaitingEatData) data.getExtras().getSerializable(
+            WaitingEatData waitingeatdata = (WaitingEatData) data.getExtras().getSerializable(
                     "com.example.yan.die_eat.WaitingEatData");
 
             // 如果是新增記事
             if (requestCode == 0) {
-            //    item = WaitingDBItem.insert
-                // 設定記事物件的編號與日期時間
-                item.setId(waitingEatDatas.size() + 1);
-                item.setDatetime(new Date().getTime());
-
-                // 加入新增的記事物件
-                waitingEatDatas.add(item);
-
+                waitingeatdata = waitingEatDBItem.insert(waitingeatdata);
+                waitingEatDatas.add(waitingeatdata);
                 // 通知資料改變
                 waitingEatAdapter.notifyDataSetChanged();
             }
@@ -102,8 +98,9 @@ public class WaitingEatFragment extends Fragment {
                 int position = data.getIntExtra("position", -1);
 
                 if (position != -1) {
-                    // 設定修改的記事物件
-                    waitingEatDatas.set(position, item);
+                    // 修改資料庫的記事
+                    waitingEatDBItem.update(waitingeatdata);
+                    waitingEatDatas.set(position, waitingeatdata);
                     waitingEatAdapter.notifyDataSetChanged();
                 }
             }
@@ -159,7 +156,7 @@ public class WaitingEatFragment extends Fragment {
         // 註冊記事項目長按監聽物件
         listView.setOnItemLongClickListener(itemLongListener);
 
-        // 建立長按監聽物件
+         //建立長按監聽物件
         View.OnLongClickListener listener = new View.OnLongClickListener() {
 
             @Override
@@ -174,8 +171,8 @@ public class WaitingEatFragment extends Fragment {
 
         };
 
-        // 註冊長按監聽物件
-        //  showAppName.setOnLongClickListener(listener);
+         //註冊長按監聽物件
+       //   showAppName.setOnLongClickListener(listener);
     }
 
     // 處理是否顯示已選擇項目
@@ -273,6 +270,7 @@ public class WaitingEatFragment extends Fragment {
 
                                         if (item.isSelected()) {
                                             waitingEatAdapter.remove(item);
+                                            waitingEatDBItem.delete(item.getId());
                                         }
 
                                         index--;
@@ -280,8 +278,8 @@ public class WaitingEatFragment extends Fragment {
 
                                     // 通知資料改變
                                     waitingEatAdapter.notifyDataSetChanged();
-                                    selectedCount = 0;
-                                    processMenu(null);
+
+                               //     processMenu(null);
                                 }
                             });
                     d.setNegativeButton(android.R.string.no, null);
@@ -301,5 +299,9 @@ public class WaitingEatFragment extends Fragment {
         // 呼叫「startActivity」，參數為一個建立好的Intent物件
         // 這行敘述執行以後，如果沒有任何錯誤，就會啟動指定的元件
         startActivity(intent);
+    }
+
+    public void onResume() {
+        super.onResume();
     }
 }

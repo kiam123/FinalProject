@@ -9,29 +9,43 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="1">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:onClick="imgBack"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="25dp"
+                android:src="@drawable/ic_arrow_back_white_18dp" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edt_title_text"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="2sp"
+            android:background="@drawable/rectangle_drawable"
+            android:hint="@string/enter_title"
+            android:padding="6sp"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="vertical"
-            android:layout_weight="1">
-
-            <EditText
-                android:id="@+id/edt_title_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="2sp"
-                android:background="@drawable/rectangle_drawable"
-                android:hint="@string/enter_title"
-                android:padding="6sp"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
+            android:weightSum="1">
 
             <EditText
                 android:id="@+id/edt_content_text"
-                android:layout_width="380sp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="top"
                 android:layout_margin="2sp"
@@ -39,14 +53,14 @@
                 android:gravity="left"
                 android:hint="@string/enter_content"
                 android:padding="6sp"
+                android:lines="15"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="0.5">
+            android:layout_height="45dp"
+            android:orientation="vertical">
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -72,25 +86,6 @@
                         android:id="@+id/select_color"
                         android:onClick="clickFunction"
                         android:src="@drawable/select_color_icon" />
-                </TableRow>
-            </TableLayout>
-
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:stretchColumns="*">
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <Button
-                        android:id="@+id/cancel_item"
-                        android:layout_margin="2sp"
-                        android:onClick="onSubmit"
-                        android:padding="6sp"
-                        android:text="@android:string/cancel"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
 
                     <Button
                         android:id="@+id/ok_teim"
@@ -100,8 +95,8 @@
                         android:text="@android:string/ok"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
                 </TableRow>
-
             </TableLayout>
+
         </LinearLayout>
     </LinearLayout>
 

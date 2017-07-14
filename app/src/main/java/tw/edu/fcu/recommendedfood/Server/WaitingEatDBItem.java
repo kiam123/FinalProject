@@ -29,22 +29,47 @@ public class WaitingEatDBItem {
     public static final String COL_7 = "LONGITUDE"; //緯度
     public static final String COL_8 = "LASTMODIFY"; //修改
 
+    private WaitingEatDBHelper waitingEatDBHelper;
     private SQLiteDatabase db;
 
-    public static final String SQL =
-            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "( " +
+//    public static final String SQL =
+//            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "( " +
+//            COL_1 + "  INTEGER PRIMARY KEY AUTOINCREMENT, " +
+//            COL_2 + "  INTEGER NOT NULL, " +
+//            COL_3 + "  INTEGER NOT NULL, " +
+//            COL_4 + "  TEXT NOT NULL, " +
+//            COL_5 + "  TEXT NOT NULL, " +
+//            COL_6 + "  REAL, " +
+//            COL_7 + "  REAL, " +
+//            COL_8 + " INTEGER );" ;
+
+//    public static final String SQL =
+//            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "( " +
+//                    COL_1 + "  INTEGER PRIMARY KEY AUTOINCREMENT, " +
+//                    COL_2 + "   VARCHAR(50),  " +
+//                    COL_3 + "   VARCHAR(50),  " +
+//                    COL_4 + "   VARCHAR(50),  " +
+//                    COL_5 + "   VARCHAR(50),  " +
+//                    COL_6 + "   VARCHAR(50),  " +
+//                    COL_7 + "   VARCHAR(50),  " +
+//                    COL_8 + "   VARCHAR(50) );" ;
+
+    public static final String SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "( " +
             COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            COL_2 + " INTEGER NOT NULL, " +
-            COL_3 + " INTEGER NOT NULL, " +
-            COL_4 + " TEXT NOT NULL, " +
-            COL_5 + " TEXT NOT NULL, " +
-            COL_6 + " REAL, " +
-            COL_7 + " REAL, " +
-            COL_8 + "INTEGER );" ;
+            COL_2 + " VARCHAR(50), " +
+            COL_3 + " VARCHAR(50), " +
+            COL_4 + " VARCHAR(50), " +
+            COL_5 + " VARCHAR(50), " +
+            COL_6 + " VARCHAR(50), " +
+            COL_7 + " VARCHAR(50), " +
+            COL_8 + " VARCHAR(50)  " +
+            ");";
 
     //建構子
     public WaitingEatDBItem(Context context){
-        db = WaitingEatDBHelper.getDb(context);
+        //建構子
+        waitingEatDBHelper = new WaitingEatDBHelper(context);
+        db = waitingEatDBHelper.getWritableDatabase();
     }
 
     //關db
@@ -138,6 +163,7 @@ public class WaitingEatDBItem {
         int result = 0;
         Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_NAME, null);
 
+
         if(cursor.moveToNext()){
             result = cursor.getInt(0);
         }
@@ -146,7 +172,7 @@ public class WaitingEatDBItem {
 
     public void sample() {
         WaitingEatData item = new WaitingEatData(0, new Date().getTime(), WaitingEatColors.RED, "關於Android Tutorial的事情.", "Hello content", 0, 0, 0);
-        WaitingEatData item2 = new WaitingEatData(0, new Date().getTime(), WaitingEatColors.BLUE, "一隻非常可愛的小狗狗!", "她的名字叫「大熱狗」，又叫\n作「奶嘴」，是一隻非常可愛\n的小狗。", 25.04719, 121.516981, 0);
+        WaitingEatData item2 = new WaitingEatData(0, new Date().getTime(), WaitingEatColors.BLUE, "一隻非常可愛的小狗狗!", "她的名字叫「大熱", 25.04719, 121.516981, 0);
         WaitingEatData item3 = new WaitingEatData(0, new Date().getTime(), WaitingEatColors.GREEN, "一首非常好聽的音樂！", "Hello content", 0, 0, 0);
         WaitingEatData item4 = new WaitingEatData(0, new Date().getTime(), WaitingEatColors.ORANGE, "儲存在資料庫的資料", "Hello content", 0, 0,0);
 
