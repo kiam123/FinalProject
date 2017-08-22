@@ -29,8 +29,7 @@ public class DeletableEditText extends android.support.v7.widget.AppCompatEditTe
 
 	@Override
 	public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
-		return new DeleteInputConnection(super.onCreateInputConnection(outAttrs),
-				true);
+		return new DeleteInputConnection(super.onCreateInputConnection(outAttrs),true);
 	}
 
 	private class DeleteInputConnection extends InputConnectionWrapper {

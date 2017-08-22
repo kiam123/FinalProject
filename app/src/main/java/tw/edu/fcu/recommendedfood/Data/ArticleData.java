@@ -5,9 +5,10 @@ package tw.edu.fcu.recommendedfood.Data;
  */
 
 public class ArticleData {
-    String count, title, content;
+    int count;
+    String title, content;
 
-    public ArticleData(String count, String title, String content){
+    public ArticleData(int count, String title, String content){
         this.count = count;
         this.title = title;
         this.content = content;
@@ -29,11 +30,11 @@ public class ArticleData {
         this.content = content;
     }
 
-    public String getCount() {
+    public int getCount() {
         return count;
     }
 
-    public void setCount(String count) {
+    public void setCount(int count) {
         this.count = count;
     }
 }

@@ -69,4 +69,8 @@ public class ArticleAdapter extends BaseAdapter {
 
         return convertView;
     }
+
+    public void sort(){
+
+    }
 }

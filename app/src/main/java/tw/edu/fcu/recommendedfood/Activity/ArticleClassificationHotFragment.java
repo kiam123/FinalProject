@@ -5,15 +5,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.HashMap;
+
 import tw.edu.fcu.recommendedfood.Adapter.ArticleAdapter;
 import tw.edu.fcu.recommendedfood.Data.ArticleData;
 import tw.edu.fcu.recommendedfood.R;
+import tw.edu.fcu.recommendedfood.Server.HttpCall;
+import tw.edu.fcu.recommendedfood.Server.HttpRequest;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +29,9 @@ import tw.edu.fcu.recommendedfood.R;
 public class ArticleClassificationHotFragment extends Fragment {
     ArticleAdapter articleAdapter;
     ListView listView;
+    HashMap<String, String> params = new HashMap<String, String>();
+    HttpCall httpCallPost;
+    int page;
 
     public ArticleClassificationHotFragment() {
         // Required empty public constructor
@@ -30,6 +41,10 @@ public class ArticleClassificationHotFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if(getArguments() != null){
+            page = getArguments().getInt(ArticleClassificationFragment.PAGE_NUMBER);
+            Log.v("PAGE_NUMBER",page+"");
+        }
     }
 
     @Override
@@ -37,8 +52,10 @@ public class ArticleClassificationHotFragment extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_article_classification_hot, container, false);
 
+
         initView(viewGroup);
         initAdapter();
+        getArticle();
 
         return viewGroup;
     }
@@ -52,16 +69,7 @@ public class ArticleClassificationHotFragment extends Fragment {
         listView.setAdapter(articleAdapter);
         listView.setOnItemClickListener(articleBlogOnItemClickListener);
 
-        articleAdapter.addItem(new ArticleData("1", "標題", "內容"));
-        articleAdapter.addItem(new ArticleData("2", "標題", "內容"));
-        articleAdapter.addItem(new ArticleData("3", "標題", "內容"));
-        articleAdapter.addItem(new ArticleData("4", "標題", "內容"));
-        articleAdapter.addItem(new ArticleData("5", "標題", "內容"));
-        articleAdapter.addItem(new ArticleData("6", "標題", "內容"));
-        articleAdapter.addItem(new ArticleData("7", "標題", "內容"));
-        articleAdapter.addItem(new ArticleData("8", "標題", "內容"));
-        articleAdapter.addItem(new ArticleData("9", "標題", "內容"));
-        articleAdapter.addItem(new ArticleData("10", "標題", "內容"));
+//        articleAdapter.addItem(new ArticleData("1", "標題", "內容"));
     }
 
     private AdapterView.OnItemClickListener articleBlogOnItemClickListener = new AdapterView.OnItemClickListener() {
@@ -72,4 +80,42 @@ public class ArticleClassificationHotFragment extends Fragment {
             startActivity(intent);
         }
     };
+
+    //TODO 文章
+    public void getArticle() {
+        httpCallPost = new HttpCall();
+        httpCallPost.setMethodtype(HttpCall.POST);
+        httpCallPost.setUrl("http://140.134.26.31/recommended_food_db/article_connect_MySQL.php");//140.134.26.31
+
+        params.put("query_string", page+"");
+        httpCallPost.setParams(params);
+        postToServer(httpCallPost);
+    }
+
+    public void postToServer(HttpCall httpCallPost) {
+        new HttpRequest() {
+            @Override
+            public void onResponse(String response) {
+                super.onResponse(response);
+                final String result = response;
+                Log.v("response", response);
+                try {
+                    JSONArray jsonArray = new JSONArray(result);
+
+                    int click;
+                    String title;
+                    String content = "內容";
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        title = jsonArray.getJSONObject(i).getString("title");
+                        click = Integer.parseInt(jsonArray.getJSONObject(i).getString("click"));
+                        articleAdapter.addItem(new ArticleData(click, title, content));
+                    }
+                    params.clear();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.execute(httpCallPost);
+    }
 }

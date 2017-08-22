@@ -39,8 +39,9 @@ public class ArticleFragment extends Fragment {
     private ListView listviewClassification;
     private ArticleClassificationAdapter articleClassificationAdapter;
     public static final String KEY_CLASSIFICATION = "KEY_CLASSIFICATION";
+    public static final String PAGE_NUMBER = "PAGENUMBER";
     private String classification[] = {"全部", "中式", "港式", "西式", "南洋", "韓式", "日式",
-            "飲料", "點心", "速食", "食譜", "燒烤", "便利店"};
+            "飲料", "點心", "速食", "食譜", "燒烤"};
 
     public ArticleFragment() {
     }
@@ -78,9 +79,9 @@ public class ArticleFragment extends Fragment {
         imgCommand.setOnClickListener(imgCommandOnClickListener);
     }
 
-    public void initClassificationAdapter(){
+    public void initClassificationAdapter() {
         articleClassificationAdapter = new ArticleClassificationAdapter(getActivity());
-        for(int i = 0;i < classification.length;i++){
+        for (int i = 0; i < classification.length; i++) {
             articleClassificationAdapter.addItem(new ArticleClassificationData(classification[i]));
         }
 
@@ -96,15 +97,14 @@ public class ArticleFragment extends Fragment {
         }
     };
 
-    public void loadClassification(int position){
+    public void loadClassification(int position) {
         changeTab(position);
         openDrawerLayout = false;
         drawerlayout.closeDrawers();
     }
 
-    private void initClassificationFragment(){
-        fragmentArrayList = new ArrayList<Fragment>(13);
-        fragmentArrayList.add(new ArticleClassificationFragment());
+    private void initClassificationFragment() {
+        fragmentArrayList = new ArrayList<Fragment>(12);
         fragmentArrayList.add(new ArticleClassificationFragment());
         fragmentArrayList.add(new ArticleClassificationFragment());
         fragmentArrayList.add(new ArticleClassificationFragment());
@@ -121,7 +121,7 @@ public class ArticleFragment extends Fragment {
         changeTab(0);
     }
 
-    public void changeTab(int index){
+    public void changeTab(int index) {
         currentIndex = index;
 
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
@@ -133,9 +133,9 @@ public class ArticleFragment extends Fragment {
         //先根据Tag从FragmentTransaction事物获取之前添加的Fragment
         Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag(fragmentArrayList.get(currentIndex).getClass().getName());
         if (mCurrentFrgment != null) {
-            Log.v("tag1",""+mCurrentFrgment.toString());
+            Log.v("tag1", "" + mCurrentFrgment.toString());
         }
-        Log.v("tag2",""+fragmentArrayList.get(currentIndex).getClass().getName());
+        Log.v("tag2", "" + fragmentArrayList.get(currentIndex).getClass().getName());
 
         if (fragment == null) {
             //如fragment为空，则之前未添加此Fragment。便从集合中取出
@@ -143,15 +143,16 @@ public class ArticleFragment extends Fragment {
         }
         mCurrentFrgment = fragment;
         if (mCurrentFrgment != null) {
-            Log.v("tag3",""+mCurrentFrgment.toString());
+            Log.v("tag3", "" + mCurrentFrgment.toString());
 
             if (fragment != null)
-                Log.v("tag4",""+fragment.toString());
+                Log.v("tag4", "" + fragment.toString());
         }
         //判断此Fragment是否已经添加到FragmentTransaction事物中
         if (!fragment.isAdded()) {
             Bundle bundle = new Bundle();
             bundle.putString(KEY_CLASSIFICATION, classification[currentIndex]);
+            bundle.putInt(PAGE_NUMBER, currentIndex + 1);
             fragment.setArguments(bundle);
             ft.replace(R.id.fragment, fragment, fragment.getClass().getName());
 //            ft.addToBackStack(null);
