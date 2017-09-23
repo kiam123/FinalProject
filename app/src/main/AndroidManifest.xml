@@ -38,7 +38,10 @@
         <activity
             android:name=".Activity.FoodTextSeachActivity"
             android:windowSoftInputMode="stateAlwaysVisible" />
-        <activity android:name=".Activity.ArticleBlogActivity" />
+        <activity
+            android:name=".Activity.ArticleBlogActivity"
+            android:windowSoftInputMode="stateHidden"
+            />
         <activity
             android:name=".Activity.ArticleSeachAll"
             android:windowSoftInputMode="stateAlwaysVisible" />

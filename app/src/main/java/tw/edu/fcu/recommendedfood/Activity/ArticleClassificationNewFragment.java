@@ -102,12 +102,14 @@ public class ArticleClassificationNewFragment extends Fragment {
                     JSONArray jsonArray = new JSONArray(result);
 
                     int click;
+                    String article_id;
                     String title;
                     String content = "內容";
                     for (int i = 0; i < jsonArray.length(); i++) {
-                        title = jsonArray.getJSONObject(i).getString("title");
                         click = Integer.parseInt(jsonArray.getJSONObject(i).getString("click"));
-                        articleAdapter.addItem(new ArticleData(click, title, content));
+                        article_id = jsonArray.getJSONObject(i).getString("article_id");
+                        title = jsonArray.getJSONObject(i).getString("title");
+                        articleAdapter.addItem(new ArticleData(click, article_id, title, content));
                     }
                     params.clear();
 

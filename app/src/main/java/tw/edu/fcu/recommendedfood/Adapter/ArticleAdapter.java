@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import tw.edu.fcu.recommendedfood.Data.ArticleData;
 import tw.edu.fcu.recommendedfood.R;
@@ -26,6 +28,7 @@ public class ArticleAdapter extends BaseAdapter {
 
     public void addItem(ArticleData itemData){
         itemDatas.add(itemData);
+        sort();
         this.notifyDataSetChanged();
     }
 
@@ -40,7 +43,7 @@ public class ArticleAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return position;
+        return itemDatas.get(position);
     }
 
     @Override
@@ -63,14 +66,19 @@ public class ArticleAdapter extends BaseAdapter {
             viewHolder = (ViewHolder)convertView.getTag();
         }
 
-        viewHolder.count.setText(itemDatas.get(position).getCount());
+        viewHolder.count.setText(itemDatas.get(position).getCount()+"");
         viewHolder.title.setText(itemDatas.get(position).getTitle());
         viewHolder.content.setText(itemDatas.get(position).getContent());
 
         return convertView;
     }
 
-    public void sort(){
-
+    public void sort() {
+        Collections.sort(itemDatas, new Comparator<ArticleData>(){
+            @Override
+            public int compare(ArticleData o1, ArticleData o2) {
+                return o2.getCount() - o1.getCount();
+            }
+        });
     }
 }

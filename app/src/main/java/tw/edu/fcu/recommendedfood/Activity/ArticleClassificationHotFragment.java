@@ -15,6 +15,7 @@ import android.widget.ListView;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import tw.edu.fcu.recommendedfood.Adapter.ArticleAdapter;
@@ -26,11 +27,12 @@ import tw.edu.fcu.recommendedfood.Server.HttpRequest;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ArticleClassificationHotFragment extends Fragment {
+    public class ArticleClassificationHotFragment extends Fragment implements Serializable {
     ArticleAdapter articleAdapter;
     ListView listView;
     HashMap<String, String> params = new HashMap<String, String>();
     HttpCall httpCallPost;
+    static final String ARTICLEDATA = "ARTICLEDATA";
     int page;
 
     public ArticleClassificationHotFragment() {
@@ -51,7 +53,6 @@ public class ArticleClassificationHotFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_article_classification_hot, container, false);
-
 
         initView(viewGroup);
         initAdapter();
@@ -76,6 +77,7 @@ public class ArticleClassificationHotFragment extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             Intent intent = new Intent();
+            intent.putExtra(ARTICLEDATA,(ArticleData)articleAdapter.getItem(i));
             intent.setClass(getActivity(),ArticleBlogActivity.class);
             startActivity(intent);
         }
@@ -88,6 +90,7 @@ public class ArticleClassificationHotFragment extends Fragment {
         httpCallPost.setUrl("http://140.134.26.31/recommended_food_db/article_connect_MySQL.php");//140.134.26.31
 
         params.put("query_string", page+"");
+        Log.v("page",""+page);
         httpCallPost.setParams(params);
         postToServer(httpCallPost);
     }
@@ -102,16 +105,33 @@ public class ArticleClassificationHotFragment extends Fragment {
                 try {
                     JSONArray jsonArray = new JSONArray(result);
 
-                    int click;
-                    String title;
-                    String content = "內容";
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        title = jsonArray.getJSONObject(i).getString("title");
-                        click = Integer.parseInt(jsonArray.getJSONObject(i).getString("click"));
-                        articleAdapter.addItem(new ArticleData(click, title, content));
+                    if(jsonArray != null) {
+                        int click;
+                        String article_id;
+                        String title;
+                        String content = "內容";
+                        String author;
+                        String date;
+                        String time;
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            click = Integer.parseInt(jsonArray.getJSONObject(i).getString("click"));
+                            article_id = jsonArray.getJSONObject(i).getString("article_id");
+                            title = jsonArray.getJSONObject(i).getString("title");
+                            author = jsonArray.getJSONObject(i).getString("account_id");
+                            date = jsonArray.getJSONObject(i).getString("date");
+                            time = jsonArray.getJSONObject(i).getString("time");
+                            ArticleData tempArticleData = new ArticleData();
+                            tempArticleData.setCount(click);
+                            tempArticleData.setArticleId(article_id);
+                            tempArticleData.setTitle(title);
+                            tempArticleData.setContent(content);
+                            tempArticleData.articleBlogData.setDate(date);
+                            tempArticleData.articleBlogData.setAuthor(author);
+                            tempArticleData.articleBlogData.setTime(time);
+                            articleAdapter.addItem(tempArticleData);
+                        }
+                        params.clear();
                     }
-                    params.clear();
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

@@ -62,14 +62,8 @@ public class ArticleClassificationFragment extends Fragment {
 
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_article_classification, container, false);
 
-        if (android.os.Build.VERSION.SDK_INT > 9) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
-
         initView(viewGroup);
         initNotificationTab(viewGroup);
-//        getArticle();
         initFragment();
 
         return viewGroup;
@@ -101,40 +95,6 @@ public class ArticleClassificationFragment extends Fragment {
         fragmentArrayList.add(new ArticleClassificationNewFragment());
 
         changeTab(0);
-    }
-
-    //TODO 文章
-    public void getArticle() {
-        httpCallPost = new HttpCall();
-        httpCallPost.setMethodtype(HttpCall.POST);
-        httpCallPost.setUrl("http://140.134.26.31/recommended_food_db/article_connect_MySQL.php");//140.134.26.31
-
-        params.put("query_string", page+"");
-        httpCallPost.setParams(params);
-        postToServer(httpCallPost);
-    }
-
-    public void postToServer(HttpCall httpCallPost) {
-        new HttpRequest() {
-            @Override
-            public void onResponse(String response) {
-                super.onResponse(response);
-                final String result = response;
-                Log.v("response", response);
-                try {
-                    JSONArray jsonArray = new JSONArray(result);
-
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        Log.v("title", jsonArray.getJSONObject(i).getString("title"));
-                        Log.v("click", jsonArray.getJSONObject(i).getString("click"));
-                    }
-                    params.clear();
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }.execute(httpCallPost);
     }
 
     private TabLayout.OnTabSelectedListener tabNotificationOnTabSelectedListener = new TabLayout.OnTabSelectedListener() {

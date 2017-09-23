@@ -40,7 +40,7 @@ public class ChildViewPager extends ViewPager {
                 if (curPosition == count - 1 || curPosition == 0) {
                     getParent().requestDisallowInterceptTouchEvent(false);
                 } else {//其他情况，由孩子拦截触摸事件
-                    getParent().requestDisallowInterceptTouchEvent(true);
+                    getParent().requestDisallowInterceptTouchEvent(false);
                 }
 
         }

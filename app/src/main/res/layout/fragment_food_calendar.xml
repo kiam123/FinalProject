@@ -12,24 +12,38 @@
         android:orientation="horizontal">
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
+
+    <tw.edu.fcu.recommendedfood.Widget.VerticalScrollView
+        android:fillViewport="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:ignore="UselessParent">
+        android:layout_height="match_parent"
+        >
 
-        <TextView
-            android:textIsSelectable="true"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            android:id="@+id/tv_month"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
 
-        <tw.edu.fcu.recommendedfood.Widget.ChildViewPager
-            android:id="@+id/viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="324dp" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_month"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:textIsSelectable="true" />
+
+            <tw.edu.fcu.recommendedfood.Widget.ChildViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="324dp" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/bar_chart"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"></com.github.mikephil.charting.charts.BarChart>
+        </LinearLayout>
+    </tw.edu.fcu.recommendedfood.Widget.VerticalScrollView>
+
 </LinearLayout>

@@ -68,7 +68,6 @@ public class HttpRequest extends AsyncTask<HttpCall, String, String> {
         result = s;
         Log.v("log_tag1", result);
         Log.v("log_tag", s);
-
     }
 
     public void onResponse(String response){

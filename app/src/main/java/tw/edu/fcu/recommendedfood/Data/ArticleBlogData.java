@@ -1,35 +1,36 @@
 package tw.edu.fcu.recommendedfood.Data;
 
+import java.io.Serializable;
+
 /**
  * Created by kiam on 4/23/2017.
  */
 
-public class ArticleBlogData {
-    String avatar;
+public class ArticleBlogData implements Serializable{
     String title;
     String author;
+    String date;
     String time;
     String htmlContent;
     int type;
 
-    public ArticleBlogData(String title, String author, String time, String htmlContent, int type) {
+    public ArticleBlogData(){
+    }
+
+    public ArticleBlogData(String title, String author, String date, String time, String htmlContent, int type) {
         this.title = title;
         this.author = author;
+        this.date = date;
         this.time = time;
         this.htmlContent = htmlContent;
         this.type = type;
     }
 
-    public ArticleBlogData(int type, String avatar, String author, String htmlContent, String time) {
-        this.avatar = avatar;
+    public ArticleBlogData(int type, String author, String htmlContent, String time) {
         this.author = author;
         this.time = time;
         this.htmlContent = htmlContent;
         this.type = type;
-    }
-
-    public String getAvatar() {
-        return avatar;
     }
 
     public String getTitle() {
@@ -50,5 +51,33 @@ public class ArticleBlogData {
 
     public int getType() {
         return type;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public void setHtmlContent(String htmlContent) {
+        this.htmlContent = htmlContent;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

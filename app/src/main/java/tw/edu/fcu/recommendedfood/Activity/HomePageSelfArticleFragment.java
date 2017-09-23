@@ -45,16 +45,16 @@ public class HomePageSelfArticleFragment extends Fragment {
         listView.setAdapter(articleAdapter);
         listView.setOnItemClickListener(articleBlogOnItemClickListener);
 
-        articleAdapter.addItem(new ArticleData("1", "標題", "內容"));
-        articleAdapter.addItem(new ArticleData("2", "標題", "內容"));
-        articleAdapter.addItem(new ArticleData("3", "標題", "內容"));
-        articleAdapter.addItem(new ArticleData("4", "標題", "內容"));
-        articleAdapter.addItem(new ArticleData("5", "標題", "內容"));
-        articleAdapter.addItem(new ArticleData("6", "標題", "內容"));
-        articleAdapter.addItem(new ArticleData("7", "標題", "內容"));
-        articleAdapter.addItem(new ArticleData("8", "標題", "內容"));
-        articleAdapter.addItem(new ArticleData("9", "標題", "內容"));
-        articleAdapter.addItem(new ArticleData("10", "標題", "內容"));
+        articleAdapter.addItem(new ArticleData(1,"", "標題", "內容"));
+        articleAdapter.addItem(new ArticleData(2,"", "標題", "內容"));
+        articleAdapter.addItem(new ArticleData(3,"", "標題", "內容"));
+        articleAdapter.addItem(new ArticleData(4,"", "標題", "內容"));
+        articleAdapter.addItem(new ArticleData(5,"", "標題", "內容"));
+        articleAdapter.addItem(new ArticleData(6,"", "標題", "內容"));
+        articleAdapter.addItem(new ArticleData(7,"", "標題", "內容"));
+        articleAdapter.addItem(new ArticleData(8,"", "標題", "內容"));
+        articleAdapter.addItem(new ArticleData(9,"", "標題", "內容"));
+        articleAdapter.addItem(new ArticleData(10,"", "標題", "內容"));
     }
 
     private AdapterView.OnItemClickListener articleBlogOnItemClickListener = new AdapterView.OnItemClickListener() {

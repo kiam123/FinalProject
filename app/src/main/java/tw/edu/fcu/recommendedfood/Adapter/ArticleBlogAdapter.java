@@ -85,6 +85,7 @@ public class ArticleBlogAdapter extends BaseAdapter {
                     discussViewHolder = new DiscussViewHolder();
                     discussViewHolder.txtTitle = (TextView) convertView.findViewById(R.id.txt_title);
                     discussViewHolder.txtAuthor = (TextView) convertView.findViewById(R.id.txt_author);
+                    discussViewHolder.txtDate = (TextView) convertView.findViewById(R.id.txt_date) ;
                     discussViewHolder.txtTime = (TextView) convertView.findViewById(R.id.txt_time);
                     discussViewHolder.txtHtmlContent = (TextView) convertView.findViewById(R.id.txt_html_content);
                     discussViewHolder.imageView = (ImageView) convertView.findViewById(R.id.imageView);
@@ -108,8 +109,8 @@ public class ArticleBlogAdapter extends BaseAdapter {
                     commentViewHolder.txtTime = (TextView) convertView.findViewById(R.id.txt_time);
                     commentViewHolder.txtHtmlContent = (TextView) convertView.findViewById(R.id.txt_html_content);
                     commentViewHolder.imageView = (ImageView) convertView.findViewById(R.id.imageView);
-
-                    commentViewHolder.txtAvatar.setText(blogData.getAvatar());
+                    //TODO 還沒做完
+                    commentViewHolder.txtAvatar.setText(blogData.getAuthor());
                     commentViewHolder.txtAuthor.setText(blogData.getAuthor());
                     commentViewHolder.txtTime.setText(blogData.getTime());
 
@@ -127,6 +128,7 @@ public class ArticleBlogAdapter extends BaseAdapter {
                     discussViewHolder = (DiscussViewHolder) convertView.getTag();
                     discussViewHolder.txtTitle.setText(blogData.getTitle());
                     discussViewHolder.txtAuthor.setText(blogData.getAuthor());
+                    discussViewHolder.txtDate.setText(blogData.getDate());
                     discussViewHolder.txtTime.setText(blogData.getTime());
 
                     picassoImageGetter = new PicassoImageGetter(discussViewHolder.txtHtmlContent,
@@ -136,7 +138,8 @@ public class ArticleBlogAdapter extends BaseAdapter {
                     break;
                 case LAYOUT_COMMENT:
                     commentViewHolder = (CommentViewHolder) convertView.getTag();
-                    commentViewHolder.txtAvatar.setText(blogData.getAvatar());
+                    //TODO 還沒做完
+                    commentViewHolder.txtAvatar.setText(blogData.getAuthor());
                     commentViewHolder.txtAuthor.setText(blogData.getAuthor());
                     commentViewHolder.txtTime.setText(blogData.getTime());
 
@@ -153,7 +156,7 @@ public class ArticleBlogAdapter extends BaseAdapter {
 
     private class DiscussViewHolder {
         ImageView imageView;
-        TextView txtTitle, txtAuthor, txtTime, txtHtmlContent;
+        TextView txtTitle, txtAuthor, txtDate, txtTime, txtHtmlContent;
     }
 
     private class CommentViewHolder {

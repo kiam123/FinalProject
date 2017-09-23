@@ -20,6 +20,10 @@ android {
     }
 }
 
+repositories {
+    maven { url "https://jitpack.io" }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -35,4 +39,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.github.PhilJay:MPAndroidChart:v2.2.4'
 }

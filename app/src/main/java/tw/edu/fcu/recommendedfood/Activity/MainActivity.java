@@ -18,13 +18,14 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import tw.edu.fcu.recommendedfood.R;
 import tw.edu.fcu.recommendedfood.Server.PostServer;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Serializable {
     private ViewPager viewPager;
     private ArrayList<Fragment> fragmentArrayList;
     private List<String> titles;
