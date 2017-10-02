@@ -8,14 +8,17 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -87,6 +90,37 @@ public class ArticleFragment extends Fragment {
 
         listviewClassification.setAdapter(articleClassificationAdapter);
         listviewClassification.setOnItemClickListener(classificationAdapterOnItemClickListener);
+
+        listviewClassification.setOnScrollListener(new AbsListView.OnScrollListener() {
+            private int visibleThreshold = 5;
+            private int currentPage = 0;
+            private int previousTotal = 0;
+            private boolean loading = true;
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                if (loading) {
+                    if (totalItemCount > previousTotal) {
+                        loading = false;
+                        previousTotal = totalItemCount;
+                        currentPage++;
+
+                    }
+                }
+                if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
+                    // load more items
+                    loading = true;
+//                    Toast.makeText(getActivity(),"asd",Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+//                Toast.makeText(getActivity(),"asd",Toast.LENGTH_LONG).show();
+            }
+
+        });
     }
 
     private AdapterView.OnItemClickListener classificationAdapterOnItemClickListener = new AdapterView.OnItemClickListener() {

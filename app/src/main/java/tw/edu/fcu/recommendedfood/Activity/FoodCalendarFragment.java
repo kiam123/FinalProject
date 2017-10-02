@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -43,8 +44,7 @@ public class FoodCalendarFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_food_calendar, container, false);
-
+        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_food_calendar, container, false);
 
 
         return viewGroup;
@@ -92,67 +92,44 @@ public class FoodCalendarFragment extends Fragment {
         });
     }
 
-    public void initChart(View rootView){
+    public void initChart(View rootView) {
         barChart = (BarChart) rootView.findViewById(R.id.bar_chart);
 
         ArrayList<String> xAxis = new ArrayList<String>();
         ArrayList<IBarDataSet> dataSet = new ArrayList<IBarDataSet>();
         ArrayList<BarEntry> valueSet1 = new ArrayList<BarEntry>();
-        ArrayList<BarEntry> valueSet2 = new ArrayList<BarEntry>();
-        ArrayList<BarEntry> valueSet3 = new ArrayList<BarEntry>();
-        ArrayList<BarEntry> valueSet4 = new ArrayList<BarEntry>();
-        ArrayList<BarEntry> valueSet5 = new ArrayList<BarEntry>();
-        ArrayList<BarEntry> valueSet6 = new ArrayList<BarEntry>();
-        ArrayList<BarEntry> valueSet7 = new ArrayList<BarEntry>();
 
-        xAxis.add("");
+        xAxis.add("禮拜一");
+        xAxis.add("禮拜二");
+        xAxis.add("禮拜三");
+        xAxis.add("禮拜四");
+        xAxis.add("禮拜五");
+        xAxis.add("禮拜六");
+        xAxis.add("禮拜日");
 
+
+        //TODO 需要做SQlite
         valueSet1.add(new BarEntry(25, 0));
-        valueSet2.add(new BarEntry(20, 0));
-        valueSet3.add(new BarEntry(40, 0));
-        valueSet4.add(new BarEntry(30, 0));
-        valueSet5.add(new BarEntry(30, 0));
-        valueSet6.add(new BarEntry(30, 0));
-        valueSet7.add(new BarEntry(30, 0));
+        valueSet1.add(new BarEntry(20, 1));
+        valueSet1.add(new BarEntry(40, 2));
+        valueSet1.add(new BarEntry(0, 3));
+        valueSet1.add(new BarEntry(0, 4));
+        valueSet1.add(new BarEntry(0, 5));
+        valueSet1.add(new BarEntry(0, 6));
 
+        BarDataSet barDataSet = new BarDataSet(valueSet1, "卡路里");
+        barDataSet.setValueTextSize(14f);
+        barDataSet.setColor(Color.MAGENTA);
+        dataSet.add(barDataSet);
 
-        BarDataSet d0 = new BarDataSet(valueSet1, "1");
-        BarDataSet d1 = new BarDataSet(valueSet2, "2");
-        BarDataSet d2 = new BarDataSet(valueSet3, "3");
-        BarDataSet d3 = new BarDataSet(valueSet4, "4");
-        BarDataSet d4 = new BarDataSet(valueSet4, "5");
-        BarDataSet d5 = new BarDataSet(valueSet4, "6");
-        BarDataSet d6 = new BarDataSet(valueSet4, "7");
-
-        dataSet.add(d0);
-        dataSet.add(d1);
-        dataSet.add(d2);
-        dataSet.add(d3);
-        dataSet.add(d4);
-        dataSet.add(d5);
-        dataSet.add(d6);
+        YAxis yAxisRight = barChart.getAxisRight();
+        yAxisRight.setEnabled(false);
 
         BarData barData = new BarData(xAxis, dataSet);
-        d0.setColors(new int[]{Color.RED});
-        d1.setColors(new int[]{Color.GREEN});
-        d2.setColors(new int[]{Color.MAGENTA});
-        d3.setColors(new int[]{Color.BLUE});
-        d4.setColors(new int[]{Color.BLACK});
-        d5.setColors(new int[]{Color.CYAN});
-        d6.setColors(new int[]{Color.GRAY});
-        d0.setValueTextSize(14f);
-        d1.setValueTextSize(14f);
-        d2.setValueTextSize(14f);
-        d3.setValueTextSize(14f);
-        d4.setValueTextSize(14f);
-        d5.setValueTextSize(14f);
-        d6.setValueTextSize(14f);
-
 
         barChart.setDescription("");
         barChart.setExtraOffsets(0, 0, 0, 20);
         barChart.setData(barData);
-//        barChart.animateXY(2000, 2000);
         barChart.invalidate();
     }
 

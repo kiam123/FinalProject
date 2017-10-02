@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,101 +9,151 @@
     tools:context="tw.edu.fcu.recommendedfood.Activity.FoodRecorderActivity">
 
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/colorPrimary"
-        android:orientation="horizontal">
-    </LinearLayout>
-
-    <android.support.design.widget.CoordinatorLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/listviewClassification"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:clickable="true"
-            app:backgroundTint="@color/colorAccent"
-            app:fabSize="normal"
-            app:srcCompat="@drawable/ic_search_black_24dp"
-            tools:ignore="RtlHardcoded" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/colorPrimary"
+                android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/gps_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="100dp"
-            android:layout_marginEnd="26dp"
-            android:layout_marginRight="26dp"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            tools:ignore="RtlHardcoded">
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/textView"
-                style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:text="@string/gps" />
+            <android.support.design.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/gps_floatingActionButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                app:fabSize="mini"
-                app:srcCompat="@drawable/ic_pin_drop_black_24dp" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerView_note"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </android.support.v7.widget.RecyclerView>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerView_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    </android.support.v7.widget.RecyclerView>
+                </LinearLayout>
+
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:clickable="true"
+                    app:backgroundTint="@color/colorAccent"
+                    app:fabSize="normal"
+                    app:srcCompat="@drawable/ic_plus_black_24dp"
+                    tools:ignore="RtlHardcoded" />
+
+                <LinearLayout
+                    android:id="@+id/gps_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginBottom="100dp"
+                    android:layout_marginEnd="26dp"
+                    android:layout_marginRight="26dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    tools:ignore="RtlHardcoded">
+
+                    <TextView
+                        android:id="@+id/textView"
+                        style="@style/TextAppearance.AppCompat.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/gps" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/gps_floatingActionButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        app:fabSize="mini"
+                        app:srcCompat="@drawable/ic_pin_drop_black_24dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/search_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginBottom="160dp"
+                    android:layout_marginEnd="26dp"
+                    android:layout_marginRight="26dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    tools:ignore="RtlHardcoded">
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        style="@style/TextAppearance.AppCompat.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/search" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/search_floatingActionButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        app:fabSize="mini"
+                        app:srcCompat="@android:drawable/ic_menu_search" />
+
+                </LinearLayout>
+
+
+            </android.support.design.widget.CoordinatorLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/search_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="160dp"
-            android:layout_marginEnd="26dp"
-            android:layout_marginRight="26dp"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            tools:ignore="RtlHardcoded">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView2"
-                style="@style/TextAppearance.AppCompat.Title"
+                android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:text="@string/search" />
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/search_floatingActionButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                app:fabSize="mini"
-                app:srcCompat="@android:drawable/ic_menu_search" />
-
+                android:text="歡迎使用飲食筆記本"
+                android:textColor="#000000"
+                android:textSize="25dp" />
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/image_window"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#9000" />
+    </FrameLayout>
 
-    </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

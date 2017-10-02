@@ -4,11 +4,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import tw.edu.fcu.recommendedfood.Adapter.FoodDetailsAdapter;
+import tw.edu.fcu.recommendedfood.Adapter.FoodNoteAdapter;
+import tw.edu.fcu.recommendedfood.Data.FoodDetailData;
+import tw.edu.fcu.recommendedfood.Data.FoodNoteData;
 import tw.edu.fcu.recommendedfood.R;
 
 public class FoodRecorderActivity extends AppCompatActivity {
@@ -21,6 +32,11 @@ public class FoodRecorderActivity extends AppCompatActivity {
     private Animation mShowLayout;
     private Animation mHideButton;
     private Animation mHideLayout;
+    private ImageView imageWindow;
+    private RecyclerView noteRecyclerView;
+    private RecyclerView detailsRecyclerView;
+    private FoodNoteAdapter foodNoteAdapter;
+    private FoodDetailsAdapter foodDetailsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +53,32 @@ public class FoodRecorderActivity extends AppCompatActivity {
         mGpsButton = (FloatingActionButton) findViewById(R.id.gps_floatingActionButton);
         mSearchLayout = (LinearLayout) findViewById(R.id.search_layout);
         mGpsLayout = (LinearLayout) findViewById(R.id.gps_layout);
+        imageWindow = (ImageView) findViewById(R.id.image_window);
+        noteRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_note);
+        detailsRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_details);
+
+
+        noteRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        detailsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        foodNoteAdapter = new FoodNoteAdapter();
+        foodDetailsAdapter = new FoodDetailsAdapter();
+
+        noteRecyclerView.setAdapter(foodNoteAdapter);
+        detailsRecyclerView.setAdapter(foodDetailsAdapter);
+
+        foodNoteAdapter.addItem(new FoodNoteData());
+        foodDetailsAdapter.addItem(new FoodDetailData());
+        foodDetailsAdapter.addItem(new FoodDetailData());
+        foodDetailsAdapter.addItem(new FoodDetailData());
+        foodDetailsAdapter.addItem(new FoodDetailData());
+
+
+        imageWindow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageWindow.setVisibility(View.GONE);
+            }
+        });
     }
 
     public void initAnimation() {
@@ -44,6 +86,7 @@ public class FoodRecorderActivity extends AppCompatActivity {
         mHideButton = AnimationUtils.loadAnimation(this, R.anim.hide_button);
         mHideLayout = AnimationUtils.loadAnimation(this, R.anim.hide_layout);
         mShowLayout = AnimationUtils.loadAnimation(this, R.anim.show_layout);
+
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,4 +130,6 @@ public class FoodRecorderActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }
