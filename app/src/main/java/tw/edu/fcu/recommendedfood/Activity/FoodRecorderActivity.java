@@ -12,6 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class FoodRecorderActivity extends AppCompatActivity {
     private Animation mHideButton;
     private Animation mHideLayout;
     private ImageView imageWindow;
+    private LinearLayout lnPrompt;
     private RecyclerView noteRecyclerView;
     private RecyclerView detailsRecyclerView;
     private FoodNoteAdapter foodNoteAdapter;
@@ -56,6 +58,7 @@ public class FoodRecorderActivity extends AppCompatActivity {
         imageWindow = (ImageView) findViewById(R.id.image_window);
         noteRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_note);
         detailsRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_details);
+        lnPrompt = (LinearLayout) findViewById(R.id.ln_prompt);
 
 
         noteRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -77,6 +80,7 @@ public class FoodRecorderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 imageWindow.setVisibility(View.GONE);
+                lnPrompt.setVisibility(View.GONE);
             }
         });
     }
