@@ -7,10 +7,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -21,8 +24,11 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
+import tw.edu.fcu.recommendedfood.Adapter.FoodGraphSpinnerAdapter;
 import tw.edu.fcu.recommendedfood.R;
 import tw.edu.fcu.recommendedfood.Utils.Utils;
 
@@ -33,8 +39,11 @@ public class FoodCalendarFragment extends Fragment {
     private ViewPager viewPager;
     private TextView tvMonth;
     private String month;
-
-    BarChart barChart;
+    Spinner spinner;
+    FoodGraphSpinnerAdapter foodGraphSpinnerAdapter;
+    private ArrayList<Fragment> fragmentArrayList;
+    private Fragment mCurrentFrgment;
+    private int currentIndex = 0;
 
 
     public FoodCalendarFragment() {
@@ -55,7 +64,7 @@ public class FoodCalendarFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         initView(view);
-        initChart(view);
+        initSpinner(view);
     }
 
     public void initView(View rootView) {
@@ -92,46 +101,68 @@ public class FoodCalendarFragment extends Fragment {
         });
     }
 
-    public void initChart(View rootView) {
-        barChart = (BarChart) rootView.findViewById(R.id.bar_chart);
+    public void initSpinner(View view){
+        spinner = (Spinner) view.findViewById(R.id.spinner);
+        List<String> list = new ArrayList<>();
+        list.add("每週卡路里長條圖");
+        list.add("每週卡路里直線圖");
+        list.add("每週毒物長條圖");
+        list.add("每週毒物直線圖");
+        foodGraphSpinnerAdapter = new FoodGraphSpinnerAdapter(getActivity(), list);
+        spinner.setAdapter(foodGraphSpinnerAdapter);
+        initFragment();
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                foodGraphSpinnerAdapter.setPosition(position);
+                changeTab(position);
+            }
 
-        ArrayList<String> xAxis = new ArrayList<String>();
-        ArrayList<IBarDataSet> dataSet = new ArrayList<IBarDataSet>();
-        ArrayList<BarEntry> valueSet1 = new ArrayList<BarEntry>();
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
-        xAxis.add("禮拜一");
-        xAxis.add("禮拜二");
-        xAxis.add("禮拜三");
-        xAxis.add("禮拜四");
-        xAxis.add("禮拜五");
-        xAxis.add("禮拜六");
-        xAxis.add("禮拜日");
-
-
-        //TODO 需要做SQlite
-        valueSet1.add(new BarEntry(25, 0));
-        valueSet1.add(new BarEntry(20, 1));
-        valueSet1.add(new BarEntry(40, 2));
-        valueSet1.add(new BarEntry(0, 3));
-        valueSet1.add(new BarEntry(0, 4));
-        valueSet1.add(new BarEntry(0, 5));
-        valueSet1.add(new BarEntry(0, 6));
-
-        BarDataSet barDataSet = new BarDataSet(valueSet1, "卡路里");
-        barDataSet.setValueTextSize(14f);
-        barDataSet.setColor(Color.MAGENTA);
-        dataSet.add(barDataSet);
-
-        YAxis yAxisRight = barChart.getAxisRight();
-        yAxisRight.setEnabled(false);
-
-        BarData barData = new BarData(xAxis, dataSet);
-
-        barChart.setDescription("");
-        barChart.setExtraOffsets(0, 0, 0, 20);
-        barChart.setData(barData);
-        barChart.invalidate();
+            }
+        });
     }
+
+    private void initFragment() {
+        fragmentArrayList = new ArrayList<Fragment>(4);
+        fragmentArrayList.add(new FoodCalorieBarChartFragmenet());
+        fragmentArrayList.add(new FoodCalorieLineChartFragmenet());
+        fragmentArrayList.add(new FoodPoisonBarChartFragmenet());
+        fragmentArrayList.add(new FoodPoisonLineChartFragmenet());
+
+        changeTab(0);
+    }
+
+    private void changeTab(int index) {
+        currentIndex = index;
+        /*---------------------------------------------↓需要用v4 lib------------------------------------------------------*/
+
+        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+        //判断当前的Fragment是否为空，不为空则隐藏
+        if (null != mCurrentFrgment) {
+            ft.hide(mCurrentFrgment);
+        }
+        //先根据Tag从FragmentTransaction事物获取之前添加的Fragment
+        Fragment fragment = getChildFragmentManager().findFragmentByTag(fragmentArrayList.get(currentIndex).getClass().getName());
+
+        if (null == fragment) {
+            //如fragment为空，则之前未添加此Fragment。便从集合中取出
+            fragment = fragmentArrayList.get(index);
+        }
+        mCurrentFrgment = fragment;
+
+        //判断此Fragment是否已经添加到FragmentTransaction事物中
+        if (!fragment.isAdded()) {
+            ft.add(R.id.fragment, fragment, fragment.getClass().getName());
+        } else {
+            ft.show(fragment);
+        }
+        ft.commit();
+        /*---------------------------------------------↑需要用v4 lib------------------------------------------------------*/
+    }
+
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         public ScreenSlidePagerAdapter(FragmentManager fm) {

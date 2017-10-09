@@ -2,22 +2,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="tw.edu.fcu.recommendedfood.Activity.FoodCalendarFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="tw.edu.fcu.recommendedfood.Activity.FoodCalendarFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/colorPrimary"
-        android:orientation="horizontal">
-    </LinearLayout>
+        android:orientation="horizontal"></LinearLayout>
 
 
     <tw.edu.fcu.recommendedfood.Widget.VerticalScrollView
-        android:fillViewport="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,10 +37,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="324dp" />
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/bar_chart"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="400dp"></com.github.mikephil.charting.charts.BarChart>
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/fui_bg_spinner" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </FrameLayout>
+
         </LinearLayout>
     </tw.edu.fcu.recommendedfood.Widget.VerticalScrollView>
 

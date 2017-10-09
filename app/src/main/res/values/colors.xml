@@ -32,4 +32,8 @@
 	<color name="colorYellow">#FFFF00</color>
 	<color name="colorWhite">#FFFFFF</color>
 	<color name="divider_color">#DD999999</color>
+
+
+	<color name="f_light_blue">#5a9aa8</color>
+	<color name="f_default_textColor">#6d6e76</color>
 </resources>
