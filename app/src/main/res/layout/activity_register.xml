@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/inputTAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="帳號:"
+                android:textSize="18sp"
+                />
+            <EditText
+                android:id="@+id/ERegAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/TwarningAccount"
+            android:textColor="@android:color/holo_red_light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/inputTScode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="密碼:"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/ERegScode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/TwarningCode"
+            android:textColor="@android:color/holo_red_light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/inputTScodeAgain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="再次輸入密碼:"
+                android:textSize="18sp" />
+            <EditText
+                android:id="@+id/ERegScodeAgain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/TwarningCodeAgain"
+            android:textColor="@android:color/holo_red_light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/TRegName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="姓名:"
+                android:textSize="18sp" />
+            <EditText
+                android:id="@+id/ERegName"
+                android:maxLength="20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/TwarningName"
+            android:textColor="@android:color/holo_red_light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/TRegSex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="性別(男/女):"
+                android:textSize="18sp" />
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton android:id="@+id/radio_man"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="男"
+                    android:onClick="onRadioButtonClicked"/>
+                <RadioButton android:id="@+id/radio_woman"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="女"
+                    android:onClick="onRadioButtonClicked"/>
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/TRegEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="email:"
+                android:textSize="18sp" />
+            <EditText
+                android:id="@+id/ERegEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/TwarningEmail"
+            android:textColor="@android:color/holo_red_light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/TRegAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="地址:"
+                android:textSize="18sp" />
+            <EditText
+                android:id="@+id/ERegAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/TwarningAddress"
+            android:textColor="@android:color/holo_red_light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/TRegPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="電話:"
+                android:textSize="18sp" />
+            <EditText
+                android:id="@+id/ERegPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="9"
+                android:inputType="phone"
+                />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/TwarningPhone"
+            android:textColor="@android:color/holo_red_light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+            <Button
+                android:id="@+id/RegOK"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="47dp"
+                android:text="確認"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
