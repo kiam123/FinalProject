@@ -77,7 +77,7 @@ public class FoodCalorieLineChartFragmenet extends Fragment {
         set1.setColor(Color.RED);
         set1.setLineWidth(3f);
         set1.setValueTextSize(10f);
-        set1.setValueTextColor(Color.GREEN);
+        set1.setValueTextColor(Color.MAGENTA);
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(set1);

@@ -100,6 +100,7 @@ public class ArticleFragment extends Fragment {
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
+                Log.v("total",listviewClassification.getCount()+"");
                 if (loading) {
                     if (totalItemCount > previousTotal) {
                         loading = false;
@@ -117,6 +118,7 @@ public class ArticleFragment extends Fragment {
 
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
+                Log.v("total",listviewClassification.getCount()+"");
 //                Toast.makeText(getActivity(),"asd",Toast.LENGTH_LONG).show();
             }
 

@@ -70,10 +70,10 @@ public class FoodRecorderActivity extends AppCompatActivity {
         detailsRecyclerView.setAdapter(foodDetailsAdapter);
 
         foodNoteAdapter.addItem(new FoodNoteData());
-        foodDetailsAdapter.addItem(new FoodDetailData());
-        foodDetailsAdapter.addItem(new FoodDetailData());
-        foodDetailsAdapter.addItem(new FoodDetailData());
-        foodDetailsAdapter.addItem(new FoodDetailData());
+        foodDetailsAdapter.addItem(new FoodDetailData("肯德基","雞","100","200","1"));
+        foodDetailsAdapter.addItem(new FoodDetailData("seven","紅茶","50","100","1"));
+        foodDetailsAdapter.addItem(new FoodDetailData("肯德基","雞","100","200","1"));
+        foodDetailsAdapter.addItem(new FoodDetailData("肯德基","雞","100","200","1"));
 
 
         imageWindow.setOnClickListener(new View.OnClickListener() {

@@ -5,4 +5,5 @@ package tw.edu.fcu.recommendedfood.Data;
  */
 
 public class FoodNoteData {
+
 }

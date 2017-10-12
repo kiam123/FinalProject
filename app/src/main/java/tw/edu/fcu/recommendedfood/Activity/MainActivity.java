@@ -24,9 +24,10 @@ import java.util.List;
 
 import tw.edu.fcu.recommendedfood.R;
 import tw.edu.fcu.recommendedfood.Server.PostServer;
+import tw.edu.fcu.recommendedfood.Widget.CustomViewPager;
 
 public class MainActivity extends AppCompatActivity implements Serializable {
-    private ViewPager viewPager;
+    private CustomViewPager viewPager;
     private ArrayList<Fragment> fragmentArrayList;
     private List<String> titles;
     private TabLayout mTabLayout;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             R.drawable.ic_home_white_18dp,
             R.drawable.ic_event_white_18dp,
             R.drawable.ic_favorite_white_18dp,
+            R.drawable.ic_games_white_18dp,
             R.drawable.ic_account_circle_white_18dp
     };
 
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             R.drawable.ic_home_black_18dp,
             R.drawable.ic_event_black_18dp,
             R.drawable.ic_favorite_black_18dp,
+            R.drawable.ic_games_black_18dp,
             R.drawable.ic_account_circle_black_18dp
     };
 
@@ -60,26 +63,27 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     }
 
     public void postToServer() {
-        new PostServer(){
+        new PostServer() {
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);
-                Log.v("testing123",response);
+                Log.v("testing123", response);
             }
         }.execute();
     }
 
     //初始化每個view
-    public void initView(){
+    public void initView() {
         titles = new ArrayList<>();//因為imageview不能比較，所以就用textview的方法來比較
         titles.add("One");
         titles.add("Two");
         titles.add("Three");
         titles.add("Four");
+        titles.add("Five");
 
-        viewPager = (ViewPager) this.findViewById(R.id.viewpager);
-        mTabLayout = (TabLayout)findViewById(R.id.tabs);
-        viewPager.setAdapter(new SimpleFragmentPagerAdapter(getSupportFragmentManager(),fragmentArrayList,this));
+        viewPager = (CustomViewPager) this.findViewById(R.id.viewpager);
+        mTabLayout = (TabLayout) findViewById(R.id.tabs);
+        viewPager.setAdapter(new SimpleFragmentPagerAdapter(getSupportFragmentManager(), fragmentArrayList, this));
         mTabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
         initTabLayoutEvent();
@@ -91,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         mTabLayout.getTabAt(1).setCustomView(getTabView(1));
         mTabLayout.getTabAt(2).setCustomView(getTabView(2));
         mTabLayout.getTabAt(3).setCustomView(getTabView(3));
+        mTabLayout.getTabAt(4).setCustomView(getTabView(4));
     }
 
     //自定義tab
@@ -141,12 +146,15 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         } else if (txt_title.getText().toString().equals("Two")) {
             Picasso.with(this).load(ICONS[1]).into(img_title);
             viewPager.setCurrentItem(1);
-        } else if (txt_title.getText().toString().equals("Three")){
+        } else if (txt_title.getText().toString().equals("Three")) {
             Picasso.with(this).load(ICONS[2]).into(img_title);
             viewPager.setCurrentItem(2);
-        }        else {
+        } else if (txt_title.getText().toString().equals("Four")) {
             Picasso.with(this).load(ICONS[3]).into(img_title);
             viewPager.setCurrentItem(3);
+        } else {
+            Picasso.with(this).load(ICONS[4]).into(img_title);
+            viewPager.setCurrentItem(4);
         }
     }
 
@@ -160,11 +168,12 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             Picasso.with(this).load(ICONS2[0]).into(img_title);
         } else if (txt_title.getText().toString().equals("Two")) {
             Picasso.with(this).load(ICONS2[1]).into(img_title);
-        }else if (txt_title.getText().toString().equals("Three")) {
+        } else if (txt_title.getText().toString().equals("Three")) {
             Picasso.with(this).load(ICONS2[2]).into(img_title);
-        }
-        else {
+        } else if (txt_title.getText().toString().equals("Four")) {
             Picasso.with(this).load(ICONS2[3]).into(img_title);
+        } else {
+            Picasso.with(this).load(ICONS2[4]).into(img_title);
         }
     }
 
@@ -174,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         fragmentArrayList.add(new ArticleFragment());//部落格
         fragmentArrayList.add(new FoodCalendarFragment());//記錄食物
         fragmentArrayList.add(new WaitingEatFragment());//待吃
+        fragmentArrayList.add(new GameFragment());//待吃
         fragmentArrayList.add(new HomePageFragment());//個人主頁
     }
 
@@ -181,6 +191,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     class SimpleFragmentPagerAdapter extends FragmentStatePagerAdapter {
         Context mContext;
         ArrayList<Fragment> fragmentArrayList = new ArrayList<Fragment>();
+
         public SimpleFragmentPagerAdapter(FragmentManager fm, ArrayList<Fragment> fragmentArrayList, Context context) {
             super(fm);
             this.fragmentArrayList = fragmentArrayList;

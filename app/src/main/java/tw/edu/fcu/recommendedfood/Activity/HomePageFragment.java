@@ -42,7 +42,7 @@ public class HomePageFragment extends Fragment {
     private ArrayList<Fragment> fragmentArrayList = new ArrayList<Fragment>();
     private ViewPager viewPager;
     private TabLayout mTabLayout;
-    private String[] mTitles = {"收藏", "文章", "朋友"};
+    private String[] mTitles = {"收藏", "文章"};
     private TextView txtItem;
     private ImageView imgHeader;
     private Context mContext;
@@ -87,8 +87,6 @@ public class HomePageFragment extends Fragment {
                     txtItem.setText("所有收藏");
                 } else if (tab.getPosition() == 1) {
                     txtItem.setText("所有文章");
-                } else {
-                    txtItem.setText("所有朋友");
                 }
             }
 
@@ -107,7 +105,7 @@ public class HomePageFragment extends Fragment {
         fragmentArrayList = new ArrayList<Fragment>();
         fragmentArrayList.add(new HomePageCollectArticleFragment());//收藏文章
         fragmentArrayList.add(new HomePageSelfArticleFragment());//自己的文章
-        fragmentArrayList.add(new HomePageFriendsFragment());//朋友
+//        fragmentArrayList.add(new HomePageFriendsFragment());//朋友
     }
 
     public void initOnclickListener() {
@@ -119,6 +117,7 @@ public class HomePageFragment extends Fragment {
         public void onClick(View v) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.item_popup, null, false);
             btnHeader = (Button) view.findViewById(R.id.button2);
+            btnHeader.setText("更換照片");
             btnHeader.setOnClickListener(btnHeaderOnClickListener);
 
             popWindow = new PopupWindow(view,
