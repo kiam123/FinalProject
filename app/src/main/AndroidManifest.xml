@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <!--<uses-permission android:name="android.permission.RESTART_PACKAGES"/>-->
+    <!--<uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>-->
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -26,13 +28,19 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".Activity.MainActivity"
+            android:name=".Activity.LoginActivity"
             android:label="美食推薦">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <!--主頁-->
+        <activity
+            android:name=".Activity.MainActivity"
+            android:theme="@style/AppThemeNoActionBar">
         </activity>
 
         <activity android:name=".Activity.RegisterActivity"></activity>

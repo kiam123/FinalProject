@@ -9,65 +9,70 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.yuhong.registersystem.MainActivity">
+
     <TextView
         android:id="@+id/text_account"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:text="帳號:"
-        android:textSize="18sp"
         android:layout_alignBaseline="@+id/edtID"
         android:layout_alignBottom="@+id/edtID"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:text="帳號:"
+        android:textSize="18sp" />
+
     <EditText
         android:id="@+id/edtID"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/text_account"
-        />
+        android:layout_toRightOf="@+id/text_account" />
+
     <TextView
         android:id="@+id/text_secret_code"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:text="密碼:"
-        android:textSize="18sp"
         android:layout_alignBaseline="@+id/edtSecret_code"
         android:layout_alignBottom="@+id/edtSecret_code"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:text="密碼:"
+        android:textSize="18sp" />
+
     <EditText
         android:id="@+id/edtSecret_code"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/edtID"
-        android:layout_toRightOf="@+id/text_secret_code"/>
+        android:layout_toRightOf="@+id/text_secret_code"
+        android:inputType="textPassword" />
+
     <Button
         android:id="@+id/signIn"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_below="@+id/edtSecret_code"
+        android:layout_centerInParent="true"
+        android:onClick="loginButton"
         android:text="登入" />
 
     <Button
-        android:layout_height="wrap_content"
         android:id="@+id/register"
-        android:text="註冊"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/signIn"
         android:layout_centerInParent="true"
-        android:layout_width="100dp" />
-    <CheckBox android:id="@+id/checkbox"
+        android:onClick="registerButton"
+        android:text="註冊" />
+
+    <CheckBox
+        android:id="@+id/checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/signIn"
         android:layout_alignBaseline="@+id/signIn"
-        android:text="記住密碼"
-        />
-
-
+        android:layout_toRightOf="@+id/signIn"
+        android:text="記住密碼" />
 
 
 </RelativeLayout>

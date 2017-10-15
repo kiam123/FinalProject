@@ -8,5 +8,9 @@ import android.content.Context;
 
 public interface UserState {
     public void forward(Context context);
-
+    public void commend(Context context);
+    public void setAccount(String account);
+    public void setName(String name);
+    public String getAccount();
+    public String getName();
 }

@@ -1,7 +1,9 @@
 package tw.edu.fcu.recommendedfood.Activity;
 
 
+import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.design.widget.TabLayout;
@@ -22,6 +24,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import tw.edu.fcu.recommendedfood.Data.LoginContext;
+import tw.edu.fcu.recommendedfood.Data.LogoutState;
 import tw.edu.fcu.recommendedfood.R;
 import tw.edu.fcu.recommendedfood.Server.PostServer;
 import tw.edu.fcu.recommendedfood.Widget.CustomViewPager;
@@ -207,6 +211,12 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         public int getCount() {
             return fragmentArrayList.size();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        moveTaskToBack(true);//返回APP桌面上
     }
 }
 

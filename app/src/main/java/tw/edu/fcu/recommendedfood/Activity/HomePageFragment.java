@@ -28,11 +28,9 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
-import java.io.File;
 import java.util.ArrayList;
 
-import tw.edu.fcu.recommendedfood.ImgurLib.DocumentHelper;
-import tw.edu.fcu.recommendedfood.Photo.PicassoImageGetter;
+import tw.edu.fcu.recommendedfood.Data.LoginContext;
 import tw.edu.fcu.recommendedfood.R;
 
 /**
@@ -44,12 +42,17 @@ public class HomePageFragment extends Fragment {
     private TabLayout mTabLayout;
     private String[] mTitles = {"收藏", "文章"};
     private TextView txtItem;
+    private TextView txtAccount;
+    private TextView txtName;
     private ImageView imgHeader;
     private Context mContext;
     private Button btnHeader;
     private Uri returnUri;
     private static final int REQUEST_CODE_PICK_IMAGE = 1023;
     PopupWindow popWindow;
+
+    private View.OnClickListener imgHeaderClickListener;
+    private View.OnClickListener btnHeaderOnClickListener;
 
     public HomePageFragment() {
     }
@@ -61,15 +64,25 @@ public class HomePageFragment extends Fragment {
 
         initFragment();
         initView(viewGroup);
-        initOnclickListener();
+        initHeaderOnclickListener();
+        setAccount();
 
         return viewGroup;
+    }
+
+    private void initFragment() {
+        fragmentArrayList = new ArrayList<Fragment>();
+        fragmentArrayList.add(new HomePageCollectArticleFragment());//收藏文章
+        fragmentArrayList.add(new HomePageSelfArticleFragment());//自己的文章
+//        fragmentArrayList.add(new HomePageFriendsFragment());//朋友
     }
 
     //view初始化
     public void initView(ViewGroup viewGroup) {//不一定要用viewGroup，也可以直接使用getView()
         mContext = getActivity();
         imgHeader = (ImageView) viewGroup.findViewById(R.id.img_header);
+        txtAccount = (TextView) viewGroup.findViewById(R.id.txt_account);
+        txtName = (TextView) viewGroup.findViewById(R.id.txt_name);
         viewPager = (ViewPager) viewGroup.findViewById(R.id.viewpager);
         mTabLayout = (TabLayout) viewGroup.findViewById(R.id.tabs);
         txtItem = (TextView) viewGroup.findViewById(R.id.txt_item);
@@ -100,55 +113,52 @@ public class HomePageFragment extends Fragment {
         });
     }
 
-    //初始化每個頁面的fragment（部落格，記錄食物，待吃，個人主頁）
-    private void initFragment() {
-        fragmentArrayList = new ArrayList<Fragment>();
-        fragmentArrayList.add(new HomePageCollectArticleFragment());//收藏文章
-        fragmentArrayList.add(new HomePageSelfArticleFragment());//自己的文章
-//        fragmentArrayList.add(new HomePageFriendsFragment());//朋友
-    }
-
-    public void initOnclickListener() {
+    public void initHeaderOnclickListener() {
         imgHeader.setOnClickListener(imgHeaderClickListener);
+
+        imgHeaderClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View view = LayoutInflater.from(mContext).inflate(R.layout.item_popup, null, false);
+                btnHeader = (Button) view.findViewById(R.id.button2);
+                btnHeader.setText("更換照片");
+                btnHeader.setOnClickListener(btnHeaderOnClickListener);
+
+                popWindow = new PopupWindow(view,
+                        ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+
+                popWindow.setAnimationStyle(R.anim.anim_pop);  //设置加载动画
+                popWindow.setTouchable(true);
+                popWindow.setTouchInterceptor(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        return false;
+                        // 这里如果返回true的话，touch事件将被拦截
+                        // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
+                    }
+                });
+                popWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));    //要为popWindow设置一个背景才有效
+
+                //设置popupWindow显示的位置，参数依次是参照View，x轴的偏移量，y轴的偏移量
+                Log.v("heigh", v.getHeight() + " " + view.getHeight());
+                popWindow.showAsDropDown(v, v.getHeight() / 2, -v.getHeight() / 2);
+            }
+        };
+
+        btnHeaderOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");// 相片类型
+                startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE);
+            }
+        };
     }
 
-    private View.OnClickListener imgHeaderClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.item_popup, null, false);
-            btnHeader = (Button) view.findViewById(R.id.button2);
-            btnHeader.setText("更換照片");
-            btnHeader.setOnClickListener(btnHeaderOnClickListener);
-
-            popWindow = new PopupWindow(view,
-                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-
-            popWindow.setAnimationStyle(R.anim.anim_pop);  //设置加载动画
-            popWindow.setTouchable(true);
-            popWindow.setTouchInterceptor(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    return false;
-                    // 这里如果返回true的话，touch事件将被拦截
-                    // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
-                }
-            });
-            popWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));    //要为popWindow设置一个背景才有效
-
-            //设置popupWindow显示的位置，参数依次是参照View，x轴的偏移量，y轴的偏移量
-            Log.v("heigh", v.getHeight() + " " + view.getHeight());
-            popWindow.showAsDropDown(v, v.getHeight() / 2, -v.getHeight() / 2);
-        }
-    };
-
-    private View.OnClickListener btnHeaderOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setType("image/*");// 相片类型
-            startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE);
-        }
-    };
+    public void setAccount(){
+        txtAccount.setText(LoginContext.getLoginContext().getAccount());
+        txtName.setText(LoginContext.getLoginContext().getName());
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
