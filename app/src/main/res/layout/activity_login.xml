@@ -26,6 +26,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:text="admin"
         android:layout_toRightOf="@+id/text_account" />
 
     <TextView
@@ -46,6 +47,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/edtID"
         android:layout_toRightOf="@+id/text_secret_code"
+        android:text="admin"
         android:inputType="textPassword" />
 
     <Button
@@ -72,6 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/signIn"
         android:layout_toRightOf="@+id/signIn"
+        android:onClick="rememberPassword"
         android:text="記住密碼" />
 
 

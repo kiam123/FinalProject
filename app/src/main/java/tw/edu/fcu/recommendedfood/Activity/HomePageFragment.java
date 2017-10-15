@@ -3,6 +3,7 @@ package tw.edu.fcu.recommendedfood.Activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
@@ -47,12 +48,16 @@ public class HomePageFragment extends Fragment {
     private ImageView imgHeader;
     private Context mContext;
     private Button btnHeader;
+    private Button btnLogout;
     private Uri returnUri;
     private static final int REQUEST_CODE_PICK_IMAGE = 1023;
     PopupWindow popWindow;
 
-    private View.OnClickListener imgHeaderClickListener;
-    private View.OnClickListener btnHeaderOnClickListener;
+    private SharedPreferences settings;
+    private static final String data = "RegisterPage1";
+    private static final String idField = "ID";
+    private static final String secretCodeField = "CODE";
+    private static final String checkboxField = "checkbox";
 
     public HomePageFragment() {
     }
@@ -115,45 +120,60 @@ public class HomePageFragment extends Fragment {
 
     public void initHeaderOnclickListener() {
         imgHeader.setOnClickListener(imgHeaderClickListener);
-
-        imgHeaderClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                View view = LayoutInflater.from(mContext).inflate(R.layout.item_popup, null, false);
-                btnHeader = (Button) view.findViewById(R.id.button2);
-                btnHeader.setText("更換照片");
-                btnHeader.setOnClickListener(btnHeaderOnClickListener);
-
-                popWindow = new PopupWindow(view,
-                        ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-
-                popWindow.setAnimationStyle(R.anim.anim_pop);  //设置加载动画
-                popWindow.setTouchable(true);
-                popWindow.setTouchInterceptor(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        return false;
-                        // 这里如果返回true的话，touch事件将被拦截
-                        // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
-                    }
-                });
-                popWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));    //要为popWindow设置一个背景才有效
-
-                //设置popupWindow显示的位置，参数依次是参照View，x轴的偏移量，y轴的偏移量
-                Log.v("heigh", v.getHeight() + " " + view.getHeight());
-                popWindow.showAsDropDown(v, v.getHeight() / 2, -v.getHeight() / 2);
-            }
-        };
-
-        btnHeaderOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");// 相片类型
-                startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE);
-            }
-        };
     }
+
+    private View.OnClickListener imgHeaderClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.layout_homepager_item_popup, null, false);
+            btnHeader = (Button) view.findViewById(R.id.btn_change_image);
+            btnLogout = (Button) view.findViewById(R.id.btn_logout);
+            btnLogout.setOnClickListener(btnLogoutOnClickListener);
+            btnHeader.setOnClickListener(btnHeaderOnClickListener);
+
+            popWindow = new PopupWindow(view,
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+
+            popWindow.setAnimationStyle(R.anim.anim_pop);  //设置加载动画
+            popWindow.setTouchable(true);
+            popWindow.setTouchInterceptor(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return false;
+                    // 这里如果返回true的话，touch事件将被拦截
+                    // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
+                }
+            });
+            popWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));    //要为popWindow设置一个背景才有效
+
+            //设置popupWindow显示的位置，参数依次是参照View，x轴的偏移量，y轴的偏移量
+            Log.v("heigh", v.getHeight() + " " + view.getHeight());
+            popWindow.showAsDropDown(v, v.getHeight() / 2, -v.getHeight() / 2);
+        }
+    };
+
+    private View.OnClickListener btnHeaderOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");// 相片类型
+            startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE);
+        }
+    };
+
+    private View.OnClickListener btnLogoutOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            popWindow.dismiss();
+            settings = getActivity().getSharedPreferences(LoginActivity.data, getActivity().MODE_PRIVATE);
+            settings.edit().putBoolean(LoginActivity.checkboxField, false)
+                    .commit();
+
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+    };
 
     public void setAccount(){
         txtAccount.setText(LoginContext.getLoginContext().getAccount());

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -20,10 +21,10 @@ public class LoginActivity extends AppCompatActivity {
     private CheckBox mCBoxPasswordRemember;
 
     private SharedPreferences settings;
-    private static final String data = "RegisterPage1";
+    public static final String data = "RegisterPage1";
     private static final String idField = "ID";
     private static final String secretCodeField = "CODE";
-    private static final String checkboxField = "checkbox";
+    public static final String checkboxField = "checkbox";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     public void loginButton(View view) {
         String id = mEditId.getText().toString();
         String password = mEditPassword.getText().toString();
-        if(checkAccount(id, password)){
+        if (checkAccount(id, password)) {
             setLoginState();
         }
         saveData();
@@ -53,9 +54,13 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private boolean checkAccount(String id, String password){
+    public void rememberPassword(View view) {
+        saveData();
+    }
 
-        if(!id.equals("admin") && !password.equals("123123")){
+    private boolean checkAccount(String id, String password) {
+
+        if (!id.equals("admin") && !password.equals("123123")) {
             return false;
         }
 
@@ -63,19 +68,19 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void readData() {
-        settings = getSharedPreferences(data, 0);
-        mEditId.setText(settings.getString(idField, ""));
-        mEditPassword.setText(settings.getString(secretCodeField, ""));
-        mCBoxPasswordRemember.setChecked(settings.getBoolean(checkboxField, false));
+        settings = getSharedPreferences(data, MODE_PRIVATE);
 
-        if(mCBoxPasswordRemember.isEnabled()){
-            if(checkAccount(mEditId.getText().toString(), mEditPassword.getText().toString())){
+        mEditId.setText(settings.getString(idField, "admin"));
+        mEditPassword.setText(settings.getString(secretCodeField, "admin"));
+        mCBoxPasswordRemember.setChecked(settings.getBoolean(checkboxField, false));
+        if (mCBoxPasswordRemember.isChecked()) {
+            if (checkAccount(mEditId.getText().toString(), mEditPassword.getText().toString())) {
                 setLoginState();
             }
         }
     }
 
-    public void setLoginState(){
+    public void setLoginState() {
         LoginContext.getLoginContext().setState(new LoginedState());
         LoginContext.getLoginContext().forward(this);
         LoginContext.getLoginContext().setAccount(mEditId.getText().toString());
@@ -83,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void saveData() {
-        settings = getSharedPreferences(data, 0);
+        settings = getSharedPreferences(data, MODE_PRIVATE);
         settings.edit().putString(idField, mEditId.getText().toString())
                 .putString(secretCodeField, mEditPassword.getText().toString())
                 .putBoolean(checkboxField, mCBoxPasswordRemember.isChecked())
