@@ -32,6 +32,7 @@ import com.squareup.picasso.Transformation;
 import java.util.ArrayList;
 
 import tw.edu.fcu.recommendedfood.Data.LoginContext;
+import tw.edu.fcu.recommendedfood.Data.LogoutState;
 import tw.edu.fcu.recommendedfood.R;
 
 /**
@@ -169,9 +170,8 @@ public class HomePageFragment extends Fragment {
             settings.edit().putBoolean(LoginActivity.checkboxField, false)
                     .commit();
 
-            Intent intent = new Intent(getActivity(), LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            LoginContext.getLoginContext().setState(new LogoutState());
+            LoginContext.getLoginContext().forward(getActivity());
         }
     };
 
