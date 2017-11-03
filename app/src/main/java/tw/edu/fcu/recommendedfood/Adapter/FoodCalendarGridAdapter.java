@@ -2,6 +2,7 @@ package tw.edu.fcu.recommendedfood.Adapter;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +15,18 @@ import java.util.Calendar;
 import java.util.Date;
 
 import tw.edu.fcu.recommendedfood.R;
+import tw.edu.fcu.recommendedfood.Server.FoodDBHelper;
 
 /**
  * Created by kiam on 3/2/2017.
  */
 
-public class CalendarGridViewAdapter extends BaseAdapter {
+public class FoodCalendarGridAdapter extends BaseAdapter {
 
     private Calendar calStartDate = Calendar.getInstance();// 当前显示的日历
     private Calendar calToday = Calendar.getInstance(); // 今日
     private int iMonthViewCurrentMonth = 0; // 当前视图月
+    FoodDBHelper foodDBHelper;
 
     // 根据改变的日期更新日历
     // 填充日历控件用
@@ -50,7 +53,9 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         calStartDate.add(Calendar.DAY_OF_MONTH, -1);// 周日第一位
 
     }
+
     ArrayList<Date> titles;
+
     public ArrayList<Date> getDates() {
 
         UpdateStartDateForMonth();
@@ -67,17 +72,19 @@ public class CalendarGridViewAdapter extends BaseAdapter {
 
     private Activity activity;
     Resources resources;
+
     // construct
-    public CalendarGridViewAdapter(Activity a, Calendar cal) {
-        calStartDate=cal;
+    public FoodCalendarGridAdapter(Activity a, Calendar cal) {
+        calStartDate = cal;
         activity = a;
-        resources=activity.getResources();
+        resources = activity.getResources();
         titles = getDates();
+        foodDBHelper = new FoodDBHelper(activity);
     }
 
-    public CalendarGridViewAdapter(Activity a) {
+    public FoodCalendarGridAdapter(Activity a) {
         activity = a;
-        resources=activity.getResources();
+        resources = activity.getResources();
     }
 
 
@@ -118,10 +125,14 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         txtToDay.setGravity(Gravity.CENTER_HORIZONTAL);
         txtToDay.setTextSize(9);
         txtToDay.setHeight(80);
+
+
         if (equalsDate(calToday.getTime(), myDate)) {
             // 当前日期
             iv.setBackgroundColor(resources.getColor(R.color.selection));
             txtToDay.setText("TODAY!");
+        } else if (foodDBHelper.getDateData(myDate.getDate() + "/" + (myDate.getMonth() + 1) + "/" + (myDate.getYear()+ 1900))) {
+            iv.setBackgroundColor(resources.getColor(R.color.forecast_point));
         }
         // 设置背景颜色结束
 
@@ -148,7 +159,6 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         iv.addView(txtToDay, lp1);
-
 
 
         return iv;

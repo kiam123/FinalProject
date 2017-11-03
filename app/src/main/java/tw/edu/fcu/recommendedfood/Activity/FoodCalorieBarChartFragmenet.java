@@ -1,10 +1,12 @@
 package tw.edu.fcu.recommendedfood.Activity;
 
 
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +19,21 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
-import tw.edu.fcu.recommendedfood.Adapter.FoodGraphSpinnerAdapter;
 import tw.edu.fcu.recommendedfood.R;
+import tw.edu.fcu.recommendedfood.Server.FoodDBHelper;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class FoodCalorieBarChartFragmenet extends Fragment {
     BarChart barChart;
+    ArrayList<String> xAxis = new ArrayList<String>();
+    ArrayList<IBarDataSet> dataSet = new ArrayList<IBarDataSet>();
+    ArrayList<BarEntry> valueSet1 = new ArrayList<BarEntry>();
+    FoodDBHelper foodDBHelper;
 
     public FoodCalorieBarChartFragmenet() {
         // Required empty public constructor
@@ -43,33 +51,74 @@ public class FoodCalorieBarChartFragmenet extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        initDatebase();
         initChart(view);
+    }
+
+    public void initDatebase() {
+        foodDBHelper = new FoodDBHelper(getActivity());
     }
 
     public void initChart(View rootView) {
         barChart = (BarChart) rootView.findViewById(R.id.bar_chart);
 
-        ArrayList<String> xAxis = new ArrayList<String>();
-        ArrayList<IBarDataSet> dataSet = new ArrayList<IBarDataSet>();
-        ArrayList<BarEntry> valueSet1 = new ArrayList<BarEntry>();
 
+        xAxis.add("禮拜日");
         xAxis.add("禮拜一");
         xAxis.add("禮拜二");
         xAxis.add("禮拜三");
         xAxis.add("禮拜四");
         xAxis.add("禮拜五");
         xAxis.add("禮拜六");
-        xAxis.add("禮拜日");
+        Calendar cal = Calendar.getInstance();
+        int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+        cal.setTime(new Date());
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH) + 1;
+        int day = cal.get(Calendar.DAY_OF_MONTH);
 
+//        if(dayOfWeek == 7)
+//            dayOfWeek -= 1;
+        Log.v("kkkk",dayOfWeek+"");
+        int tempMonth = 0;
+        for (int i = 1; i <= dayOfWeek; i++) {
+            Cursor res = null;
+            if (day <= 0) {
+                if (month - 1 < 1) {
+                    cal.set(Calendar.MONTH, year - 1);
+                    tempMonth = cal.get(Calendar.MONTH) + 1;
+                } else {
+                    cal.add(Calendar.MONTH, -1);
+                    tempMonth = cal.get(Calendar.MONTH) + 1;
+                    Log.v("month", tempMonth + "");
+                }
+                cal.set(Calendar.MONTH, 0);
+                day = cal.getActualMaximum(Calendar.DATE);
+                res = foodDBHelper.getAllData(day + "/" + tempMonth + "/" + year);
+                Log.v("tempMonth1", day + "/" + tempMonth + "/" + year);
+                day -= 1;
+            } else if (tempMonth == 0){
+//                Log.v("tempMonth123123", tempMonth + "");
+                res = foodDBHelper.getAllData((day) + "/" + month + "/" + year);
+                Log.v("tempMonth2", (day) + "/" + month + "/" + year);
+                day -= 1;
+            } else{
+                Log.v("tempMonth", tempMonth + "");
+                Log.v("tempMonth", day + "");
+                res = foodDBHelper.getAllData(day + "/" + tempMonth + "/" + year);
+                Log.v("tempMonth3", day + "/" + tempMonth + "/" + year);
+                day -= 1;
+            }
+            res.moveToFirst();
+            float temp = 0;
 
-        //TODO 需要做SQlite
-        valueSet1.add(new BarEntry(25, 0));
-        valueSet1.add(new BarEntry(20, 1));
-        valueSet1.add(new BarEntry(40, 2));
-        valueSet1.add(new BarEntry(0, 3));
-        valueSet1.add(new BarEntry(0, 4));
-        valueSet1.add(new BarEntry(0, 5));
-        valueSet1.add(new BarEntry(0, 6));
+            for (int j = 0; j < res.getCount(); j++) {
+                temp += Float.parseFloat(res.getString(4));
+                res.moveToNext();
+            }
+            Log.v("dayOfWeek", (dayOfWeek-i) + "");
+            valueSet1.add(new BarEntry(temp, dayOfWeek-i));
+        }
 
         BarDataSet barDataSet = new BarDataSet(valueSet1, "卡路里");
         barDataSet.setValueTextSize(14f);
@@ -86,4 +135,5 @@ public class FoodCalorieBarChartFragmenet extends Fragment {
         barChart.setData(barData);
         barChart.invalidate();
     }
+
 }

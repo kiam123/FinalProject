@@ -159,7 +159,7 @@ public class FoodCalendarFragment extends Fragment {
         } else {
             ft.show(fragment);
         }
-        ft.commit();
+        ft.commitAllowingStateLoss();
         /*---------------------------------------------↑需要用v4 lib------------------------------------------------------*/
     }
 

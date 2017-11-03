@@ -86,4 +86,5 @@ public class EditTextWidget extends AppCompatEditText {
     protected void finalize() throws Throwable {
         super.finalize();
     }
+
 }

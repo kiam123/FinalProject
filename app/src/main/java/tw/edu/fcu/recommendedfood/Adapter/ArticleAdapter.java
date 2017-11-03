@@ -7,9 +7,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 import tw.edu.fcu.recommendedfood.Data.ArticleData;
 import tw.edu.fcu.recommendedfood.R;
@@ -26,9 +30,13 @@ public class ArticleAdapter extends BaseAdapter {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public void addItem(ArticleData itemData){
+    public void addItem(ArticleData itemData, String type){
         itemDatas.add(itemData);
-        sort();
+        if("hot".equals(type)) {
+            sort();
+        }else{
+            sortDate();
+        }
         this.notifyDataSetChanged();
     }
 
@@ -78,6 +86,21 @@ public class ArticleAdapter extends BaseAdapter {
             @Override
             public int compare(ArticleData o1, ArticleData o2) {
                 return o2.getCount() - o1.getCount();
+            }
+        });
+    }
+
+    public void sortDate() {
+        Collections.sort(itemDatas, new Comparator<ArticleData>() {
+            DateFormat f = new SimpleDateFormat("yyyy/MM/dd");
+
+            @Override
+            public int compare(ArticleData o1, ArticleData o2) {
+                try {
+                    return f.parse(o2.articleBlogData.getDate()).compareTo(f.parse(o1.articleBlogData.getDate()));
+                } catch (ParseException e) {
+                    throw new IllegalArgumentException(e);
+                }
             }
         });
     }

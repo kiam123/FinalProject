@@ -7,13 +7,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,12 +45,16 @@ public class WaitingEatFragment extends Fragment {
     private List<WaitingEatData> waitingEatDatas;
 
     // 選單項目物件
+    private MenuItem add_item, search_item, revert_item, delete_item;
     private ImageView imgAddItem, imgSearchItem, imgRevertItem, imgDeleteItem;
 
     // 已選擇項目數量
     private int selectedCount = 0;
 
     private WaitingEatDBItem waitingEatDBItem;
+
+    Toolbar toolbar;
+    LinearLayout search;
 
     public WaitingEatFragment() {
     }
@@ -53,8 +64,15 @@ public class WaitingEatFragment extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_waiting_eat, container, false);
 
+        toolbar = (Toolbar) viewGroup.findViewById(R.id.fragment_toolbar);
+
+        setHasOptionsMenu(true);//fragment在需要使用這個method來讓onCreateOptionsMenu生效
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);//隱藏action bar title
+
+
         initViews(viewGroup);
-        initOptionsMenu(viewGroup);
+//        initOptionsMenu(viewGroup);
         initControllers();
         initAdapter();
         return viewGroup;
@@ -62,6 +80,7 @@ public class WaitingEatFragment extends Fragment {
 
     private void initViews(ViewGroup viewGroup) {
         listView = (ListView) viewGroup.findViewById(R.id.item_list);
+        search = (LinearLayout) viewGroup.findViewById(R.id.search);
     }
 
     public void initAdapter() {
@@ -156,7 +175,7 @@ public class WaitingEatFragment extends Fragment {
         // 註冊記事項目長按監聽物件
         listView.setOnItemLongClickListener(itemLongListener);
 
-         //建立長按監聽物件
+        //建立長按監聽物件
         View.OnLongClickListener listener = new View.OnLongClickListener() {
 
             @Override
@@ -171,8 +190,8 @@ public class WaitingEatFragment extends Fragment {
 
         };
 
-         //註冊長按監聽物件
-       //   showAppName.setOnLongClickListener(listener);
+        //註冊長按監聽物件
+        //   showAppName.setOnLongClickListener(listener);
     }
 
     // 處理是否顯示已選擇項目
@@ -190,115 +209,103 @@ public class WaitingEatFragment extends Fragment {
             }
         }
 
-        // 根據選擇的狀況，設定是否顯示選單項目
-        imgAddItem.setVisibility(selectedCount == 0 ? View.VISIBLE : View.GONE);
-        imgSearchItem.setVisibility(selectedCount == 0 ? View.VISIBLE : View.GONE);
-        imgRevertItem.setVisibility(selectedCount > 0 ? View.VISIBLE : View.GONE);
-        imgDeleteItem.setVisibility(selectedCount > 0 ? View.VISIBLE : View.GONE);
+        add_item.setVisible(selectedCount == 0);
+        search_item.setVisible(selectedCount == 0);
+        revert_item.setVisible(selectedCount > 0);
+        delete_item.setVisible(selectedCount > 0);
     }
 
-    // 載入選單資源
-    public void initOptionsMenu(ViewGroup viewGroup) {
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.waitting_eat_menu, menu);
+
         // 取得選單項目物件
-        imgAddItem = (ImageView) viewGroup.findViewById(R.id.img_add_item);
-        imgSearchItem = (ImageView) viewGroup.findViewById(R.id.img_search_item);
-        imgRevertItem = (ImageView) viewGroup.findViewById(R.id.img_revert_item);
-        imgDeleteItem = (ImageView) viewGroup.findViewById(R.id.img_delete_item);
-
-        imgAddItem.setOnClickListener(imgOnClickListener);
-        imgSearchItem.setOnClickListener(imgOnClickListener);
-        imgRevertItem.setOnClickListener(imgOnClickListener);
-        imgDeleteItem.setOnClickListener(imgOnClickListener);
-
+        add_item = menu.findItem(R.id.img_add_item);
+        search_item = menu.findItem(R.id.img_search_item);
+        revert_item = menu.findItem(R.id.img_revert_item);
+        delete_item = menu.findItem(R.id.img_delete_item);
+        delete_item = menu.findItem(R.id.img_delete_item);
         // 設定選單項目
         processMenu(null);
     }
 
-    public View.OnClickListener imgOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            // 使用參數取得使用者選擇的選單項目元件編號
-            int itemId = view.getId();
 
-            // 判斷該執行什麼工作，目前還沒有加入需要執行的工作
-            switch (itemId) {
-                case R.id.img_search_item:
-                    break;
-                // 使用者選擇新增選單項目
-                case R.id.img_add_item:
-                    // 使用Action名稱建立啟動另一個Activity元件需要的Intent物件
-                    Intent intent = new Intent("com.example.yan.die_eat.ADD_ITEM");
-                    // 呼叫「startActivityForResult」，，第二個參數「0」表示執行新增
-                    startActivityForResult(intent, 0);
-                    break;
-                // 取消所有已勾選的項目
-                case R.id.img_revert_item:
-                    for (int i = 0; i < waitingEatAdapter.getCount(); i++) {
-                        WaitingEatData ri = waitingEatAdapter.getItem(i);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // 使用參數取得使用者選擇的選單項目元件編號
+        int itemId = item.getItemId();
 
-                        if (ri.isSelected()) {
-                            ri.setSelected(false);
-                            waitingEatAdapter.set(i, ri);
-                        }
+        // 判斷該執行什麼工作，目前還沒有加入需要執行的工作
+        switch (itemId) {
+            case R.id.img_search_item:
+                Intent searchIntent = new Intent();
+                searchIntent.setClass(getActivity(), WaitingEatSearchActivity.class);
+                startActivity(searchIntent);
+                break;
+            // 使用者選擇新增選單項目
+            case R.id.img_add_item:
+                // 使用Action名稱建立啟動另一個Activity元件需要的Intent物件
+                Intent intent = new Intent("com.example.yan.die_eat.ADD_ITEM");
+                // 呼叫「startActivityForResult」，，第二個參數「0」表示執行新增
+                startActivityForResult(intent, 0);
+                break;
+            // 取消所有已勾選的項目
+            case R.id.img_revert_item:
+                for (int i = 0; i < waitingEatAdapter.getCount(); i++) {
+                    WaitingEatData ri = waitingEatAdapter.getItem(i);
+
+                    if (ri.isSelected()) {
+                        ri.setSelected(false);
+                        waitingEatAdapter.set(i, ri);
                     }
+                }
 
-                    selectedCount = 0;
-                    processMenu(null);
+                selectedCount = 0;
+                processMenu(null);
 
+                break;
+            // 刪除
+            case R.id.img_delete_item:
+                // 沒有選擇
+                if (selectedCount == 0) {
                     break;
-                // 刪除
-                case R.id.img_delete_item:
-                    // 沒有選擇
-                    if (selectedCount == 0) {
-                        break;
-                    }
+                }
 
-                    // 建立與顯示詢問是否刪除的對話框
-                    AlertDialog.Builder d = new AlertDialog.Builder(getActivity());
-                    String message = getString(R.string.delete_item);
-                    d.setTitle(R.string.delete)
-                            .setMessage(String.format(message, selectedCount));
-                    d.setPositiveButton(android.R.string.yes,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // 刪除所有已勾選的項目
-                                    int index = waitingEatAdapter.getCount() - 1;
+                // 建立與顯示詢問是否刪除的對話框
+                AlertDialog.Builder d = new AlertDialog.Builder(getActivity());
+                String message = getString(R.string.delete_item);
+                d.setTitle(R.string.delete)
+                        .setMessage(String.format(message, selectedCount));
+                d.setPositiveButton(android.R.string.yes,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // 刪除所有已勾選的項目
+                                int index = waitingEatAdapter.getCount() - 1;
 
-                                    while (index > -1) {
-                                        WaitingEatData item = waitingEatAdapter.get(index);
+                                while (index > -1) {
+                                    WaitingEatData item = waitingEatAdapter.get(index);
 
-                                        if (item.isSelected()) {
-                                            waitingEatAdapter.remove(item);
-                                            waitingEatDBItem.delete(item.getId());
-                                        }
-
-                                        index--;
+                                    if (item.isSelected()) {
+                                        waitingEatAdapter.remove(item);
+                                        waitingEatDBItem.delete(item.getId());
                                     }
 
-                                    // 通知資料改變
-                                    waitingEatAdapter.notifyDataSetChanged();
-
-                               //     processMenu(null);
+                                    index--;
                                 }
-                            });
-                    d.setNegativeButton(android.R.string.no, null);
-                    d.show();
 
-                    break;
-            }
+                                // 通知資料改變
+                                waitingEatAdapter.notifyDataSetChanged();
+
+                                //     processMenu(null);
+                            }
+                        });
+                d.setNegativeButton(android.R.string.no, null);
+                d.show();
+
+                break;
         }
-    };
-
-    // 點擊應用程式名稱元件後呼叫的方法
-    public void aboutApp(View view) {
-        // 建立啟動另一個Activity元件需要的Intent物件
-        // 建構式的第一個參數：「this」
-        // 建構式的第二個參數：「Activity元件類別名稱.class」
-        Intent intent = new Intent(getActivity(), WaitingEatAboutActivity.class);
-        // 呼叫「startActivity」，參數為一個建立好的Intent物件
-        // 這行敘述執行以後，如果沒有任何錯誤，就會啟動指定的元件
-        startActivity(intent);
+        return false;
     }
 
     public void onResume() {

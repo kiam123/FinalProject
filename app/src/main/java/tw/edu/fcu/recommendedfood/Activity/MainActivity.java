@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         titles.add("Five");
 
         viewPager = (CustomViewPager) this.findViewById(R.id.viewpager);
+
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
         viewPager.setAdapter(new SimpleFragmentPagerAdapter(getSupportFragmentManager(), fragmentArrayList, this));
         mTabLayout.setupWithViewPager(viewPager);
@@ -217,6 +218,10 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     public void onBackPressed() {
         super.onBackPressed();
         moveTaskToBack(true);//返回APP桌面上
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
     }
 }
 

@@ -1,207 +1,230 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_height="match_parent"
-    android:layout_width="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activity.RegisterActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/fragment_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="註冊系統"
+            android:textColor="#FFFFFF"
+            android:textSize="19dp" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:orientation="vertical">
-            <TextView
-                android:id="@+id/inputTAccount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="帳號:"
-                android:textSize="18sp"
-                />
-            <EditText
-                android:id="@+id/ERegAccount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <TextView
-            android:id="@+id/TwarningAccount"
-            android:textColor="@android:color/holo_red_light"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/inputTScode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="密碼:"
-                android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/ERegScode"
+            <LinearLayout
+                android:id="@+id/lnlayout_frame"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                />
-        </LinearLayout>
-        <TextView
-            android:id="@+id/TwarningCode"
-            android:textColor="@android:color/holo_red_light"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/inputTScodeAgain"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="再次輸入密碼:"
-                android:textSize="18sp" />
-            <EditText
-                android:id="@+id/ERegScodeAgain"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword" />
-        </LinearLayout>
-        <TextView
-            android:id="@+id/TwarningCodeAgain"
-            android:textColor="@android:color/holo_red_light"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/TRegName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="姓名:"
-                android:textSize="18sp" />
-            <EditText
-                android:id="@+id/ERegName"
-                android:maxLength="20"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <TextView
-            android:id="@+id/TwarningName"
-            android:textColor="@android:color/holo_red_light"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/TRegSex"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="性別(男/女):"
-                android:textSize="18sp" />
-            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <RadioButton android:id="@+id/radio_man"
-                    android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="男"
-                    android:onClick="onRadioButtonClicked"/>
-                <RadioButton android:id="@+id/radio_woman"
-                    android:layout_width="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:text="@string/account" />
+
+                <tw.edu.fcu.recommendedfood.Widget.EditTextWidget
+                    android:id="@+id/edt_account"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="女"
-                    android:onClick="onRadioButtonClicked"/>
-            </RadioGroup>
-        </LinearLayout>
+                    android:inputType="textMultiLine" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/TRegEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="email:"
-                android:textSize="18sp" />
-            <EditText
-                android:id="@+id/ERegEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress" />
-        </LinearLayout>
-        <TextView
-            android:id="@+id/TwarningEmail"
-            android:textColor="@android:color/holo_red_light"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/TRegAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="地址:"
-                android:textSize="18sp" />
-            <EditText
-                android:id="@+id/ERegAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
-        </LinearLayout>
-        <TextView
-            android:id="@+id/TwarningAddress"
-            android:textColor="@android:color/holo_red_light"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/TRegPhone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="電話:"
-                android:textSize="18sp" />
-            <EditText
-                android:id="@+id/ERegPhone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLength="9"
-                android:inputType="phone"
-                />
-        </LinearLayout>
-        <TextView
-            android:id="@+id/TwarningPhone"
-            android:textColor="@android:color/holo_red_light"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/txt_error_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/holo_red_light"
+                    android:textSize="15dp"
+                    android:visibility="gone" />
 
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:text="@string/password" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            >
+                <EditText
+                    android:id="@+id/edt_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPassword" />
+
+                <TextView
+                    android:id="@+id/txt_error_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textColor="@android:color/holo_red_light"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:text="@string/repeat_password" />
+
+                <EditText
+                    android:id="@+id/edt_repeat_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPassword" />
+
+                <TextView
+                    android:id="@+id/txt_error_repeat_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textColor="@android:color/holo_red_light"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:text="@string/name" />
+
+                <EditText
+                    android:id="@+id/edt_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="5dp">
+
+                    <RadioButton
+                        android:id="@+id/radio_man"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onRadioButtonClicked"
+                        android:checked="true"
+                        android:text="男" />
+
+                    <RadioButton
+                        android:id="@+id/radio_woman"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onRadioButtonClicked"
+                        android:text="女" />
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/txt_error_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textColor="@android:color/holo_red_light"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:text="@string/email" />
+
+                <EditText
+                    android:id="@+id/edt_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+
+                <TextView
+                    android:id="@+id/txt_error_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textColor="@android:color/holo_red_light"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:text="@string/phone" />
+
+                <EditText
+                    android:id="@+id/edt_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="phone" />
+
+                <TextView
+                    android:id="@+id/txt_error_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textColor="@android:color/holo_red_light"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:text="@string/address" />
+
+                <EditText
+                    android:id="@+id/edt_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:ems="10"
+                    android:inputType="textPostalAddress" />
+
+                <TextView
+                    android:id="@+id/txt_error_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textColor="@android:color/holo_red_light"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
             <Button
-                android:id="@+id/RegOK"
-                android:layout_width="100dp"
+                android:id="@+id/btn_submit"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="47dp"
-                android:text="確認"
-                />
-
+                android:onClick="submitButon"
+                android:text="@string/submit" />
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+
+</LinearLayout>

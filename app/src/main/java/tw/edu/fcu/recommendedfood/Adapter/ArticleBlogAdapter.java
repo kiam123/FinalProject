@@ -104,13 +104,13 @@ public class ArticleBlogAdapter extends BaseAdapter {
                 case LAYOUT_COMMENT:
                     convertView = layoutInflater.inflate(R.layout.layout_article_blog_adapter_comment, null);
                     commentViewHolder = new CommentViewHolder();
-                    commentViewHolder.txtAvatar = (TextView) convertView.findViewById(R.id.txt_avatar);
+//                    commentViewHolder.txtAvatar = (TextView) convertView.findViewById(R.id.txt_avatar);
                     commentViewHolder.txtAuthor = (TextView) convertView.findViewById(R.id.txt_author);
                     commentViewHolder.txtTime = (TextView) convertView.findViewById(R.id.txt_time);
                     commentViewHolder.txtHtmlContent = (TextView) convertView.findViewById(R.id.txt_html_content);
                     commentViewHolder.imageView = (ImageView) convertView.findViewById(R.id.imageView);
                     //TODO 還沒做完
-                    commentViewHolder.txtAvatar.setText(blogData.getAuthor());
+//                    commentViewHolder.txtAvatar.setText(blogData.getAuthor());
                     commentViewHolder.txtAuthor.setText(blogData.getAuthor());
                     commentViewHolder.txtTime.setText(blogData.getTime());
 
@@ -139,7 +139,7 @@ public class ArticleBlogAdapter extends BaseAdapter {
                 case LAYOUT_COMMENT:
                     commentViewHolder = (CommentViewHolder) convertView.getTag();
                     //TODO 還沒做完
-                    commentViewHolder.txtAvatar.setText(blogData.getAuthor());
+//                    commentViewHolder.txtAvatar.setText(blogData.getAuthor());
                     commentViewHolder.txtAuthor.setText(blogData.getAuthor());
                     commentViewHolder.txtTime.setText(blogData.getTime());
 

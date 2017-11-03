@@ -9,7 +9,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
@@ -34,6 +38,7 @@ public class ArticleCommandActivity extends AppCompatActivity {
     private String arr[];
     String title;
     String msg = "";
+    Toolbar fragment_toolbar;
 
     private static final int REQUEST_CODE_PICK_IMAGE = 1023;
     private static final int REQUEST_CODE_CAPTURE_CAMEIA = 1022;
@@ -59,9 +64,12 @@ public class ArticleCommandActivity extends AppCompatActivity {
     public void initView() {
         edtTitle = (EditText) findViewById(R.id.edt_title);
         edtMsg = (RichTextEditor) findViewById(R.id.edt_msg);
+        fragment_toolbar = (Toolbar)findViewById(R.id.fragment_toolbar);
+        setSupportActionBar(fragment_toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
-    public void imgDoneCommand(View view) {
+    public void btnDoneCommand(View view) {
         boolean succuss = false;
         String shortSentences = "";
         comments = new ArrayList<>();
@@ -230,5 +238,22 @@ public class ArticleCommandActivity extends AppCompatActivity {
 
     public void imgBackAtivity(View view) {
         finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.back_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.menuBack) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -87,7 +87,7 @@ import tw.edu.fcu.recommendedfood.Server.HttpRequest;
     public void getArticle() {
         httpCallPost = new HttpCall();
         httpCallPost.setMethodtype(HttpCall.POST);
-        httpCallPost.setUrl("http://140.134.26.31/recommended_food_db/article_connect_MySQL.php");//140.134.26.31
+        httpCallPost.setUrl("http://140.134.26.31/recommended_food_db/article_hot_MySQL.php");//140.134.26.31
 
         params.put("query_string", page+"");
         Log.v("page",""+page);
@@ -128,7 +128,7 @@ import tw.edu.fcu.recommendedfood.Server.HttpRequest;
                             tempArticleData.articleBlogData.setDate(date);
                             tempArticleData.articleBlogData.setAuthor(author);
                             tempArticleData.articleBlogData.setTime(time);
-                            articleAdapter.addItem(tempArticleData);
+                            articleAdapter.addItem(tempArticleData,"hot");
                         }
                         params.clear();
                     }

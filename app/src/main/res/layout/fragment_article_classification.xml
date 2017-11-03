@@ -41,10 +41,15 @@
         android:layout_marginRight="10dp"
         android:background="#DDDDDD" />
 
-    <FrameLayout
+    <!--<FrameLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id="@+id/classification_fragment">-->
+    <!--</FrameLayout>-->
+
+    <tw.edu.fcu.recommendedfood.Widget.ChildViewPager
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/classification_fragment">
-    </FrameLayout>
+        android:layout_height="match_parent" />
 
 </LinearLayout>

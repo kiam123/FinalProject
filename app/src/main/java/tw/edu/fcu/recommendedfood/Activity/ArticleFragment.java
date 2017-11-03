@@ -8,10 +8,14 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -32,10 +36,8 @@ import tw.edu.fcu.recommendedfood.R;
 public class ArticleFragment extends Fragment {
     private DrawerLayout drawerlayout;
     private NavigationView navigationview;
-    private ImageView imgToggle;
     private boolean openDrawerLayout = false;//侧滑菜单是否打开的标识
     private ImageView imgSearch;
-    private ImageView imgCommand;
     private ArrayList fragmentArrayList;
     private Fragment mCurrentFrgment;
     private int currentIndex = 0;
@@ -45,6 +47,7 @@ public class ArticleFragment extends Fragment {
     public static final String PAGE_NUMBER = "PAGENUMBER";
     private String classification[] = {"全部", "中式", "港式", "西式", "南洋", "韓式", "日式",
             "飲料", "點心", "速食", "食譜", "燒烤"};
+    Toolbar toolbar;
 
     public ArticleFragment() {
     }
@@ -60,6 +63,7 @@ public class ArticleFragment extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_article, container, false);
         initView(viewGroup);
+        initActionBar(viewGroup);
         initClassificationAdapter();
 
         return viewGroup;
@@ -67,8 +71,6 @@ public class ArticleFragment extends Fragment {
 
     //初始化view
     public void initView(ViewGroup viewGroup) {
-        imgToggle = (ImageView) viewGroup.findViewById(R.id.img_toggle);
-        imgCommand = (ImageView) viewGroup.findViewById(R.id.img_command);
         drawerlayout = ((DrawerLayout) viewGroup.findViewById(R.id.drawerlayout));//侧滑的根布局
         navigationview = ((NavigationView) viewGroup.findViewById(R.id.navigationview));//侧滑菜单布局
         imgSearch = (ImageView) viewGroup.findViewById(R.id.img_search);
@@ -77,10 +79,31 @@ public class ArticleFragment extends Fragment {
 
         drawerlayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);//函数来关闭手势滑动
         drawerlayout.addDrawerListener(drawerlayoutListerner);
-        imgToggle.setOnClickListener(btnToggleListener);
         imgSearch.setOnClickListener(imgSearchOnClickListener);
-        imgCommand.setOnClickListener(imgCommandOnClickListener);
     }
+
+    public void initActionBar(View view) {
+        toolbar = (Toolbar) view.findViewById(R.id.fragment_toolbar);
+
+        setHasOptionsMenu(true);//fragment在需要使用這個method來讓onCreateOptionsMenu生效
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);//隱藏action bar title
+        toolbar.setNavigationIcon(R.drawable.ic_list_white_36dp);
+        toolbar.setNavigationOnClickListener(toggleOnClickListener);
+
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);//設定back key
+    }
+
+    private View.OnClickListener toggleOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (openDrawerLayout) {//如果是打开的,就关闭侧滑菜单
+                drawerlayout.closeDrawers();
+            } else {
+                drawerlayout.openDrawer(Gravity.LEFT);//布局中设置从左边打开,这里也要设置为左边打开
+            }
+        }
+    };
 
     public void initClassificationAdapter() {
         articleClassificationAdapter = new ArticleClassificationAdapter(getActivity());
@@ -224,17 +247,6 @@ public class ArticleFragment extends Fragment {
         }
     };
 
-    private View.OnClickListener btnToggleListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if (openDrawerLayout) {//如果是打开的,就关闭侧滑菜单
-                drawerlayout.closeDrawers();
-            } else {
-                drawerlayout.openDrawer(Gravity.LEFT);//布局中设置从左边打开,这里也要设置为左边打开
-            }
-        }
-    };
-
     private View.OnClickListener imgSearchOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -244,13 +256,21 @@ public class ArticleFragment extends Fragment {
         }
     };
 
-    private View.OnClickListener imgCommandOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.menuEdit) {
             Intent intent = new Intent();
             intent.setClass(getActivity(), ArticleCommandActivity.class);
             startActivity(intent);
+            return true;
         }
-    };
-
+        return super.onOptionsItemSelected(item);
+    }
 }

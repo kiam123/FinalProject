@@ -41,4 +41,21 @@
     <string name="version">版本：AndroidTutorial_0.2.4</string>
     <string name="delete">刪除</string>
     <string name="delete_item">確定要刪除 %1$d 個項目？</string>
+
+
+    <!--註冊與登入-->
+    <string name="account">賬號</string>
+    <string name="password">密碼</string>
+    <string name="repeat_password">再輸入一次密碼</string>
+    <string name="name">名字</string>
+    <string name="email">郵件</string>
+    <string name="phone">電話</string>
+    <string name="address">地址</string>
+    <string name="record_password">記住密碼</string>
+    <string name="login">登入</string>
+    <string name="register">註冊</string>
+    <string name="register_account">註冊賬號</string>
+    <string name="submit">送出</string>
+    <string name="forget">忘記密碼</string>
+    <string name="getpassword">找回密碼</string>
 </resources>

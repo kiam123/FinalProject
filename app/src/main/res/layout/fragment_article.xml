@@ -9,30 +9,16 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/fragment_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:orientation="horizontal"
-            android:background="@color/colorPrimary">
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/img_toggle"
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="25dp"
-                    android:src="@drawable/ic_list_white_18dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.4"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -40,26 +26,10 @@
                     android:id="@+id/img_search"
                     android:layout_width="170dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/search"/>
-
+                    android:src="@drawable/search" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/img_command"
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="25dp"
-                    android:src="@drawable/ic_create_white_18dp" />
-            </LinearLayout>
-
-        </LinearLayout>
+        </android.support.v7.widget.Toolbar>
 
         <android.support.v4.widget.DrawerLayout
             android:id="@+id/drawerlayout"
@@ -68,10 +38,9 @@
 
             <!--<include layout="@layout/layout_article" />-->
             <FrameLayout
+                android:id="@+id/fragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/fragment">
-            </FrameLayout>
+                android:layout_height="match_parent"></FrameLayout>
 
             <android.support.design.widget.NavigationView
                 android:id="@+id/navigationview"
@@ -88,7 +57,6 @@
 
         </android.support.v4.widget.DrawerLayout>
     </LinearLayout>
-
 
 
 </FrameLayout>

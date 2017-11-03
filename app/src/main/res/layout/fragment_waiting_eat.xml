@@ -6,54 +6,63 @@
     android:orientation="vertical"
     tools:context="tw.edu.fcu.recommendedfood.Activity.WaitingEatFragment">
 
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/fragment_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:orientation="horizontal"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
-        android:gravity="center_vertical|end">
+        android:elevation="4dp"
+        android:gravity="center">
 
-        <ImageView
-            android:id="@+id/img_search_item"
-            android:layout_width="45dp"
+        <LinearLayout
+            android:id="@+id/search"
+            android:layout_width="290dp"
             android:layout_height="match_parent"
-            android:padding="5dp"
-            app:srcCompat="@android:drawable/ic_menu_search" />
+            android:layout_weight="1.2"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
-        <ImageView
-            android:id="@+id/img_add_item"
-            android:layout_width="45dp"
-            android:layout_height="match_parent"
-            android:padding="5dp"
-            app:srcCompat="@android:drawable/ic_menu_add" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="#ffffff">
 
-        <ImageView
-            android:id="@+id/img_revert_item"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="5dp"
-            android:visibility="gone"
-            app:srcCompat="@android:drawable/ic_menu_revert" />
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_width="25dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="5dp"
+                    android:src="@drawable/ic_search_black_24dp" />
 
-        <ImageView
-            android:id="@+id/img_delete_item"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="5dp"
-            android:visibility="gone"
-            app:srcCompat="@android:drawable/ic_menu_delete" />
+                <tw.edu.fcu.recommendedfood.Widget.EditTextWidget
+                    android:id="@+id/et_search_food"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_margin="2dp"
+                    android:layout_toRightOf="@+id/img"
+                    android:background="#ffffff"
+                    android:hint="搜尋筆記" />
 
-    </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+    </android.support.v7.widget.Toolbar>
 
     <ListView
         android:id="@+id/item_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.27"
         android:layout_margin="@dimen/default_margin"
-        android:dividerHeight="1sp"
+        android:layout_weight="1.27"
         android:background="@drawable/rectangle_drawable"
-        android:divider="@color/divider_color" />
+        android:divider="@color/divider_color"
+        android:dividerHeight="1sp" />
 
     <!-- 加入「android:id="@+id/名稱"」的設定 -->
     <!-- <TextView

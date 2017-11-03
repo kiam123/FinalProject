@@ -11,15 +11,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.Date;
 
 import tw.edu.fcu.recommendedfood.Data.WaitingEatColors;
 import tw.edu.fcu.recommendedfood.Data.WaitingEatData;
 import tw.edu.fcu.recommendedfood.R;
-import tw.edu.fcu.recommendedfood.Server.WaitingEatDBHelper;
 
 public class WaitingEatAddtoListActivity extends AppCompatActivity {
 
@@ -32,13 +33,34 @@ public class WaitingEatAddtoListActivity extends AppCompatActivity {
 
     // 記事物件
     private WaitingEatData waitingEatData;
+    Toolbar fragmentToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting_eat_item);
-        processViews();
+        initView();
+        setIntent();
+    }
 
+    private void initView() {
+        fragmentToolbar = (Toolbar) findViewById(R.id.fragment_toolbar);
+        edtTitleText = (EditText) findViewById(R.id.edt_title_text);
+        edtContentText = (EditText) findViewById(R.id.edt_content_text);
+
+        setSupportActionBar(fragmentToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        fragmentToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    public void setIntent(){
         // 取得Intent物件
         Intent intent = getIntent();
         // 讀取Action名稱
@@ -49,6 +71,7 @@ public class WaitingEatAddtoListActivity extends AppCompatActivity {
             // 接收記事物件與設定標題、內容
             waitingEatData = (WaitingEatData) intent.getExtras().getSerializable(
                     "com.example.yan.die_eat.WaitingEatData");
+
             edtTitleText.setText(waitingEatData.getTitle());
             edtContentText.setText(waitingEatData.getContent());
         }
@@ -82,7 +105,7 @@ public class WaitingEatAddtoListActivity extends AppCompatActivity {
         }
     }
 
-    public static  WaitingEatColors getColors(int color) {
+    public static WaitingEatColors getColors(int color) {
         WaitingEatColors result = WaitingEatColors.LIGHTGREY;
 
         if (color == WaitingEatColors.BLUE.parseColor()) {
@@ -104,11 +127,6 @@ public class WaitingEatAddtoListActivity extends AppCompatActivity {
         return result;
     }
 
-    private void processViews() {
-        edtTitleText = (EditText) findViewById(R.id.edt_title_text);
-        edtContentText = (EditText) findViewById(R.id.edt_content_text);
-    }
-
     // 點擊確定與取消按鈕都會呼叫這個方法
     public void onSubmit(View view) {
         // 確定按鈕
@@ -116,6 +134,11 @@ public class WaitingEatAddtoListActivity extends AppCompatActivity {
             // 讀取使用者輸入的標題與內容
             String titleText = edtTitleText.getText().toString();
             String contentText = edtContentText.getText().toString();
+
+            if(titleText.trim().equals("")) {
+                Toast.makeText(this,"標題無法為空",Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             // 設定記事物件的標題與內容
             waitingEatData.setTitle(titleText);
@@ -146,24 +169,11 @@ public class WaitingEatAddtoListActivity extends AppCompatActivity {
         int id = view.getId();
 
         switch (id) {
-            case R.id.set_location:
-                break;
-            case R.id.set_alarm:
-                break;
             case R.id.select_color:
                 // 啟動設定顏色的Activity元件
                 startActivityForResult(
                         new Intent(this, WaitingEatColorActivity.class), START_COLOR);
                 break;
         }
-
     }
-
-    public void imgBack(View view){
-        finish();
-    }
-    //@Override
-   // protected void onResume() {
-     //   super.onResume();
-    //}
 }

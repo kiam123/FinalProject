@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="tw.edu.fcu.recommendedfood.Activity.WaitingEatSearchActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/fragment_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:elevation="4dp">
+
+        <LinearLayout
+            android:layout_width="290dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="#ffffff">
+
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_width="25dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="5dp"
+                    android:src="@drawable/ic_search_black_24dp" />
+
+                <tw.edu.fcu.recommendedfood.Widget.EditTextWidget
+                    android:id="@+id/et_search_food"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_margin="2dp"
+                    android:layout_toRightOf="@+id/img"
+                    android:background="#ffffff"
+                    android:hint="搜尋筆記" />
+
+            </RelativeLayout>
+        </LinearLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <ListView
+        android:id="@+id/item_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/default_margin"
+        android:layout_weight="1.27"
+        android:background="@drawable/rectangle_drawable"
+        android:divider="@color/divider_color"
+        android:dividerHeight="1sp" />
+
+</LinearLayout>

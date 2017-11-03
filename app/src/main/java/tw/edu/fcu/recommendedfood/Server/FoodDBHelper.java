@@ -18,13 +18,12 @@ public class FoodDBHelper extends SQLiteOpenHelper implements Serializable {
     public static final String DATABASE_NAME = "food.db";
     public static final String TABLE_NAME = "food_table";
     public static final String COL_1 = "ID";
-    public static final String COL_2 = "FOODNAME";
-    public static final String COL_3 = "SHOPNAME";
+    public static final String COL_2 = "SHOPNAME";
+    public static final String COL_3 = "FOODNAME";
     public static final String COL_4 = "PRICE";
     public static final String COL_5 = "CALORIES";
-    public static final String COL_6 = "DATE";
-    public static final String COL_7 = "QUANTITY";
-    public static final String COL_8 = "TIME";
+    public static final String COL_6 = "QUANTITY";
+    public static final String COL_7 = "DATE";
 
     public FoodDBHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -39,8 +38,7 @@ public class FoodDBHelper extends SQLiteOpenHelper implements Serializable {
                 COL_4 + " VARCHAR(50), " +
                 COL_5 + " VARCHAR(50), " +
                 COL_6 + " VARCHAR(50), " +
-                COL_7 + " VARCHAR(50), " +
-                COL_8 + " VARCHAR(50)  " +
+                COL_7 + " VARCHAR(50)  " +
                 ");";
         db.execSQL(SQL);
         /* db.execSQL("create table " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT,FOODNAME TEXT,CALORIES INTEGER)");*/
@@ -52,17 +50,16 @@ public class FoodDBHelper extends SQLiteOpenHelper implements Serializable {
         onCreate(db);
     }
 
-    public boolean insertData(String food_name, String shopName, String price,
-                              String calories, String date, String quantity, String time) {  //加入資料
+    public boolean insertData(String shopName, String foodName, String price,
+                              String calories, String quantity, String date) {  //加入資料
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_2, food_name);
-        contentValues.put(COL_3, shopName);
+        contentValues.put(COL_2, shopName);
+        contentValues.put(COL_3, foodName);
         contentValues.put(COL_4, price);
         contentValues.put(COL_5, calories);
-        contentValues.put(COL_6, date);
-        contentValues.put(COL_7, quantity);
-        contentValues.put(COL_8, time);
+        contentValues.put(COL_6, quantity);
+        contentValues.put(COL_7, date);
         long result = db.insert(TABLE_NAME, null, contentValues);
         if (result == -1)
             return false;
@@ -70,58 +67,59 @@ public class FoodDBHelper extends SQLiteOpenHelper implements Serializable {
             return true;
     }
 
-    public Cursor getAllData() {//取得所有資料，可利用他修改或刪除資料
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("select * from " + TABLE_NAME, null);
-
-        return res;
-    }
-
-    public Cursor getDayInfo(String date, String time) {//取得當天的資料
-        SQLiteDatabase db = this.getWritableDatabase();
-        //記得''這個可能會影響sqlite
-        Cursor res = db.rawQuery("select * from " + TABLE_NAME +
-                " where " + COL_6 + " = '" + date + "' and " +
-                COL_8 + " = '" + time + "'", null);//如果找不到就回傳null
-
-        return res;
-    }
-
-    public String getId(String food_name, String date, String time) {//取得當天的資料
-        SQLiteDatabase db = this.getWritableDatabase();
-        String id = "";
-        Cursor res = db.rawQuery("select * from " + TABLE_NAME +
-                " where " + COL_2 + " = '" + food_name + "' and " +
-                COL_6 + " = '" + date + "' and " +
-                COL_8 + " = '" + time + "'", null);//如果找不到就回傳null
-
-        res.moveToFirst();
-        id = res.getString(0);
-        res.close();
-        return id;
-    }
-
-    public boolean getDaySameInfo(String food_name, String date, String time) {//取得是否是當天的資料
+    public boolean isDataExist(String shopName, String foodName, String date) {
         SQLiteDatabase db = this.getWritableDatabase();
         boolean flag;
         Cursor res = db.rawQuery("select * from " + TABLE_NAME +
-                " where " + COL_2 + " = '" + food_name + "' and " +
-                COL_6 + " = '" + date + "' and " +
-                COL_8 + " = '" + time + "'", null);//如果找不到就回傳null
+                " where " + COL_2 + " = '" + shopName + "' and " +
+                COL_3 + " = '" + foodName + "' and " +
+                COL_7 + " = '" + date + "'", null);//如果找不到就回傳null
         flag = res.getCount() == 0 ? true : false;
         res.close();
 
         return flag;
     }
 
-    public boolean updateData(String id, String food_name, String date, String quantity) { //修改資料
+    public boolean isDataExist(String shopName, String foodName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        boolean flag;
+        Cursor res = db.rawQuery("select * from " + TABLE_NAME +
+                " where " + COL_2 + " = '" + shopName + "' and " +
+                COL_3 + " = '" + foodName + "'", null);//如果找不到就回傳null
+        flag = res.getCount() == 0 ? true : false;
+        res.close();
+
+        return flag;
+    }
+
+    public boolean getDateData(String date) {//取得所有資料，可利用他修改或刪除資料
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from " + TABLE_NAME +
+                " where " + COL_7 + " = '" + date + "'", null);
+
+        return res.getCount()>0;
+    }
+
+    public Cursor getAllData(String date) {//取得所有資料
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from " + TABLE_NAME +
+                " where " + COL_7 + " = '" + date + "'", null);
+
+        return res;
+    }
+
+    public Cursor getData(String id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from " + TABLE_NAME +
+                " where " + COL_1 + " = '" + id + "'", null);
+
+        return res;
+    }
+
+    public boolean updateData(String id, String quantity) { //修改資料
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_2, food_name);
-        //contentValues.put(COL_5, calories);
-        contentValues.put(COL_6, date);
-        contentValues.put(COL_7, quantity);
-        Log.v("msgData", id + " " + food_name + " " + date + " " + quantity);
+        contentValues.put(COL_6, quantity);
         db.update(TABLE_NAME, contentValues, "ID = " + id, null);
 
         return true;

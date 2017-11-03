@@ -36,4 +36,7 @@
 
 	<color name="f_light_blue">#5a9aa8</color>
 	<color name="f_default_textColor">#6d6e76</color>
+
+	<color name="super_light_grey">#FAFAFA</color>
+	<color name="light_grey">#D7D7D7</color>
 </resources>

@@ -5,13 +5,15 @@ package tw.edu.fcu.recommendedfood.Data;
  */
 
 public class FoodDetailData {
+    String id;
     String shopName;
     String food;
     String price;
     String calorie;
     String quantity;
 
-    public FoodDetailData(String shopName, String food, String price, String calorie, String quantity) {
+    public FoodDetailData(String id, String shopName, String food, String price, String calorie, String quantity) {
+        this.id = id;
         this.shopName = shopName;
         this.food = food;
         this.price = price;
@@ -19,23 +21,59 @@ public class FoodDetailData {
         this.quantity = quantity;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public String getShopNameTostring() {
+        return "店名：" + shopName;
+    }
+
+    public String getFoodTostring() {
+        return "食物：" + food;
+    }
+
+    public String getPriceTostring() {
+        return "價錢：" + price;
+    }
+
+    public String getCalorieTostring() {
+        return "卡路里：" + calorie;
+    }
+
+    public String getQuantityTostring() {
+        return "數量：" + quantity;
+    }
+
     public String getShopName() {
-        return "店名："+shopName;
+        return shopName;
     }
 
     public String getFood() {
-        return "食物："+food;
+        return food;
     }
 
     public String getPrice() {
-        return "價錢："+price;
+        return price;
     }
 
     public String getCalorie() {
-        return "卡路里："+calorie;
+        return calorie;
     }
 
     public String getQuantity() {
-        return "數量："+quantity;
+        return quantity;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public void setCalorie(String calorie) {
+        this.calorie = calorie;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
     }
 }

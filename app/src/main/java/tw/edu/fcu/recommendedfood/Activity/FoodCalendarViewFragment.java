@@ -3,9 +3,10 @@ package tw.edu.fcu.recommendedfood.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,8 +23,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import tw.edu.fcu.recommendedfood.Adapter.CalendarGridViewAdapter;
+import tw.edu.fcu.recommendedfood.Adapter.FoodCalendarGridAdapter;
 import tw.edu.fcu.recommendedfood.R;
+import tw.edu.fcu.recommendedfood.Server.FoodDBHelper;
 import tw.edu.fcu.recommendedfood.Utils.Utils;
 
 public class FoodCalendarViewFragment extends Fragment {
@@ -34,9 +36,11 @@ public class FoodCalendarViewFragment extends Fragment {
 
     private Calendar mCalendar;
 
-    private CalendarGridViewAdapter calendarGridViewAdapter;
+    private FoodCalendarGridAdapter foodCalendarGridAdapter;
 
     String month;
+
+    FoodDBHelper foodDBHelper;
 
     public static Fragment create(int pageNumber) {
         FoodCalendarViewFragment fragment = new FoodCalendarViewFragment();
@@ -54,8 +58,9 @@ public class FoodCalendarViewFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mPageNumber = getArguments().getInt(ARG_PAGE);
         mCalendar = Utils.getSelectCalendar(mPageNumber);
-        calendarGridViewAdapter = new CalendarGridViewAdapter(getActivity(),
+        foodCalendarGridAdapter = new FoodCalendarGridAdapter(getActivity(),
                 mCalendar);
+        foodDBHelper = new FoodDBHelper(getActivity());
     }
 
     @Override
@@ -69,21 +74,23 @@ public class FoodCalendarViewFragment extends Fragment {
         initGridView(titleGridView, titleAdapter);
 
         GridView calendarView = (GridView) rootView.findViewById(R.id.calendarView);
-        initGridView(calendarView, calendarGridViewAdapter);
+        initGridView(calendarView, foodCalendarGridAdapter);
         calendarView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                for (int i = 0; i < parent.getCount(); i++) {
-                        parent.getChildAt(i).setBackgroundColor(
-                                Color.TRANSPARENT);
-                }
-                view.setBackgroundColor(getActivity().getResources().getColor(
-                        R.color.selection));
-
-                Date date = (Date) calendarGridViewAdapter.getItem(position);
+                Date date = (Date) foodCalendarGridAdapter.getItem(position);
                 SimpleDateFormat df = new SimpleDateFormat("yyyy");
                 df.format(date);
+
+                for (int i = 0; i < parent.getCount(); i++) {
+                    if(!(foodDBHelper.getDateData(date.getDate()+"/"+(date.getMonth()+1)+"/"+df.format(date)))) {
+                        parent.getChildAt(i).setBackgroundColor(
+                                Color.TRANSPARENT);
+                    }
+                }
+//                view.setBackgroundColor(getActivity().getResources().getColor(
+//                        R.color.selection));
 
                 Intent intent = new Intent();
                 intent.putExtra("DATE",date.getDate()+"/"+(date.getMonth()+1)+"/"+df.format(date));
@@ -165,5 +172,11 @@ public class FoodCalendarViewFragment extends Fragment {
             linearLayout.addView(txtDay, layoutParams);
             return linearLayout;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        foodCalendarGridAdapter.notifyDataSetChanged();
     }
 }

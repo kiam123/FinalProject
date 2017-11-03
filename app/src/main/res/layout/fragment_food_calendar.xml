@@ -5,11 +5,14 @@
     android:orientation="vertical"
     tools:context="tw.edu.fcu.recommendedfood.Activity.FoodCalendarFragment">
 
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/fragment_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
-        android:orientation="horizontal"></LinearLayout>
+        android:elevation="4dp">
+
+    </android.support.v7.widget.Toolbar>
 
 
     <tw.edu.fcu.recommendedfood.Widget.VerticalScrollView

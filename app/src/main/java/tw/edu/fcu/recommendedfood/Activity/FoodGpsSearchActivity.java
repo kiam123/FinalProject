@@ -1,72 +1,66 @@
 package tw.edu.fcu.recommendedfood.Activity;
 
+import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.text.DateFormat;
-import java.util.Date;
+import org.json.JSONArray;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import tw.edu.fcu.recommendedfood.Data.OnLocationChangeListener;
 import tw.edu.fcu.recommendedfood.R;
+import tw.edu.fcu.recommendedfood.Server.HttpCall;
+import tw.edu.fcu.recommendedfood.Server.HttpRequest;
+import tw.edu.fcu.recommendedfood.Server.LocationService;
 
-public class FoodGpsSearchActivity extends FragmentActivity implements OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+public class FoodGpsSearchActivity extends FragmentActivity implements OnMapReadyCallback, OnLocationChangeListener/*,GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener*/ {
     private GoogleMap mMap;
-
-    protected static final String TAG = "Service-location";
-    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
-    public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
-            UPDATE_INTERVAL_IN_MILLISECONDS / 2;
-    protected GoogleApiClient mGoogleApiClient;
-    protected LocationRequest mLocationRequest;
-    protected Location mCurrentLocation;
-    protected String mLastUpdateTime;
-    protected Boolean mRequestingLocationUpdates;
-    protected ServiceLocationListener serviceLocationListener;
-
-    LatLng currentPosition;
-
-
-    protected class ServiceLocationListener implements LocationListener {
-        @Override
-        public void onLocationChanged(Location location) {
-            mCurrentLocation = location;
-            mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-            onLocationChange(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude());
-            Log.d(TAG, String.valueOf(mCurrentLocation.getLatitude()) + ", " + String.valueOf(mCurrentLocation.getLongitude()));
-
-        }
-    } // LocationListener class end
-
+    public static Broadcast broadcast;
+    public static final String Map_ACTION = "Map_ACTION";
+    private HttpCall httpCallPost;
+    private HashMap<String, String> params = new HashMap<String, String>();
+    HashMap<String, String> hashShopDetail = new HashMap<>();
+    ArrayList<LatLng> myLocation = new ArrayList<>();
+    boolean isFirst = true;
+    String date="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_gps_search);
 
-        buildGoogleApiClient();
-        mRequestingLocationUpdates = false;
+        initNework();
         initView();
+        initBroadcastReceiver();
+        Intent intent = new Intent(FoodGpsSearchActivity.this, LocationService.class);
+        startService(intent);
     }
 
-    public void initView(){
+    public void initNework() {
+        httpCallPost = new HttpCall();
+        httpCallPost.setMethodtype(HttpCall.POST);
+        httpCallPost.setUrl("http://140.134.26.31/recommended_food_db/food_connect_MySQL.php");
+    }
+
+    public void initView() {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -75,97 +69,147 @@ public class FoodGpsSearchActivity extends FragmentActivity implements OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        enableMyLocation();
+        setMapAction();
     }
 
-    public void onLocationChange(final double latitude,final double longitude){
-        currentPosition = new LatLng(latitude, longitude);
-        MarkerOptions markerOptions = new MarkerOptions()
-                .position(currentPosition)
-                .title("起始位置")
-                .snippet("frist location")
-                .draggable(true);
-
-        mMap.addMarker(markerOptions);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 18));
+    private void enableMyLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+        } else if (mMap != null) {
+            // Access to the location has been granted to the app.
+            mMap.setMyLocationEnabled(true);
+        }
     }
 
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        if (mCurrentLocation == null) {
-            if (ActivityCompat.checkSelfPermission(this,
-                    android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(this,
-                            android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+    public void setMapAction() {
+        mMap.getUiSettings().setZoomControlsEnabled(true);//enable zoom controls
+        mMap.getUiSettings().setAllGesturesEnabled(true);//enable all gestures
+        mMap.getUiSettings().setScrollGesturesEnabled(true);
+        mMap.getUiSettings().setMapToolbarEnabled(true);
+        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
 
-                return;
+                return false;
             }
-            mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+        });
+    }
+
+    public void initBroadcastReceiver() {
+        broadcast = new Broadcast(this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Map_ACTION);
+        registerReceiver(broadcast, intentFilter);
+    }
+
+    @Override
+    public void getLocation(LatLng latLng) {
+        Log.v("abc", latLng.latitude + "," + latLng.longitude);
+        myLocation.add(latLng);
+
+        postServer();
+    }
+
+
+    public void postServer() {
+        params.clear();
+        params.put("query_string", "6 " + myLocation.get(0).latitude + "," + myLocation.get(0).longitude);
+        httpCallPost.setParams(params);
+        new HttpRequest() {
+            @Override
+            public void onResponse(String response) {
+                super.onResponse(response);
+                try {
+                    Log.v("abc", response);
+                    mMap.clear();
+                    addMapMarker(myLocation.get(0), "目前位置", myLocation.get(0) + "");
+                    if(isFirst) {
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation.get(0), 18));
+                        isFirst = false;
+                    }
+                    JSONArray jsonArray = new JSONArray(response);
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        String shopName = jsonArray.getJSONObject(i).getString("shop_name");
+                        String food[] = jsonArray.getJSONObject(i).getString("food").split(",");
+                        String latlng[] = jsonArray.getJSONObject(i).getString("latlng").split(",");
+                        LatLng location = new LatLng(Double.parseDouble(latlng[0]), Double.parseDouble(latlng[1]));
+                        addMapMarker(location, shopName, location + "");
+                        for (int j = 0; j < food.length; j++) {
+                            Log.v("lat",shopName+"  "+latlng[0] + "," +latlng[1]+"");
+
+                            hashShopDetail.put(latlng[0] + "," +latlng[1], food[j]);
+                        }
+                    }
+
+                } catch (Exception e) {
+                }
+            }
+        }.execute(httpCallPost);
+    }
+
+    public void addMapMarker(LatLng latLng, String title, String snipper) {
+        MarkerOptions options = new MarkerOptions(); // 建立標記選項的實例
+        options.position(latLng);// 標記經緯度
+        options.title(title); // Info-Window標題
+        options.snippet(snipper); // Info-Window標記摘要
+        options.anchor(0.5f, 1.0f); // 錨點
+        options.draggable(false); // 是否可以拖曳標記?
+        mMap.addMarker(options);
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                String latlngPosition = marker.getPosition().toString();
+                latlngPosition = latlngPosition.substring(10, latlngPosition.length() - 1);
+
+                if (hashShopDetail.get(latlngPosition) != null) {
+                    Intent intent = new Intent();
+                    intent.putExtra("SHOP",latlngPosition);
+                    intent.putExtra("DATE",date);
+
+                    intent.setClass(FoodGpsSearchActivity.this, FoodGpsDialogShopActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
+    }
+
+
+    public static class Broadcast extends BroadcastReceiver {
+        OnLocationChangeListener onLocationChangeListener;
+
+        public Broadcast() {
         }
 
-        if (mRequestingLocationUpdates) {
-            startLocationUpdates();
+        public Broadcast(OnLocationChangeListener onLocationChangeListener) {
+            this.onLocationChangeListener = onLocationChangeListener;
         }
-    }
 
-    @Override
-    public void onConnectionSuspended(int i) {
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        serviceLocationListener = new ServiceLocationListener();
-        mGoogleApiClient.connect();
-        if (!mRequestingLocationUpdates) {
-            mRequestingLocationUpdates = true;
-            if (!mGoogleApiClient.isConnected()) {
-                mGoogleApiClient.connect();
-            } else {
-                startLocationUpdates();
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Map_ACTION)) {
+                double lat, lng;
+                lat = intent.getDoubleExtra("LAT", 0);
+                lng = intent.getDoubleExtra("LNG", 0);
+                onLocationChangeListener.getLocation(new LatLng(lat, lng));
             }
         }
     }
 
-    protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-        createLocationRequest();
-    }
-
-    protected void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
-        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-    }
-
-    protected void startLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(
-                        this,
-                        android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            return;
-        }
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient, mLocationRequest, serviceLocationListener);
-    }
-
     @Override
-    public void onDestroy() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, serviceLocationListener);
-        Log.d(TAG, "onDestroy");
+    protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(broadcast);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent intent = getIntent();
+        date = intent.getStringExtra("DATE");
+        Log.v("DATE",date);
     }
 }

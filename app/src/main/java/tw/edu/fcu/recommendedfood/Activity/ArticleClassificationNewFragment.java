@@ -30,6 +30,7 @@ public class ArticleClassificationNewFragment extends Fragment {
     ArticleAdapter articleAdapter;
     ListView listView;
     HashMap<String, String> params = new HashMap<String, String>();
+    static final String ARTICLEDATA = "ARTICLEDATA";
     HttpCall httpCallPost;
     int page;
 
@@ -50,7 +51,7 @@ public class ArticleClassificationNewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_article_classification_new, container, false);
+        ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_article_classification_hot, container, false);
 
         initView(viewGroup);
         initAdapter();
@@ -75,6 +76,7 @@ public class ArticleClassificationNewFragment extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             Intent intent = new Intent();
+            intent.putExtra(ARTICLEDATA,(ArticleData)articleAdapter.getItem(i));
             intent.setClass(getActivity(),ArticleBlogActivity.class);
             startActivity(intent);
         }
@@ -84,9 +86,10 @@ public class ArticleClassificationNewFragment extends Fragment {
     public void getArticle() {
         httpCallPost = new HttpCall();
         httpCallPost.setMethodtype(HttpCall.POST);
-        httpCallPost.setUrl("http://140.134.26.31/recommended_food_db/article_connect_MySQL.php");//140.134.26.31
+        httpCallPost.setUrl("http://140.134.26.31/recommended_food_db/article_new_MySQL.php");//140.134.26.31
 
         params.put("query_string", page+"");
+        Log.v("page",""+page);
         httpCallPost.setParams(params);
         postToServer(httpCallPost);
     }
@@ -101,18 +104,33 @@ public class ArticleClassificationNewFragment extends Fragment {
                 try {
                     JSONArray jsonArray = new JSONArray(result);
 
-                    int click;
-                    String article_id;
-                    String title;
-                    String content = "內容";
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        click = Integer.parseInt(jsonArray.getJSONObject(i).getString("click"));
-                        article_id = jsonArray.getJSONObject(i).getString("article_id");
-                        title = jsonArray.getJSONObject(i).getString("title");
-                        articleAdapter.addItem(new ArticleData(click, article_id, title, content));
+                    if(jsonArray != null) {
+                        int click;
+                        String article_id;
+                        String title;
+                        String content = "內容";
+                        String author;
+                        String date;
+                        String time;
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            click = Integer.parseInt(jsonArray.getJSONObject(i).getString("click"));
+                            article_id = jsonArray.getJSONObject(i).getString("article_id");
+                            title = jsonArray.getJSONObject(i).getString("title");
+                            author = jsonArray.getJSONObject(i).getString("account_id");
+                            date = jsonArray.getJSONObject(i).getString("date");
+                            time = jsonArray.getJSONObject(i).getString("time");
+                            ArticleData tempArticleData = new ArticleData();
+                            tempArticleData.setCount(click);
+                            tempArticleData.setArticleId(article_id);
+                            tempArticleData.setTitle(title);
+                            tempArticleData.setContent(content);
+                            tempArticleData.articleBlogData.setDate(date);
+                            tempArticleData.articleBlogData.setAuthor(author);
+                            tempArticleData.articleBlogData.setTime(time);
+                            articleAdapter.addItem(tempArticleData,"new");
+                        }
+                        params.clear();
                     }
-                    params.clear();
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

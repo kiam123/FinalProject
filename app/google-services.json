@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1071600163746",
+    "firebase_url": "https://recommendedfood-84dfb.firebaseio.com",
+    "project_id": "recommendedfood-84dfb",
+    "storage_bucket": "recommendedfood-84dfb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1071600163746:android:41449cc4c2f10343",
+        "android_client_info": {
+          "package_name": "tw.edu.fcu.recommendedfood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1071600163746-lnk0236m6ejua18ivr8o5631e27vjhh2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tw.edu.fcu.recommendedfood",
+            "certificate_hash": "225cf5b8d7187e7a0cc48a5ca4f5d1e8b73a7373"
+          }
+        },
+        {
+          "client_id": "1071600163746-fv53v1rvhmp9q60vq90s0t5n1n2ql666.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRhhybOnYRYV2AmxlSIqFKAntYwn1BQm8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1071600163746-fv53v1rvhmp9q60vq90s0t5n1n2ql666.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

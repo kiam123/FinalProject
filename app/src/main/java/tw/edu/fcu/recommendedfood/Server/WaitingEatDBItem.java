@@ -66,18 +66,18 @@ public class WaitingEatDBItem {
             ");";
 
     //建構子
-    public WaitingEatDBItem(Context context){
+    public WaitingEatDBItem(Context context) {
         //建構子
         waitingEatDBHelper = new WaitingEatDBHelper(context);
         db = waitingEatDBHelper.getWritableDatabase();
     }
 
     //關db
-    public void close(){
+    public void close() {
         db.close();
     }
 
-    public WaitingEatData insert(WaitingEatData data){
+    public WaitingEatData insert(WaitingEatData data) {
         ContentValues cv = new ContentValues(); //建立新增資料的物件
 
         cv.put(COL_2, data.getDatetime());
@@ -96,7 +96,7 @@ public class WaitingEatDBItem {
         return data;
     }
 
-    public boolean update(WaitingEatData data){
+    public boolean update(WaitingEatData data) {
         ContentValues cv = new ContentValues();//建立修改資料的物件
 
         cv.put(COL_2, data.getDatetime());
@@ -108,12 +108,12 @@ public class WaitingEatDBItem {
         cv.put(COL_8, data.getLastModify());
 
         String key = COL_1 + "=" + data.getId(); //若要修改資料 編號要正確
-        return  db.update(TABLE_NAME, cv, key, null) > 0;
+        return db.update(TABLE_NAME, cv, key, null) > 0;
     }
 
-    public boolean delete(long id){
+    public boolean delete(long id) {
         String key = COL_1 + "=" + id;
-        return db.delete(TABLE_NAME, key , null) > 0;
+        return db.delete(TABLE_NAME, key, null) > 0;
     }
 
     // 讀取資料
@@ -130,13 +130,13 @@ public class WaitingEatDBItem {
     }
 
     //取得指定編號的資料物件
-    public WaitingEatData get(long id){
+    public WaitingEatData get(long id) {
         WaitingEatData data = null;
         String key = COL_1 + "=" + id;
 
         Cursor result = db.query(TABLE_NAME, null, key, null, null, null, null, null);
 
-        if(result.moveToFirst()){ //如果有查詢結果
+        if (result.moveToFirst()) { //如果有查詢結果
             data = getRecord(result);
         }
         result.close();
@@ -144,7 +144,7 @@ public class WaitingEatDBItem {
     }
 
     //把Cursor目前資料包裝為物件
-    public WaitingEatData getRecord(Cursor cursor){
+    public WaitingEatData getRecord(Cursor cursor) {
         WaitingEatData result = new WaitingEatData();
 
         result.setId(cursor.getLong(0));
@@ -159,22 +159,38 @@ public class WaitingEatDBItem {
         return result;
     }
 
-    public int getCount(){
+    public int getCount() {
         int result = 0;
         Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_NAME, null);
 
 
-        if(cursor.moveToNext()){
+        if (cursor.moveToNext()) {
             result = cursor.getInt(0);
         }
-        return  result;
+        return result;
     }
+
+    public List<WaitingEatData> getData(String title) {//取得所有資料，可利用他修改或刪除資料
+        List<WaitingEatData> result = new ArrayList<>();
+        SQLiteDatabase db = waitingEatDBHelper.getWritableDatabase();
+
+
+        String key = COL_4 + " LIKE '%"+title+"%'";
+        Cursor cursor = db.query(TABLE_NAME, null, key, null, null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            result.add(getRecord(cursor));
+        }
+        cursor.close();
+        return result;
+    }
+
 
     public void sample() {
         WaitingEatData item = new WaitingEatData(0, new Date().getTime(), WaitingEatColors.RED, "關於Android Tutorial的事情.", "Hello content", 0, 0, 0);
         WaitingEatData item2 = new WaitingEatData(0, new Date().getTime(), WaitingEatColors.BLUE, "一隻非常可愛的小狗狗!", "她的名字叫「大熱", 25.04719, 121.516981, 0);
         WaitingEatData item3 = new WaitingEatData(0, new Date().getTime(), WaitingEatColors.GREEN, "一首非常好聽的音樂！", "Hello content", 0, 0, 0);
-        WaitingEatData item4 = new WaitingEatData(0, new Date().getTime(), WaitingEatColors.ORANGE, "儲存在資料庫的資料", "Hello content", 0, 0,0);
+        WaitingEatData item4 = new WaitingEatData(0, new Date().getTime(), WaitingEatColors.ORANGE, "儲存在資料庫的資料", "Hello content", 0, 0, 0);
 
         insert(item);
         insert(item2);
