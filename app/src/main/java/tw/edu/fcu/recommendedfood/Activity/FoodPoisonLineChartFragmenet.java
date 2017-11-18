@@ -61,12 +61,12 @@ public class FoodPoisonLineChartFragmenet extends Fragment {
         setChart();
     }
 
-    public void setChart(){
+    public void setChart() {
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.removeAllLimitLines();
-        leftAxis.setAxisMaxValue(1500f);
-        leftAxis.setAxisMinValue(25f);
-        leftAxis.enableGridDashedLine(10f,10f,0);
+        leftAxis.setAxisMaxValue(600f);
+        leftAxis.setAxisMinValue(0f);
+        leftAxis.enableGridDashedLine(10f, 10f, 0);
         leftAxis.setDrawLimitLinesBehindData(true);
 
         mChart.getAxisRight().setEnabled(true);
@@ -80,6 +80,9 @@ public class FoodPoisonLineChartFragmenet extends Fragment {
         int month = cal.get(Calendar.MONTH) + 1;
         int day = cal.get(Calendar.DAY_OF_MONTH);
 
+//        if(dayOfWeek == 7){
+//            dayOfWeek -= 1;
+//        }
         int tempMonth = 0;
         for (int i = 1; i <= dayOfWeek; i++) {
             Cursor res = null;
@@ -94,18 +97,18 @@ public class FoodPoisonLineChartFragmenet extends Fragment {
                 }
                 cal.set(Calendar.MONTH, 0);
                 day = cal.getActualMaximum(Calendar.DATE);
-                res = foodDBHelper.getAllData(day + "/" + tempMonth + "/" + year);
+                res = foodDBHelper.getAllPoisonData(day + "/" + tempMonth + "/" + year);
                 Log.v("tempMonth1", day + "/" + tempMonth + "/" + year);
                 day -= 1;
             } else if (tempMonth == 0){
 //                Log.v("tempMonth123123", tempMonth + "");
-                res = foodDBHelper.getAllData((day) + "/" + month + "/" + year);
+                res = foodDBHelper.getAllPoisonData((day) + "/" + month + "/" + year);
                 Log.v("tempMonth2", (day) + "/" + month + "/" + year);
                 day -= 1;
             } else{
                 Log.v("tempMonth", tempMonth + "");
                 Log.v("tempMonth", day + "");
-                res = foodDBHelper.getAllData(day + "/" + tempMonth + "/" + year);
+                res = foodDBHelper.getAllPoisonData(day + "/" + tempMonth + "/" + year);
                 Log.v("tempMonth3", day + "/" + tempMonth + "/" + year);
                 day -= 1;
             }
@@ -115,16 +118,14 @@ public class FoodPoisonLineChartFragmenet extends Fragment {
             Log.v("aaaddd", (day - i) + "/" + month + "/" + year);
 
             for (int j = 0; j < res.getCount(); j++) {
-                temp += Float.parseFloat(res.getString(4));
+                temp = temp + Float.parseFloat(res.getString(0)) * Float.parseFloat(res.getString(1));
                 Log.v("aaaddd", temp + "");
                 res.moveToNext();
             }
             yValues.add(new Entry(temp, dayOfWeek - i));
         }
 
-
-
-        LineDataSet set1 = new LineDataSet(yValues,"Data Set 1");
+        LineDataSet set1 = new LineDataSet(yValues, "Data Set 1");
         set1.setFillAlpha(1010);
         set1.setColor(Color.RED);
         set1.setLineWidth(3f);
@@ -134,9 +135,9 @@ public class FoodPoisonLineChartFragmenet extends Fragment {
         ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(set1);
 
-        String[] values = new String [] {"星期日","星期一","星期二","星期三","星期四","星期五","星期六"};
+        String[] values = new String[]{"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
 
-        LineData data = new LineData(values,dataSets);
+        LineData data = new LineData(values, dataSets);
         mChart.setData(data);
         mChart.setData(data);
         mChart.setDescription("");

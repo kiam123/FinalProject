@@ -116,6 +116,79 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
+                android:text="塑化劑："
+                android:textColor="#000000"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/txt_plasticizer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text=""
+
+                android:textColor="#000000"
+                android:textSize="16dp" />
+        </LinearLayout>
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="7dp"-->
+                <!--android:text="b："-->
+                <!--android:textColor="#000000"-->
+                <!--android:textSize="16dp" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/b"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="7dp"-->
+                <!--android:text=""-->
+
+                <!--android:textColor="#000000"-->
+                <!--android:textSize="16dp" />-->
+        <!--</LinearLayout>-->
+
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="7dp"-->
+                <!--android:text="c："-->
+                <!--android:textColor="#000000"-->
+                <!--android:textSize="16dp" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/c"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="7dp"-->
+                <!--android:text=""-->
+
+                <!--android:textColor="#000000"-->
+                <!--android:textSize="16dp" />-->
+        <!--</LinearLayout>-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
                 android:text="目前數量："
                 android:textColor="#000000"
                 android:textSize="16dp" />

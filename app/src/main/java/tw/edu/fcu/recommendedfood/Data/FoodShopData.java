@@ -8,15 +8,22 @@ public class FoodShopData {
     String foodName;
     String price;
     String calorie;
+    String plasticizer;
+    String b;
+    String c;
     String count;
     String date;
 
-    public FoodShopData(){}
+    public FoodShopData() {
+    }
 
-    public FoodShopData(String foodName, String price, String calorie, String count) {
+    public FoodShopData(String foodName, String price, String calorie, String plasticizer/*, String b, String c*/, String count) {
         this.foodName = foodName;
         this.price = price;
         this.calorie = calorie;
+        this.plasticizer = plasticizer;
+//        this.b = b;
+//        this.c = c;
         this.count = count;
     }
 
@@ -58,5 +65,17 @@ public class FoodShopData {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getPlasticizer() {
+        return plasticizer;
+    }
+
+    public String getB() {
+        return b;
+    }
+
+    public String getC() {
+        return c;
     }
 }

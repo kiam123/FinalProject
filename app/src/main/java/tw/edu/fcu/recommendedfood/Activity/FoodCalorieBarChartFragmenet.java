@@ -113,7 +113,7 @@ public class FoodCalorieBarChartFragmenet extends Fragment {
             float temp = 0;
 
             for (int j = 0; j < res.getCount(); j++) {
-                temp += Float.parseFloat(res.getString(4));
+                temp = temp + Float.parseFloat(res.getString(4)) * Float.parseFloat(res.getString(8));
                 res.moveToNext();
             }
             Log.v("dayOfWeek", (dayOfWeek-i) + "");

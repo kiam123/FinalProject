@@ -96,6 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         }.execute(httpCallPost);
+        setLoginState();
     }
 
     public void registerButton(View view) {

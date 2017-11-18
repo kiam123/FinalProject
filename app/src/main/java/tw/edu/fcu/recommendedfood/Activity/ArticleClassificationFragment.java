@@ -49,6 +49,9 @@ public class ArticleClassificationFragment extends Fragment {
 
     public static Fragment create(int pageNumber) {
         ArticleClassificationFragment fragment = new ArticleClassificationFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(KEY_CLASSIFICATION, pageNumber);
+        fragment.setArguments(bundle);
 
         return fragment;
     }
@@ -68,6 +71,10 @@ public class ArticleClassificationFragment extends Fragment {
 
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_article_classification, container, false);
 
+        if (getArguments() != null) {
+            page = getArguments().getInt(ArticleFragment.PAGE_NUMBER);
+            Log.v("papapa", page + "");
+        }
         initFragment();
         initView(viewGroup);
         initNotificationTab(viewGroup);
@@ -79,11 +86,13 @@ public class ArticleClassificationFragment extends Fragment {
         txtClassificationSet = (TextView) viewGroup.findViewById(R.id.txt_classification_set);
         viewPager = (ViewPager) viewGroup.findViewById(R.id.viewpager);
         viewPager.setAdapter(new SimpleFragmentPagerAdapter(getChildFragmentManager(), fragmentArrayList, mTitles));
+        txtClassificationSet.setText(getArguments().getString(ArticleFragment.KEY_CLASSIFICATION));
 
-        if (getArguments() != null) {
-            txtClassificationSet.setText(getArguments().getString(ArticleFragment.KEY_CLASSIFICATION));
-            page = getArguments().getInt(ArticleFragment.PAGE_NUMBER);
-        }
+//        if (getArguments() != null) {
+//            txtClassificationSet.setText(getArguments().getString(ArticleFragment.KEY_CLASSIFICATION));
+//            page = getArguments().getInt(ArticleFragment.PAGE_NUMBER);
+//            Log.v("papapa",page+"");
+//        }
     }
 
     public void initNotificationTab(ViewGroup viewGroup) {
@@ -100,9 +109,10 @@ public class ArticleClassificationFragment extends Fragment {
 
     private void initFragment() {
         Bundle bundle = new Bundle();
-        bundle.putInt(PAGE_NUMBER, 1);
+        bundle.putInt(PAGE_NUMBER, page);
+        Log.v("papapa", page + "");
         Bundle bundle2 = new Bundle();
-        bundle2.putInt(PAGE_NUMBER, 2);
+        bundle2.putInt(PAGE_NUMBER, page);
         fragmentArrayList = new ArrayList<Fragment>(2);
         ArticleClassificationHotFragment articleClassificationHotFragment = new ArticleClassificationHotFragment();
         articleClassificationHotFragment.setArguments(bundle);
@@ -190,7 +200,7 @@ public class ArticleClassificationFragment extends Fragment {
 //        //判断此Fragment是否已经添加到FragmentTransaction事物中
 //        if (!fragment.isAdded()) {
 //            Bundle bundle = new Bundle();
-//            bundle.putInt(PAGE_NUMBER, page);
+//            bundle.putInt(PAGE_NUMBER, classofication);
 //            fragment.setArguments(bundle);
 //            ft.replace(R.id.classification_fragment, fragment, fragment.getClass().getName());
 ////            ft.addToBackStack(null);

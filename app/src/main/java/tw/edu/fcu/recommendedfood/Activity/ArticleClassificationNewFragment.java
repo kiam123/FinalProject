@@ -3,6 +3,8 @@ package tw.edu.fcu.recommendedfood.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -11,6 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,9 +39,18 @@ public class ArticleClassificationNewFragment extends Fragment {
     ListView listView;
     HashMap<String, String> params = new HashMap<String, String>();
     static final String ARTICLEDATA = "ARTICLEDATA";
+    public static final int AdapterUpdate = 1;
     HttpCall httpCallPost;
     int page;
 
+    public static ArticleClassificationNewFragment create(int pageNumber) {
+        ArticleClassificationNewFragment fragment = new ArticleClassificationNewFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(ArticleClassificationFragment.PAGE_NUMBER, pageNumber);
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
 
     public ArticleClassificationNewFragment() {
     }
@@ -55,7 +72,8 @@ public class ArticleClassificationNewFragment extends Fragment {
 
         initView(viewGroup);
         initAdapter();
-        getArticle();
+        getFireBase();
+//        getArticle();
 
         return viewGroup;
     }
@@ -71,6 +89,16 @@ public class ArticleClassificationNewFragment extends Fragment {
 
 //        articleAdapter.addItem(new ArticleData("1", "標題", "內容"));
     }
+
+    Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case AdapterUpdate: {
+                    articleAdapter.addItem((ArticleData) msg.obj, "new");
+                }
+            }
+        }
+    };
 
     private AdapterView.OnItemClickListener articleBlogOnItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
@@ -89,7 +117,7 @@ public class ArticleClassificationNewFragment extends Fragment {
         httpCallPost.setUrl("http://140.134.26.31/recommended_food_db/article_new_MySQL.php");//140.134.26.31
 
         params.put("query_string", page+"");
-        Log.v("page",""+page);
+        Log.v("classofication",""+page);
         httpCallPost.setParams(params);
         postToServer(httpCallPost);
     }
@@ -136,5 +164,58 @@ public class ArticleClassificationNewFragment extends Fragment {
                 }
             }
         }.execute(httpCallPost);
+    }
+
+    public void getFireBase() {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+        myRef.child("article_title_table").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                new FireBaseThread(dataSnapshot).start();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    class FireBaseThread extends Thread {
+        private DataSnapshot dataSnapshot;
+
+        public FireBaseThread(DataSnapshot dataSnapshot) {
+            this.dataSnapshot = dataSnapshot;
+        }
+
+        @Override
+        public void run() {
+            String content = "內容";
+            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                DataSnapshot dsClick = ds.child("click");
+                DataSnapshot dsArticleId = ds.child("article_id");
+                DataSnapshot dsTitle = ds.child("title");
+                DataSnapshot dsAuthor = ds.child("account_id");
+                DataSnapshot dsDate = ds.child("date");
+                DataSnapshot dsTime = ds.child("time");
+
+//                Log.v("article123", ds.getKey());
+                ArticleData tempArticleData = new ArticleData();
+                tempArticleData.setCount(Integer.parseInt((String) dsClick.getValue()));
+                tempArticleData.setArticleId((String) dsArticleId.getValue());
+                tempArticleData.setTitle((String) dsTitle.getValue());
+                tempArticleData.setContent(content);
+                tempArticleData.articleBlogData.setDate((String) dsDate.getValue());
+                tempArticleData.articleBlogData.setAuthor((String) dsAuthor.getValue());
+                tempArticleData.articleBlogData.setTime((String) dsTime.getValue());
+
+
+                Message msg = new Message();
+                msg.what = AdapterUpdate;
+                msg.obj = tempArticleData;
+                handler.sendMessage(msg);
+            }
+        }
     }
 }

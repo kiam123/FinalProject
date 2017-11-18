@@ -11,7 +11,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -61,6 +60,7 @@ public class FoodRecorderActivity extends AppCompatActivity {
     public static final String PREFERENCE = "PREFERENCE";
     public static final String CLICK = "CLICK";
     boolean isClickPrompt;
+    private TextView plasticizer, b, c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +139,9 @@ public class FoodRecorderActivity extends AppCompatActivity {
                 txtDlgFoodName.setText(foodDetailsAdapter.getItem(pos).getFood());
                 txtDlgPrice.setText(foodDetailsAdapter.getItem(pos).getPrice());
                 txtDlgCalorie.setText(foodDetailsAdapter.getItem(pos).getCalorie());
+                plasticizer.setText(foodDetailsAdapter.getItem(pos).getPlasticizer());
+                b.setText(foodDetailsAdapter.getItem(pos).getB());
+                c.setText(foodDetailsAdapter.getItem(pos).getC());
                 txtDlgCount.setText(foodDetailsAdapter.getItem(pos).getQuantity());
                 foodDetailData = foodDetailsAdapter.getItem(pos);
 
@@ -198,17 +201,17 @@ public class FoodRecorderActivity extends AppCompatActivity {
         if (res.getCount() != 0) {
             res.moveToFirst();
 
-            int calorie = Integer.parseInt(res.getString(5)) * Integer.parseInt(res.getString(4));
-            int price = Integer.parseInt(res.getString(3)) * Integer.parseInt(res.getString(5));
+            int calorie = Integer.parseInt(res.getString(8)) * Integer.parseInt(res.getString(4));
+            int price = Integer.parseInt(res.getString(3)) * Integer.parseInt(res.getString(8));
 
-            foodDetailsAdapter.addItem(new FoodDetailData(res.getString(0), res.getString(1),
-                    res.getString(2), price + "", calorie + "", res.getString(5)));
+            foodDetailsAdapter.addItem(new FoodDetailData(res.getString(0), res.getString(1),res.getString(2),
+                    price + "", calorie + "", res.getString(5), res.getString(8)));
 
             while (res.moveToNext()) {
-                calorie = Integer.parseInt(res.getString(5)) * Integer.parseInt(res.getString(4));
-                price = Integer.parseInt(res.getString(3)) * Integer.parseInt(res.getString(5));
-                foodDetailsAdapter.addItem(new FoodDetailData(res.getString(0), res.getString(1),
-                        res.getString(2), price + "", calorie + "", res.getString(5)));
+                calorie = Integer.parseInt(res.getString(8)) * Integer.parseInt(res.getString(4));
+                price = Integer.parseInt(res.getString(3)) * Integer.parseInt(res.getString(8));
+                foodDetailsAdapter.addItem(new FoodDetailData(res.getString(0), res.getString(1),res.getString(2),
+                        price + "", calorie + "", res.getString(5), res.getString(8)));
             }
         }
     }
@@ -273,6 +276,9 @@ public class FoodRecorderActivity extends AppCompatActivity {
         txtDlgFoodName = (TextView) dialog.findViewById(R.id.txt_food_name);
         txtDlgPrice = (TextView) dialog.findViewById(R.id.txt_price);
         txtDlgCalorie = (TextView) dialog.findViewById(R.id.txt_calorie);
+        plasticizer = (TextView) dialog.findViewById(R.id.txt_plasticizer);
+//        b = (TextView) dialog.findViewById(R.id.b);
+//        c = (TextView) dialog.findViewById(R.id.c);
         txtDlgCount = (TextView) dialog.findViewById(R.id.txt_count);
         imgDlgAdd = (ImageView) dialog.findViewById(R.id.img_add);
         imgDlgNeg = (ImageView) dialog.findViewById(R.id.img_neg);

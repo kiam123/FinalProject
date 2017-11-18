@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.os.StrictMode;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -190,6 +191,11 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         fragmentArrayList.add(new WaitingEatFragment());//待吃
         fragmentArrayList.add(new GameFragment());//待吃
         fragmentArrayList.add(new HomePageFragment());//個人主頁
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+//        super.onSaveInstanceState(outState, outPersistentState);
     }
 
     //設定viewpager的adapter

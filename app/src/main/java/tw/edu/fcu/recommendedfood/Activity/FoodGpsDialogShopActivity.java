@@ -81,12 +81,15 @@ public class FoodGpsDialogShopActivity extends AppCompatActivity {
                     String food[] = jsonData.getString("food").split(",");
                     String price[] = jsonData.getString("price").split(",");
                     String calorie[] = jsonData.getString("calorie").split(",");
+                    String plasticizer[] = jsonData.getString("plasticizer").split(",");
+//                            String b[] = jsonData.getString("b").split(",");
+//                            String c[] = jsonData.getString("b").split(",");
                     foodTextSearchData.setAddress(jsonData.getString("address"));
 
                     Log.v("abc",food.length+"");
                     Log.v("abc",jsonData.getString("shop_name")+"");
                     for (int i = 0; i < food.length; i++) {
-                        foodShopDatas.add(new FoodShopData(food[i], price[i], calorie[i], "1"));
+                        foodShopDatas.add(new FoodShopData(food[i], price[i], calorie[i], plasticizer[i], "1"));
                     }
                     foodTextSearchData.setFoodShopData(foodShopDatas);
                     foodTextShopAdapter.setFoodData(foodTextSearchData);

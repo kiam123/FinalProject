@@ -10,14 +10,20 @@ public class FoodDetailData {
     String food;
     String price;
     String calorie;
+    String plasticizer;
+    String b;
+    String c;
     String quantity;
 
-    public FoodDetailData(String id, String shopName, String food, String price, String calorie, String quantity) {
+    public FoodDetailData(String id, String shopName, String food, String price, String calorie,
+                          String plasticizer/*, String b, String c*/, String quantity) {
         this.id = id;
         this.shopName = shopName;
         this.food = food;
         this.price = price;
         this.calorie = calorie;
+        this.plasticizer = plasticizer;
+
         this.quantity = quantity;
     }
 
@@ -75,5 +81,17 @@ public class FoodDetailData {
 
     public void setQuantity(String quantity) {
         this.quantity = quantity;
+    }
+
+    public String getPlasticizer() {
+        return plasticizer;
+    }
+
+    public String getB() {
+        return b;
+    }
+
+    public String getC() {
+        return c;
     }
 }

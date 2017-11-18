@@ -164,18 +164,30 @@ public class ArticleFragment extends Fragment {
 
     private void initClassificationFragment() {
         fragmentArrayList = new ArrayList<Fragment>(12);
-        fragmentArrayList.add(new ArticleClassificationFragment());
-        fragmentArrayList.add(new ArticleClassificationFragment());
-        fragmentArrayList.add(new ArticleClassificationFragment());
-        fragmentArrayList.add(new ArticleClassificationFragment());
-        fragmentArrayList.add(new ArticleClassificationFragment());
-        fragmentArrayList.add(new ArticleClassificationFragment());
-        fragmentArrayList.add(new ArticleClassificationFragment());
-        fragmentArrayList.add(new ArticleClassificationFragment());
-        fragmentArrayList.add(new ArticleClassificationFragment());
-        fragmentArrayList.add(new ArticleClassificationFragment());
-        fragmentArrayList.add(new ArticleClassificationFragment());
-        fragmentArrayList.add(new ArticleClassificationFragment());
+        fragmentArrayList.add(ArticleClassificationFragment.create(0));
+        fragmentArrayList.add(ArticleClassificationFragment.create(1));
+        fragmentArrayList.add(ArticleClassificationFragment.create(2));
+        fragmentArrayList.add(ArticleClassificationFragment.create(3));
+        fragmentArrayList.add(ArticleClassificationFragment.create(4));
+        fragmentArrayList.add(ArticleClassificationFragment.create(5));
+        fragmentArrayList.add(ArticleClassificationFragment.create(6));
+        fragmentArrayList.add(ArticleClassificationFragment.create(7));
+        fragmentArrayList.add(ArticleClassificationFragment.create(8));
+        fragmentArrayList.add(ArticleClassificationFragment.create(9));
+        fragmentArrayList.add(ArticleClassificationFragment.create(10));
+        fragmentArrayList.add(ArticleClassificationFragment.create(11));
+//        fragmentArrayList.add(new ArticleClassificationFragment());
+//        fragmentArrayList.add(new ArticleClassificationFragment());
+//        fragmentArrayList.add(new ArticleClassificationFragment());
+//        fragmentArrayList.add(new ArticleClassificationFragment());
+//        fragmentArrayList.add(new ArticleClassificationFragment());
+//        fragmentArrayList.add(new ArticleClassificationFragment());
+//        fragmentArrayList.add(new ArticleClassificationFragment());
+//        fragmentArrayList.add(new ArticleClassificationFragment());
+//        fragmentArrayList.add(new ArticleClassificationFragment());
+//        fragmentArrayList.add(new ArticleClassificationFragment());
+//        fragmentArrayList.add(new ArticleClassificationFragment());
+//        fragmentArrayList.add(new ArticleClassificationFragment());
 
         changeTab(0);
     }
@@ -211,7 +223,8 @@ public class ArticleFragment extends Fragment {
         if (!fragment.isAdded()) {
             Bundle bundle = new Bundle();
             bundle.putString(KEY_CLASSIFICATION, classification[currentIndex]);
-            bundle.putInt(PAGE_NUMBER, currentIndex + 1);
+            bundle.putInt(PAGE_NUMBER, currentIndex);
+            Log.v("papapa",(currentIndex)+"");
             fragment.setArguments(bundle);
             ft.replace(R.id.fragment, fragment, fragment.getClass().getName());
 //            ft.addToBackStack(null);

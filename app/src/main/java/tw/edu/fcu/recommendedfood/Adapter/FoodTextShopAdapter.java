@@ -77,6 +77,9 @@ public class FoodTextShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 String foodName = foodTextSearchDatas.foodShopDatas.get(position).getFoodName();
                 String price = foodTextSearchDatas.foodShopDatas.get(position).getPrice();
                 String calorie = foodTextSearchDatas.foodShopDatas.get(position).getCalorie();
+                String plasticizer = foodTextSearchDatas.foodShopDatas.get(position).getPlasticizer();
+//                String b = foodTextSearchDatas.foodShopDatas.get(position).getB();
+//                String c = foodTextSearchDatas.foodShopDatas.get(position).getC();
                 String count = foodTextSearchDatas.foodShopDatas.get(position).getCount();
                 if (mContext instanceof FoodTextSeachActivity) {
                     Log.v("position", ((FoodTextSeachActivity) mContext).date + "");
@@ -91,7 +94,7 @@ public class FoodTextShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 if (!flag) {
                     Toast.makeText(mContext, "已存在", Toast.LENGTH_SHORT).show();
                 } else {
-                    boolean isInsert = foodDBHelper.insertData(shopName, foodName, price, calorie, count, date);
+                    boolean isInsert = foodDBHelper.insertData(shopName, foodName, price, calorie, plasticizer, count, date);
                     Log.v("asdasdasd",price);
                     if (isInsert) {
                         Toast.makeText(mContext, "新增成功", Toast.LENGTH_SHORT).show();

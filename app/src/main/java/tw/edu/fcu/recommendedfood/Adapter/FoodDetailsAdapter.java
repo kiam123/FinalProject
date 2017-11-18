@@ -29,6 +29,9 @@ public class FoodDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView txtFoodName;
         TextView txtPrice;
         TextView txtCalorie;
+        TextView plasticizer;
+        TextView b;
+        TextView c;
         TextView txtQuantity;
         public ViewHolder(View itemView) {
             super(itemView);
@@ -38,6 +41,9 @@ public class FoodDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             txtFoodName = (TextView) itemView.findViewById(R.id.txt_food_name);
             txtPrice = (TextView) itemView.findViewById(R.id.txt_price);
             txtCalorie = (TextView) itemView.findViewById(R.id.txt_calorie);
+            plasticizer = (TextView) itemView.findViewById(R.id.txt_plasticizer);
+//            b = (TextView) itemView.findViewById(R.id.b);
+//            c = (TextView) itemView.findViewById(R.id.c);
             txtQuantity = (TextView) itemView.findViewById(R.id.txt_quantity);
         }
     }
@@ -83,6 +89,9 @@ public class FoodDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((ViewHolder)holder).txtFoodName.setText(foodDetailDatas.get(position).getFood());
             ((ViewHolder)holder).txtPrice.setText(foodDetailDatas.get(position).getPrice());
             ((ViewHolder)holder).txtCalorie.setText(foodDetailDatas.get(position).getCalorie());
+            ((ViewHolder)holder).plasticizer.setText(foodDetailDatas.get(position).getPlasticizer());
+//            ((ViewHolder)holder).b.setText(foodDetailDatas.get(position).getB());
+//            ((ViewHolder)holder).c.setText(foodDetailDatas.get(position).getC());
             ((ViewHolder)holder).txtQuantity.setText(foodDetailDatas.get(position).getQuantity());
 
             ((ViewHolder)holder).lnRoot.setBackgroundResource(R.drawable.touch_bg);

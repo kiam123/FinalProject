@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFF"
     android:orientation="vertical"
     tools:context="tw.edu.fcu.recommendedfood.Activity.GameFragment">
 
@@ -12,46 +13,22 @@
         android:background="@color/colorPrimary"
         android:elevation="4dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="遊戲"
+            android:textSize="20dp" />
+
     </android.support.v7.widget.Toolbar>
 
-    <!--<tw.edu.fcu.recommendedfood.Widget.DragHelperLinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:gravity="center"-->
-    <!--android:orientation="horizontal">-->
 
-    <!--<TextView-->
-    <!--android:id="@+id/dragView"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="250dp"-->
-    <!--android:layout_marginLeft="10dp"-->
-    <!--android:layout_marginRight="10dp"-->
-    <!--android:layout_weight="1"-->
-    <!--android:background="@color/colorPrimaryDark"-->
-    <!--android:clickable="true"-->
-    <!--android:padding="20dp"-->
-    <!--android:text="我可以被拖拽"-->
-    <!--android:textColor="@android:color/white" />-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/edgeDragView"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="250dp"-->
-    <!--android:layout_marginLeft="10dp"-->
-    <!--android:layout_marginRight="10dp"-->
-    <!--android:layout_weight="1"-->
-    <!--android:background="@color/colorPrimaryDark"-->
-    <!--android:padding="20dp"-->
-    <!--android:text="我可以被拖拽"-->
-    <!--android:textColor="@android:color/white" />-->
-
-    <!--</tw.edu.fcu.recommendedfood.Widget.DragHelperLinearLayout>-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_weight="1"
-        android:gravity="bottom">
+        android:gravity="bottom"
+        android:orientation="vertical">
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager1"
@@ -61,37 +38,61 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:paddingRight="10dp"
-            android:gravity="right|center_vertical">
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/txt_count1"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1"
-                android:textSize="20dp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:text="/" />
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:layout_weight="0.9"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/txt_total1"
+                <TextView
+                    android:id="@+id/txt_name1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textSize="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="8"
-                android:textSize="20dp" />
+                android:layout_height="match_parent"
+                android:gravity="right|center_vertical"
+                android:orientation="horizontal"
+                android:layout_weight="0.1"
+                android:paddingRight="10dp">
+
+                <TextView
+                    android:id="@+id/txt_count1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="/"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/txt_total1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="8"
+                    android:textSize="20dp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_weight="1"
-        android:gravity="bottom">
+        android:gravity="bottom"
+        android:orientation="vertical">
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager2"
@@ -101,28 +102,53 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:paddingRight="10dp"
-            android:gravity="right|center_vertical">
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/txt_count2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1"
-                android:textSize="20dp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:text="/" />
 
-            <TextView
-                android:id="@+id/txt_total2"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="8"
-                android:textSize="20dp" />
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:layout_weight="0.9"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txt_name2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textSize="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="right|center_vertical"
+                android:orientation="horizontal"
+                android:layout_weight="0.1"
+                android:paddingRight="10dp">
+
+                <TextView
+                    android:id="@+id/txt_count2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="/"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/txt_total2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="8"
+                    android:textSize="20dp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

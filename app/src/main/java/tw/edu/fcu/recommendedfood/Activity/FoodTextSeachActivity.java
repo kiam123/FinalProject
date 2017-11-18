@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -25,6 +32,7 @@ import java.util.HashMap;
 
 import tw.edu.fcu.recommendedfood.Adapter.FoodTextSeachAdapter;
 import tw.edu.fcu.recommendedfood.Adapter.FoodTextShopAdapter;
+import tw.edu.fcu.recommendedfood.Data.ArticleData;
 import tw.edu.fcu.recommendedfood.Data.FoodShopData;
 import tw.edu.fcu.recommendedfood.Data.FoodTextSearchData;
 import tw.edu.fcu.recommendedfood.Data.OnItemClickLitener;
@@ -37,7 +45,6 @@ public class FoodTextSeachActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private FoodTextSeachAdapter foodTextSeachAdapter;
     private EditText etSearchFood;
-    private Handler handler;
     private HttpCall httpCallPost;
     private HashMap<String, String> params = new HashMap<String, String>();
     Toolbar fragmentToolbar;
@@ -45,6 +52,7 @@ public class FoodTextSeachActivity extends AppCompatActivity {
     RecyclerView dlgRecyclerView;
     FoodTextShopAdapter foodTextShopAdapter;
     public String date;
+    static final int AdapterFoodUpdate = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,12 +117,15 @@ public class FoodTextSeachActivity extends AppCompatActivity {
                             String food[] = jsonData.getString("food").split(",");
                             String price[] = jsonData.getString("price").split(",");
                             String calorie[] = jsonData.getString("calorie").split(",");
+                            String plasticizer[] = jsonData.getString("plasticizer").split(",");
+//                            String b[] = jsonData.getString("b").split(",");
+//                            String c[] = jsonData.getString("b").split(",");
                             foodTextSearchData.setAddress(jsonData.getString("address"));
 
                             Log.v("abc",food.length+"");
                             Log.v("abc",jsonData.getString("shop_name")+"");
                             for (int i = 0; i < food.length; i++) {
-                                foodShopDatas.add(new FoodShopData(food[i], price[i], calorie[i], "1"));
+                                foodShopDatas.add(new FoodShopData(food[i], price[i], calorie[i], plasticizer[i], "1"));
                             }
                             foodTextSearchData.setFoodShopData(foodShopDatas);
                             foodTextShopAdapter.setFoodData(foodTextSearchData);
@@ -146,6 +157,8 @@ public class FoodTextSeachActivity extends AppCompatActivity {
             params.put("query_string", "3 " + s.toString());
             httpCallPost.setParams(params);
             foodTextSeachAdapter.removeItem();
+//            getFireBase(s.toString());
+
 
             new HttpRequest() {
                 @Override
@@ -174,6 +187,69 @@ public class FoodTextSeachActivity extends AppCompatActivity {
         }
     }
 
+    Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case AdapterFoodUpdate: {
+
+                    String foodId = msg.getData().getString("FoodId");
+                    String shopName = msg.getData().getString("ShopName");
+                    String address = msg.getData().getString("Address");
+                    String phone = msg.getData().getString("Phone");
+
+                    foodTextSeachAdapter.addItem(new FoodTextSearchData(foodId, "店名：" + shopName, "地址：" + address, "電話：" + phone));
+
+                    break;
+                }
+
+            }
+        }
+    };
+
+    public void getFireBase(String searchId) {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+
+        myRef.child("food_note_table").child(searchId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                new FireBaseThread(dataSnapshot).start();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    class FireBaseThread extends Thread {
+        private DataSnapshot dataSnapshot;
+
+        public FireBaseThread(DataSnapshot dataSnapshot) {
+            this.dataSnapshot = dataSnapshot;
+        }
+
+        @Override
+        public void run() {
+            String content = "內容";
+
+            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                if (ds.getKey().equals("article")) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("FoodId",ds.child("food_id").getValue()+"");
+                    bundle.putString("ShopName",ds.child("shop_name").getValue()+"");
+                    bundle.putString("Address",ds.child("address").getValue()+"");
+                    bundle.putString("Phone",ds.child("phone").getValue()+"");
+
+                    Message msg = new Message();
+                    msg.what = AdapterFoodUpdate;
+                    msg.setData(bundle);
+                    handler.sendMessage(msg);
+                }
+            }
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

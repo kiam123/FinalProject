@@ -1,7 +1,6 @@
 package tw.edu.fcu.recommendedfood.Activity;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,23 +10,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import tw.edu.fcu.recommendedfood.Data.OnItemClickLitener;
+import com.squareup.picasso.Picasso;
+
 import tw.edu.fcu.recommendedfood.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ImageFragment extends Fragment {
+public class GameImageFragment extends Fragment {
     public static final String KEY = "imageId";
     public static final String KEY_ITEM_CLICK = "KEYITEMCLICK";
     int imageId, pos;
     ImageView imageView;
 
-    public ImageFragment() {
+    public GameImageFragment() {
     }
 
-    public static ImageFragment newInstance(int imageId, int position) {
-        ImageFragment imageFragment = new ImageFragment();
+    public static GameImageFragment newInstance(int imageId, int position) {
+        GameImageFragment imageFragment = new GameImageFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(KEY, imageId);
         bundle.putInt(KEY_ITEM_CLICK, position);
@@ -55,8 +55,7 @@ public class ImageFragment extends Fragment {
                 getActivity().sendBroadcast(intent);
             }
         });
-        imageView.setImageResource(imageId);
-
+        Picasso.with(getActivity()).load(imageId).into(imageView);
 
         return inflatedView;
     }

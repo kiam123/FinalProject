@@ -68,7 +68,7 @@ public class FoodCalorieLineChartFragmenet extends Fragment {
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.removeAllLimitLines();
         leftAxis.setAxisMaxValue(1500f);
-        leftAxis.setAxisMinValue(25f);
+        leftAxis.setAxisMinValue(0f);
         leftAxis.enableGridDashedLine(10f, 10f, 0);
         leftAxis.setDrawLimitLinesBehindData(true);
 
@@ -96,33 +96,33 @@ public class FoodCalorieLineChartFragmenet extends Fragment {
                 } else {
                     cal.add(Calendar.MONTH, -1);
                     tempMonth = cal.get(Calendar.MONTH) + 1;
-                    Log.v("month", tempMonth + "");
+//                    Log.v("month", tempMonth + "");
                 }
                 cal.set(Calendar.MONTH, 0);
                 day = cal.getActualMaximum(Calendar.DATE);
                 res = foodDBHelper.getAllData(day + "/" + tempMonth + "/" + year);
-                Log.v("tempMonth1", day + "/" + tempMonth + "/" + year);
+//                Log.v("tempMonth1", day + "/" + tempMonth + "/" + year);
                 day -= 1;
             } else if (tempMonth == 0){
 //                Log.v("tempMonth123123", tempMonth + "");
                 res = foodDBHelper.getAllData((day) + "/" + month + "/" + year);
-                Log.v("tempMonth2", (day) + "/" + month + "/" + year);
+//                Log.v("tempMonth2", (day) + "/" + month + "/" + year);
                 day -= 1;
             } else{
-                Log.v("tempMonth", tempMonth + "");
-                Log.v("tempMonth", day + "");
+//                Log.v("tempMonth", tempMonth + "");
+//                Log.v("tempMonth", day + "");
                 res = foodDBHelper.getAllData(day + "/" + tempMonth + "/" + year);
-                Log.v("tempMonth3", day + "/" + tempMonth + "/" + year);
+//                Log.v("tempMonth3", day + "/" + tempMonth + "/" + year);
                 day -= 1;
             }
             res.moveToFirst();
             float temp = 0;
-            Log.v("aaaddd", res.getCount() + "");
-            Log.v("aaaddd", (day - i) + "/" + month + "/" + year);
+//            Log.v("aaaddd", res.getCount() + "");
+//            Log.v("aaaddd", (day - i) + "/" + month + "/" + year);
 
             for (int j = 0; j < res.getCount(); j++) {
-                temp += Float.parseFloat(res.getString(4));
-                Log.v("aaaddd", temp + "");
+                temp = temp + Float.parseFloat(res.getString(4)) * Float.parseFloat(res.getString(8));
+//                Log.v("aaaddd", temp + "");
                 res.moveToNext();
             }
             yValues.add(new Entry(temp, dayOfWeek - i));

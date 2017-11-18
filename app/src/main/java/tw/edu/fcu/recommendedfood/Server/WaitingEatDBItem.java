@@ -39,8 +39,8 @@ public class WaitingEatDBItem {
 //            COL_3 + "  INTEGER NOT NULL, " +
 //            COL_4 + "  TEXT NOT NULL, " +
 //            COL_5 + "  TEXT NOT NULL, " +
-//            COL_6 + "  REAL, " +
-//            COL_7 + "  REAL, " +
+//            COL_9 + "  REAL, " +
+//            COL_10 + "  REAL, " +
 //            COL_8 + " INTEGER );" ;
 
 //    public static final String SQL =
@@ -50,8 +50,8 @@ public class WaitingEatDBItem {
 //                    COL_3 + "   VARCHAR(50),  " +
 //                    COL_4 + "   VARCHAR(50),  " +
 //                    COL_5 + "   VARCHAR(50),  " +
-//                    COL_6 + "   VARCHAR(50),  " +
-//                    COL_7 + "   VARCHAR(50),  " +
+//                    COL_9 + "   VARCHAR(50),  " +
+//                    COL_10 + "   VARCHAR(50),  " +
 //                    COL_8 + "   VARCHAR(50) );" ;
 
     public static final String SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "( " +

@@ -69,14 +69,23 @@
                     android:text="送出"
                     android:visibility="gone" />
 
+                <!--<ImageView-->
+                    <!--android:id="@+id/imgFavorite"-->
+                    <!--android:layout_width="48dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="0"-->
+                    <!--android:padding="8dp"-->
+                    <!--android:onClick="imgClickFavorite"-->
+                    <!--app:srcCompat="@drawable/ic_favorite_black_18dp" />-->
+
                 <ImageView
-                    android:id="@+id/imgFavorite"
+                    android:id="@+id/imgMenu"
                     android:layout_width="48dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0"
                     android:padding="8dp"
-                    android:onClick="imgClickFavorite"
-                    app:srcCompat="@drawable/ic_favorite_black_18dp" />
+                    android:onClick="imgClickMenu"
+                    app:srcCompat="@drawable/ic_list_black_24dp" />
 
                 <!--<ImageView-->
                     <!--android:id="@+id/imageView3"-->
@@ -86,14 +95,14 @@
                     <!--android:padding="8dp"-->
                     <!--app:srcCompat="@drawable/ic_event_black_18dp" />-->
 
-                <ImageView
-                    android:id="@+id/imgMenu"
-                    android:layout_width="48dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0"
-                    android:padding="8dp"
-                    android:onClick="imgClickMenu"
-                    app:srcCompat="@drawable/ic_list_black_18dp" />
+                <!--<ImageView-->
+                    <!--android:id="@+id/imgMenu"-->
+                    <!--android:layout_width="48dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="0"-->
+                    <!--android:padding="8dp"-->
+                    <!--android:onClick="imgClickMenu"-->
+                    <!--app:srcCompat="@drawable/ic_list_black_18dp" />-->
             </LinearLayout>
         </LinearLayout>
 

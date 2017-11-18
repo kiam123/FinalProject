@@ -29,7 +29,7 @@ import tw.edu.fcu.recommendedfood.Server.FoodDBHelper;
 import tw.edu.fcu.recommendedfood.Utils.Utils;
 
 public class FoodCalendarViewFragment extends Fragment {
-    public static final String ARG_PAGE = "page";
+    public static final String ARG_PAGE = "classofication";
     public static final String KEY_MONTH = "MONTH";
 
     private int mPageNumber;

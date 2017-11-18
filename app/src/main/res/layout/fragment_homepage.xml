@@ -13,6 +13,12 @@
         android:background="@color/colorPrimary"
         android:elevation="4dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="20dp"
+            android:text="個人主頁" />
     </android.support.v7.widget.Toolbar>
 
 

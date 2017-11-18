@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.io.Serializable;
 
@@ -22,8 +21,11 @@ public class FoodDBHelper extends SQLiteOpenHelper implements Serializable {
     public static final String COL_3 = "FOODNAME";
     public static final String COL_4 = "PRICE";
     public static final String COL_5 = "CALORIES";
-    public static final String COL_6 = "QUANTITY";
-    public static final String COL_7 = "DATE";
+    public static final String COL_6 = "plasticizer";
+    public static final String COL_7 = "b";
+    public static final String COL_8 = "c";
+    public static final String COL_9 = "QUANTITY";
+    public static final String COL_10 = "DATE";
 
     public FoodDBHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -38,7 +40,10 @@ public class FoodDBHelper extends SQLiteOpenHelper implements Serializable {
                 COL_4 + " VARCHAR(50), " +
                 COL_5 + " VARCHAR(50), " +
                 COL_6 + " VARCHAR(50), " +
-                COL_7 + " VARCHAR(50)  " +
+                COL_7 + " VARCHAR(50), " +
+                COL_8 + " VARCHAR(50), " +
+                COL_9 + " VARCHAR(50), " +
+                COL_10 + " VARCHAR(50)  " +
                 ");";
         db.execSQL(SQL);
         /* db.execSQL("create table " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT,FOODNAME TEXT,CALORIES INTEGER)");*/
@@ -50,16 +55,19 @@ public class FoodDBHelper extends SQLiteOpenHelper implements Serializable {
         onCreate(db);
     }
 
-    public boolean insertData(String shopName, String foodName, String price,
-                              String calories, String quantity, String date) {  //加入資料
+    public boolean insertData(String shopName, String foodName, String price, String calories,
+                              String plasticizer/*, String b, String c*/, String quantity, String date) {  //加入資料
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_2, shopName);
         contentValues.put(COL_3, foodName);
         contentValues.put(COL_4, price);
         contentValues.put(COL_5, calories);
-        contentValues.put(COL_6, quantity);
-        contentValues.put(COL_7, date);
+        contentValues.put(COL_6, plasticizer);
+//        contentValues.put(COL_7, b);
+//        contentValues.put(COL_8, c);
+        contentValues.put(COL_9, quantity);
+        contentValues.put(COL_10, date);
         long result = db.insert(TABLE_NAME, null, contentValues);
         if (result == -1)
             return false;
@@ -73,7 +81,7 @@ public class FoodDBHelper extends SQLiteOpenHelper implements Serializable {
         Cursor res = db.rawQuery("select * from " + TABLE_NAME +
                 " where " + COL_2 + " = '" + shopName + "' and " +
                 COL_3 + " = '" + foodName + "' and " +
-                COL_7 + " = '" + date + "'", null);//如果找不到就回傳null
+                COL_10 + " = '" + date + "'", null);//如果找不到就回傳null
         flag = res.getCount() == 0 ? true : false;
         res.close();
 
@@ -95,20 +103,28 @@ public class FoodDBHelper extends SQLiteOpenHelper implements Serializable {
     public boolean getDateData(String date) {//取得所有資料，可利用他修改或刪除資料
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " + TABLE_NAME +
-                " where " + COL_7 + " = '" + date + "'", null);
+                " where " + COL_10 + " = '" + date + "'", null);
 
-        return res.getCount()>0;
+        return res.getCount() > 0;
     }
 
     public Cursor getAllData(String date) {//取得所有資料
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " + TABLE_NAME +
-                " where " + COL_7 + " = '" + date + "'", null);
+                " where " + COL_10 + " = '" + date + "'", null);
 
         return res;
     }
 
-    public Cursor getData(String id){
+    public Cursor getAllPoisonData(String date) {//取得所有資料
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select " + COL_6 + "," + COL_9 + " from " + TABLE_NAME +
+                " where " + COL_10 + " = '" + date + "'", null);
+
+        return res;
+    }
+
+    public Cursor getData(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " + TABLE_NAME +
                 " where " + COL_1 + " = '" + id + "'", null);
@@ -119,7 +135,7 @@ public class FoodDBHelper extends SQLiteOpenHelper implements Serializable {
     public boolean updateData(String id, String quantity) { //修改資料
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_6, quantity);
+        contentValues.put(COL_9, quantity);
         db.update(TABLE_NAME, contentValues, "ID = " + id, null);
 
         return true;

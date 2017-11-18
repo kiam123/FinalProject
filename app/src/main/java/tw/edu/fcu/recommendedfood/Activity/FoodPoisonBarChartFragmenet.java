@@ -91,18 +91,18 @@ public class FoodPoisonBarChartFragmenet extends Fragment {
                 }
                 cal.set(Calendar.MONTH, 0);
                 day = cal.getActualMaximum(Calendar.DATE);
-                res = foodDBHelper.getAllData(day + "/" + tempMonth + "/" + year);
+                res = foodDBHelper.getAllPoisonData(day + "/" + tempMonth + "/" + year);
                 Log.v("tempMonth1", day + "/" + tempMonth + "/" + year);
                 day -= 1;
             } else if (tempMonth == 0){
 //                Log.v("tempMonth123123", tempMonth + "");
-                res = foodDBHelper.getAllData((day) + "/" + month + "/" + year);
+                res = foodDBHelper.getAllPoisonData((day) + "/" + month + "/" + year);
                 Log.v("tempMonth2", (day) + "/" + month + "/" + year);
                 day -= 1;
             } else{
                 Log.v("tempMonth", tempMonth + "");
                 Log.v("tempMonth", day + "");
-                res = foodDBHelper.getAllData(day + "/" + tempMonth + "/" + year);
+                res = foodDBHelper.getAllPoisonData(day + "/" + tempMonth + "/" + year);
                 Log.v("tempMonth3", day + "/" + tempMonth + "/" + year);
                 day -= 1;
             }
@@ -110,7 +110,7 @@ public class FoodPoisonBarChartFragmenet extends Fragment {
             float temp = 0;
 
             for (int j = 0; j < res.getCount(); j++) {
-                temp += Float.parseFloat(res.getString(4));
+                temp = temp + Float.parseFloat(res.getString(0)) * Float.parseFloat(res.getString(1));
                 res.moveToNext();
             }
             Log.v("dayOfWeek", (dayOfWeek-i) + "");
