@@ -26,6 +26,8 @@ public class PicassoImageGetter implements Html.ImageGetter {
         this.textView = textView;
         this.resources = resources;
         this.pablo = pablo;
+//        Log.v("ress123",pablo.load(source).get()+"");
+
     }
 
     @Override
@@ -36,6 +38,7 @@ public class PicassoImageGetter implements Html.ImageGetter {
             @Override
             protected Bitmap doInBackground(final Void... meh) {
                 try {
+                    Log.v("ress123",pablo.load(source).get()+"");
 
                     return pablo.load(source).get();
                 } catch (Exception e) {
@@ -52,9 +55,9 @@ public class PicassoImageGetter implements Html.ImageGetter {
 
                     result.setDrawable(drawable);
                     result.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                    Log.v("Width",""+drawable.getIntrinsicWidth());
-                    Log.v("Height",""+drawable.getIntrinsicHeight());
-
+//                    Log.v("Width",""+drawable.getIntrinsicWidth());
+//                    Log.v("Height",""+drawable.getIntrinsicHeight());
+                    Log.v("ress123",result+"");
                     textView.setText(textView.getText()); // invalidate() doesn't work correctly...
                 } catch (Exception e) {
                 /* nom nom nom*/

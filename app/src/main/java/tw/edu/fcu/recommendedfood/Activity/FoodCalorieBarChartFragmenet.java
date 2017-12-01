@@ -39,7 +39,6 @@ public class FoodCalorieBarChartFragmenet extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -79,7 +78,7 @@ public class FoodCalorieBarChartFragmenet extends Fragment {
 
 //        if(dayOfWeek == 7)
 //            dayOfWeek -= 1;
-        Log.v("kkkk",dayOfWeek+"");
+        Log.v("kkkk", dayOfWeek + "");
         int tempMonth = 0;
         for (int i = 1; i <= dayOfWeek; i++) {
             Cursor res = null;
@@ -97,12 +96,12 @@ public class FoodCalorieBarChartFragmenet extends Fragment {
                 res = foodDBHelper.getAllData(day + "/" + tempMonth + "/" + year);
                 Log.v("tempMonth1", day + "/" + tempMonth + "/" + year);
                 day -= 1;
-            } else if (tempMonth == 0){
+            } else if (tempMonth == 0) {
 //                Log.v("tempMonth123123", tempMonth + "");
                 res = foodDBHelper.getAllData((day) + "/" + month + "/" + year);
                 Log.v("tempMonth2", (day) + "/" + month + "/" + year);
                 day -= 1;
-            } else{
+            } else {
                 Log.v("tempMonth", tempMonth + "");
                 Log.v("tempMonth", day + "");
                 res = foodDBHelper.getAllData(day + "/" + tempMonth + "/" + year);
@@ -116,8 +115,8 @@ public class FoodCalorieBarChartFragmenet extends Fragment {
                 temp = temp + Float.parseFloat(res.getString(4)) * Float.parseFloat(res.getString(8));
                 res.moveToNext();
             }
-            Log.v("dayOfWeek", (dayOfWeek-i) + "");
-            valueSet1.add(new BarEntry(temp, dayOfWeek-i));
+            Log.v("dayOfWeek", (dayOfWeek - i) + "");
+            valueSet1.add(new BarEntry(temp, dayOfWeek - i));
         }
 
         BarDataSet barDataSet = new BarDataSet(valueSet1, "卡路里");

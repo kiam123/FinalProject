@@ -166,6 +166,7 @@ public class HomePageSelfArticleFragment extends Fragment {
     public void getFireBase() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
+        Log.v("account123", LoginContext.getLoginContext().getAccount());
         myRef.child("account_collection_table").child(LoginContext.getLoginContext().getAccount()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

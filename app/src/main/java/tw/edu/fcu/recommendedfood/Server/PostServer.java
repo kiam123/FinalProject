@@ -20,8 +20,10 @@ public class PostServer extends AsyncTask<Void, String, String> {
         BufferedReader reader = null;
         StringBuilder stringBuilder = new StringBuilder();
         try {
-            targetUrl = new URL("http://140.115.197.16/?school=fcu&app=美食推薦");
+//            targetUrl = new URL("http://140.115.197.16/?school=fcu&app=美食推薦");
+            targetUrl = new URL("http://0f80eca9.ngrok.io/api/fcu/location");
             urlConnection = (HttpURLConnection) targetUrl.openConnection();
+            urlConnection.setRequestMethod("POST");
             reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));//do something
 
             String line = null;

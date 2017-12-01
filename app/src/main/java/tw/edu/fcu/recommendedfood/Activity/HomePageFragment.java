@@ -68,6 +68,7 @@ public class HomePageFragment extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_homepage, container, false);
 
+        Log.v("TAG","onCreateView");
         initFragment();
         initView(viewGroup);
         initHeaderOnclickListener();

@@ -14,6 +14,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.HashMap;
 
 import tw.edu.fcu.recommendedfood.Encryption.MD5;
@@ -37,7 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
     TextView txtErrorPhone;
     TextView txtErrorAddress;
     Button btnSubmit;
-    Lock lock = new Lock();
+    AccountData lock = new AccountData();
     String content = "";
     boolean sex = true;
     HashMap<String, String> params = new HashMap<String, String>();
@@ -113,44 +119,57 @@ public class RegisterActivity extends AppCompatActivity {
         if (lock.getCountState() < 7) {
             Toast.makeText(RegisterActivity.this, "資料必須填齊", Toast.LENGTH_LONG).show();
         } else {
-            params.put("Account", edtAccount.getText().toString());
-            params.put("Password", md5.MD5SixteenBit(edtPassword.getText().toString()));
-            params.put("Name", edtName.getText().toString());
-            params.put("Sex", sex == true ? "男" : "女");
-            params.put("Email", edtEmail.getText().toString());
-            params.put("Phone", edtPhone.getText().toString());
-            params.put("Address", edtAddress.getText().toString());
-
-            httpCallPost.setUrl("http://140.134.26.31/recommended_food_db/RegisterAccount.php");
-            httpCallPost.setParams(params);
-            new HttpRequest() {
-                @Override
-                public void onResponse(String response) {
-                    super.onResponse(response);
-                    lock.result = response;
-                }
-            }.execute(httpCallPost);
-
-            Log.v("result", lock.result);
-            if (lock.result.contains("ok")) {
-                Toast.makeText(RegisterActivity.this, "註冊成功", Toast.LENGTH_LONG).show();
-            } else if (lock.result.contains("no")) {
-                txtErrorAccount.setText("此帳號已經有人使用");
-                txtErrorAccount.setVisibility(View.VISIBLE);
-                Toast.makeText(RegisterActivity.this, "註冊失敗，此帳號已被使用", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(RegisterActivity.this, "系統有問題", Toast.LENGTH_LONG).show();
-            }
+//            params.put("Account", edtAccount.getText().toString());
+//            params.put("Password", md5.MD5SixteenBit(edtPassword.getText().toString()));
+//            params.put("Name", edtName.getText().toString());
+//            params.put("Sex", sex == true ? "男" : "女");
+//            params.put("Email", edtEmail.getText().toString());
+//            params.put("Phone", edtPhone.getText().toString());
+//            params.put("Address", edtAddress.getText().toString());
+//
+//            httpCallPost.setUrl("http://140.134.26.31/recommended_food_db/RegisterAccount.php");
+//            httpCallPost.setParams(params);
+//            new HttpRequest() {
+//                @Override
+//                public void onResponse(String response) {
+//                    super.onResponse(response);
+//                    lock.result = response;
+//                }
+//            }.execute(httpCallPost);
+//
+//            Log.v("result", lock.result);
+//            if (lock.result.contains("ok")) {
+//                Toast.makeText(RegisterActivity.this, "註冊成功", Toast.LENGTH_LONG).show();
+//            } else if (lock.result.contains("no")) {
+//                txtErrorAccount.setText("此帳號已經有人使用");
+//                txtErrorAccount.setVisibility(View.VISIBLE);
+//                Toast.makeText(RegisterActivity.this, "註冊失敗，此帳號已被使用", Toast.LENGTH_LONG).show();
+//            } else {
+//                Toast.makeText(RegisterActivity.this, "系統有問題", Toast.LENGTH_LONG).show();
+//            }
+            final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+//            database.child("account_table").push().setValue(edtAccount.getText().toString());
+            database.child("account_table").child(edtAccount.getText().toString()).child("account_id").setValue(edtAccount.getText().toString());
+            database.child("account_table").child(edtAccount.getText().toString()).child("address").setValue(edtAddress.getText().toString());
+            database.child("account_table").child(edtAccount.getText().toString()).child("email").setValue(edtEmail.getText().toString());
+            database.child("account_table").child(edtAccount.getText().toString()).child("name").setValue(edtName.getText().toString());
+            database.child("account_table").child(edtAccount.getText().toString()).child("password").setValue(md5.MD5SixteenBit(edtPassword.getText().toString()));
+            database.child("account_table").child(edtAccount.getText().toString()).child("phone").setValue(edtPhone.getText().toString());
+            database.child("account_table").child(edtAccount.getText().toString()).child("sex").setValue(sex == true ? "男" : "女");
         }
 
-        params.clear();
+//        params.clear();
+
+
     }
 
-    class Lock {
+    class AccountData {
         int count[] = new int[7];
         int total = 0;
         int temp = 0;
         String result = "";
+
+        public AccountData(){}
 
         public int getCountState() {
             for (int i : count) {
@@ -286,35 +305,60 @@ public class RegisterActivity extends AppCompatActivity {
                     txtErrorAccount.setText("賬號必須大於4");
                     txtErrorAccount.setVisibility(View.VISIBLE);
                     return;
-                }
-                txtErrorAccount.setVisibility(View.GONE);
-                txtErrorAccount.setText("驗證中...");
-                txtErrorAccount.setVisibility(View.VISIBLE);
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        params.put("check_account", content);
-                        httpCallPost.setUrl("http://140.134.26.31/postoffice_pj/CheckAccount.php");
-                        httpCallPost.setParams(params);
-                        new HttpRequest() {
-                            @Override
-                            public void onResponse(String response) {
-                                super.onResponse(response);
-                                Log.v("response", response);
-                                if (response.contains("ok")) {
-                                    txtErrorAccount.setVisibility(View.GONE);
-                                    lock.count[0] = 1;
-                                    Log.v("count", lock.count[0] + "");
-                                } else {
-                                    lock.count[0] = 0;
-                                    txtErrorAccount.setText("此帳號已經有人使用");
-                                }
-                                params.clear();
+                } else {
+                    Log.v("content123",content);
+                    txtErrorAccount.setVisibility(View.GONE);
+                    txtErrorAccount.setText("驗證中...");
+                    txtErrorAccount.setVisibility(View.VISIBLE);
+//                new Thread() {
+//                    @Override
+//                    public void run() {
+//                        super.run();
+//                        params.put("check_account", content);
+//                        httpCallPost.setUrl("http://140.134.26.31/postoffice_pj/CheckAccount.php");
+//                        httpCallPost.setParams(params);
+//                        new HttpRequest() {
+//                            @Override
+//                            public void onResponse(String response) {
+//                                super.onResponse(response);
+//                                Log.v("response", response);
+//                                if (response.contains("ok")) {
+//                                    txtErrorAccount.setVisibility(View.GONE);
+//                                    lock.count[0] = 1;
+//                                    Log.v("count", lock.count[0] + "");
+//                                } else {
+//                                    lock.count[0] = 0;
+//                                    txtErrorAccount.setText("此帳號已經有人使用");
+//                                }
+//                                params.clear();
+//                            }
+//                        }.execute(httpCallPost);
+//                    }
+//                }.start();
+
+                    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference();
+
+                    myRef.child("account_table").child(content).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Log.v("content123",dataSnapshot.getValue()+"");
+                            if (dataSnapshot.getValue() != null) {
+                                lock.count[0] = 0;
+                                txtErrorAccount.setText("此帳號已經有人使用");
+                            } else {
+                                txtErrorAccount.setVisibility(View.GONE);
+                                lock.count[0] = 1;
+                                Log.v("count", lock.count[0] + "");
                             }
-                        }.execute(httpCallPost);
-                    }
-                }.start();
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
             }
         }
     };

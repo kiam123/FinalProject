@@ -140,8 +140,8 @@ public class FoodRecorderActivity extends AppCompatActivity {
                 txtDlgPrice.setText(foodDetailsAdapter.getItem(pos).getPrice());
                 txtDlgCalorie.setText(foodDetailsAdapter.getItem(pos).getCalorie());
                 plasticizer.setText(foodDetailsAdapter.getItem(pos).getPlasticizer());
-                b.setText(foodDetailsAdapter.getItem(pos).getB());
-                c.setText(foodDetailsAdapter.getItem(pos).getC());
+//                b.setText(foodDetailsAdapter.getItem(pos).getB());
+//                c.setText(foodDetailsAdapter.getItem(pos).getC());
                 txtDlgCount.setText(foodDetailsAdapter.getItem(pos).getQuantity());
                 foodDetailData = foodDetailsAdapter.getItem(pos);
 

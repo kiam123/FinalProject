@@ -18,10 +18,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
@@ -35,6 +37,7 @@ import tw.edu.fcu.recommendedfood.Adapter.FoodTextShopAdapter;
 import tw.edu.fcu.recommendedfood.Data.ArticleData;
 import tw.edu.fcu.recommendedfood.Data.FoodShopData;
 import tw.edu.fcu.recommendedfood.Data.FoodTextSearchData;
+import tw.edu.fcu.recommendedfood.Data.LoginContext;
 import tw.edu.fcu.recommendedfood.Data.OnItemClickLitener;
 import tw.edu.fcu.recommendedfood.R;
 import tw.edu.fcu.recommendedfood.Server.HttpCall;
@@ -99,40 +102,78 @@ public class FoodTextSeachActivity extends AppCompatActivity {
         foodTextSeachAdapter.setOnItemClickLitener(new OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-                params.clear();
-                params.put("query_string", "5 " + foodTextSeachAdapter.foodTextSearchDatas.get(position).getFoodId());
-                httpCallPost.setParams(params);
-                new HttpRequest() {
+//                params.clear();
+//                params.put("query_string", "5 " + foodTextSeachAdapter.foodTextSearchDatas.get(position).getFoodId());
+//                httpCallPost.setParams(params);
+//                new HttpRequest() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        super.onResponse(response);
+//                        try {
+//                            Log.v("abc", response);
+//                            FoodTextSearchData foodTextSearchData = new FoodTextSearchData();
+//                            ArrayList<FoodShopData> foodShopDatas = new ArrayList<FoodShopData>();
+//                            JSONArray jsonArray = new JSONArray(response);
+//                            JSONObject jsonData = jsonArray.getJSONObject(0);
+//
+//                            foodTextSearchData.setShopName(jsonData.getString("shop_name"));
+//                            String food[] = jsonData.getString("food").split(",");
+//                            String price[] = jsonData.getString("price").split(",");
+//                            String calorie[] = jsonData.getString("calorie").split(",");
+//                            String plasticizer[] = jsonData.getString("plasticizer").split(",");
+////                            String b[] = jsonData.getString("b").split(",");
+////                            String c[] = jsonData.getString("b").split(",");
+//                            foodTextSearchData.setAddress(jsonData.getString("address"));
+//
+//                            Log.v("abc", food.length + "");
+//                            Log.v("abc", jsonData.getString("shop_name") + "");
+//                            for (int i = 0; i < food.length; i++) {
+//                                foodShopDatas.add(new FoodShopData(food[i], price[i], calorie[i], plasticizer[i], "1"));
+//                            }
+//                            foodTextSearchData.setFoodShopData(foodShopDatas);
+//                            foodTextShopAdapter.setFoodData(foodTextSearchData);
+//                        } catch (Exception e) {
+//                        }
+//                    }
+//                }.execute(httpCallPost);
+
+                String searchKey = foodTextSeachAdapter.getItem(position).getShopName() + "_" + foodTextSeachAdapter.getItem(position).getFoodId();
+                Log.v("datadata", searchKey);
+                final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference().child("food_note_table").child(searchKey);
+
+                myRef.addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onResponse(String response) {
-                        super.onResponse(response);
-                        try {
-                            Log.v("abc", response);
-                            FoodTextSearchData foodTextSearchData = new FoodTextSearchData();
-                            ArrayList<FoodShopData> foodShopDatas = new ArrayList<FoodShopData>();
-                            JSONArray jsonArray = new JSONArray(response);
-                            JSONObject jsonData = jsonArray.getJSONObject(0);
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        FoodTextSearchData foodTextSearchData = new FoodTextSearchData();
+                        ArrayList<FoodShopData> foodShopDatas = new ArrayList<FoodShopData>();
 
-                            foodTextSearchData.setShopName(jsonData.getString("shop_name"));
-                            String food[] = jsonData.getString("food").split(",");
-                            String price[] = jsonData.getString("price").split(",");
-                            String calorie[] = jsonData.getString("calorie").split(",");
-                            String plasticizer[] = jsonData.getString("plasticizer").split(",");
-//                            String b[] = jsonData.getString("b").split(",");
-//                            String c[] = jsonData.getString("b").split(",");
-                            foodTextSearchData.setAddress(jsonData.getString("address"));
+                        String food[] = null;
+                        String price[] = null;
+                        String calorie[] = null;
+                        String plasticizer[] = null;
+                        Log.v("datadata", dataSnapshot.child(dataSnapshot.getKey()) + "");
 
-                            Log.v("abc",food.length+"");
-                            Log.v("abc",jsonData.getString("shop_name")+"");
-                            for (int i = 0; i < food.length; i++) {
-                                foodShopDatas.add(new FoodShopData(food[i], price[i], calorie[i], plasticizer[i], "1"));
-                            }
-                            foodTextSearchData.setFoodShopData(foodShopDatas);
-                            foodTextShopAdapter.setFoodData(foodTextSearchData);
-                        } catch (Exception e) {
+                        foodTextSearchData.setShopName(dataSnapshot.child("shop_name").getValue() + "");
+                        food = (dataSnapshot.child("food").getValue() + "").split(",");
+                        price = (dataSnapshot.child("price").getValue() + "").split(",");
+                        calorie = (dataSnapshot.child("calorie").getValue() + "").split(",");
+                        plasticizer = (dataSnapshot.child("plasticizer").getValue() + "").split(",");
+                        foodTextSearchData.setAddress(dataSnapshot.child("address").getValue() + "");
+
+                        for (int i = 0; i < food.length; i++) {
+                            foodShopDatas.add(new FoodShopData(food[i], price[i], calorie[i], plasticizer[i], "1"));
                         }
+                        foodTextSearchData.setFoodShopData(foodShopDatas);
+                        foodTextShopAdapter.setFoodData(foodTextSearchData);
+
                     }
-                }.execute(httpCallPost);
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
                 shopDialog.show();
             }
 
@@ -154,36 +195,38 @@ public class FoodTextSeachActivity extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            params.put("query_string", "3 " + s.toString());
-            httpCallPost.setParams(params);
+//            params.put("query_string", "3 " + s.toString());
+//            httpCallPost.setParams(params);
             foodTextSeachAdapter.removeItem();
-//            getFireBase(s.toString());
+            if (!s.toString().trim().equals("")) {
+                getFireBase(s.toString());
+            }
 
 
-            new HttpRequest() {
-                @Override
-                public void onResponse(String response) {
-                    super.onResponse(response);
-                    params.clear();
-                    try {
-                        Log.v("response", response);
-                        JSONArray jsonArray = new JSONArray(response);
-
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject jsonData = jsonArray.getJSONObject(i);
-
-                            String foodId = jsonData.getString("food_id");
-                            String shopName = jsonData.getString("shop_name");
-                            String address = jsonData.getString("address");
-                            String phone = jsonData.getString("phone");
-
-                            foodTextSeachAdapter.addItem(new FoodTextSearchData(foodId, "店名：" + shopName, "地址：" + address, "電話：" + phone));
-                            Log.v("json", foodTextSeachAdapter.getItemCount() + "");
-                        }
-                    } catch (Exception e) {
-                    }
-                }
-            }.execute(httpCallPost);
+//            new HttpRequest() {
+//                @Override
+//                public void onResponse(String response) {
+//                    super.onResponse(response);
+//                    params.clear();
+//                    try {
+//                        Log.v("response", response);
+//                        JSONArray jsonArray = new JSONArray(response);
+//
+//                        for (int i = 0; i < jsonArray.length(); i++) {
+//                            JSONObject jsonData = jsonArray.getJSONObject(i);
+//
+//                            String foodId = jsonData.getString("food_id");
+//                            String shopName = jsonData.getString("shop_name");
+//                            String address = jsonData.getString("address");
+//                            String phone = jsonData.getString("phone");
+//
+//                            foodTextSeachAdapter.addItem(new FoodTextSearchData(foodId, "店名：" + shopName, "地址：" + address, "電話：" + phone));
+//                            Log.v("json", foodTextSeachAdapter.getItemCount() + "");
+//                        }
+//                    } catch (Exception e) {
+//                    }
+//                }
+//            }.execute(httpCallPost);
         }
     }
 
@@ -197,7 +240,7 @@ public class FoodTextSeachActivity extends AppCompatActivity {
                     String address = msg.getData().getString("Address");
                     String phone = msg.getData().getString("Phone");
 
-                    foodTextSeachAdapter.addItem(new FoodTextSearchData(foodId, "店名：" + shopName, "地址：" + address, "電話：" + phone));
+                    foodTextSeachAdapter.addItem(new FoodTextSearchData(foodId, shopName, address, phone));
 
                     break;
                 }
@@ -206,14 +249,30 @@ public class FoodTextSeachActivity extends AppCompatActivity {
         }
     };
 
-    public void getFireBase(String searchId) {
+    public void getFireBase(final String searchId) {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
+        DatabaseReference myRef = database.getReference().child("food_note_table");
+        Query query = myRef.orderByKey().startAt(searchId).limitToFirst(5);
 
-        myRef.child("food_note_table").child(searchId).addValueEventListener(new ValueEventListener() {
+        query.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                new FireBaseThread(dataSnapshot).start();
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                new FireBaseThread(dataSnapshot, searchId).start();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
             }
 
             @Override
@@ -225,28 +284,41 @@ public class FoodTextSeachActivity extends AppCompatActivity {
 
     class FireBaseThread extends Thread {
         private DataSnapshot dataSnapshot;
+        String keyword;
+        ArrayList<String> title = new ArrayList<String>() {{
+            add("FoodId");//3
+            add("ShopName");//8
+            add("Address");//0
+            add("Phone");//5
+        }};
+        ArrayList<Integer> num = new ArrayList<Integer>() {{
+            add(3);//3
+            add(8);//8
+            add(0);//0
+            add(5);//5
+        }};
 
-        public FireBaseThread(DataSnapshot dataSnapshot) {
+        public FireBaseThread(DataSnapshot dataSnapshot, String keyword) {
             this.dataSnapshot = dataSnapshot;
+            this.keyword = keyword;
         }
 
         @Override
         public void run() {
-            String content = "內容";
-
+            ArrayList<String> tempStr = new ArrayList<>();
             for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                if (ds.getKey().equals("article")) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("FoodId",ds.child("food_id").getValue()+"");
-                    bundle.putString("ShopName",ds.child("shop_name").getValue()+"");
-                    bundle.putString("Address",ds.child("address").getValue()+"");
-                    bundle.putString("Phone",ds.child("phone").getValue()+"");
-
-                    Message msg = new Message();
-                    msg.what = AdapterFoodUpdate;
-                    msg.setData(bundle);
-                    handler.sendMessage(msg);
+                tempStr.add(ds.getValue() + "");
+            }
+            if (tempStr.get(tempStr.size() - 1).contains(keyword)) {
+                Bundle bundle = new Bundle();
+                for (int i = 0; i < 4; i++) {
+                    bundle.putString(title.get(i), tempStr.get(num.get(i)));
                 }
+//
+                Message msg = new Message();
+                msg.what = AdapterFoodUpdate;
+                msg.setData(bundle);
+                handler.sendMessage(msg);
             }
         }
     }

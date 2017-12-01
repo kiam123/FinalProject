@@ -281,6 +281,7 @@ public class ArticleFragment extends Fragment {
         if (id == R.id.menuEdit) {
             Intent intent = new Intent();
             intent.setClass(getActivity(), ArticleCommandActivity.class);
+            intent.putExtra("Type",currentIndex+"");
             startActivity(intent);
             return true;
         }

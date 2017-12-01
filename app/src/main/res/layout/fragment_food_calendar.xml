@@ -67,6 +67,11 @@
                 android:layout_height="wrap_content">
             </FrameLayout>
 
+            <!--<tw.edu.fcu.recommendedfood.Widget.ChildViewPager-->
+                <!--android:id="@+id/viewpager2"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="450dp" />-->
+
         </LinearLayout>
     </tw.edu.fcu.recommendedfood.Widget.VerticalScrollView>
 

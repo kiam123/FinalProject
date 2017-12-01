@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:padding="20dp"
             android:textSize="16dp"
-            android:text="筆記本" />
+            android:text="記錄食物冊" />
 
     </LinearLayout>
 </android.support.v7.widget.CardView>

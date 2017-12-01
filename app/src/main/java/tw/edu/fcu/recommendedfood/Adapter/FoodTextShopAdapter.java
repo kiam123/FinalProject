@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import tw.edu.fcu.recommendedfood.Activity.FoodCalorieBarChartFragmenet;
 import tw.edu.fcu.recommendedfood.Activity.FoodGpsDialogShopActivity;
 import tw.edu.fcu.recommendedfood.Activity.FoodTextSeachActivity;
 import tw.edu.fcu.recommendedfood.Data.FoodTextSearchData;
@@ -98,6 +99,7 @@ public class FoodTextShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     Log.v("asdasdasd",price);
                     if (isInsert) {
                         Toast.makeText(mContext, "新增成功", Toast.LENGTH_SHORT).show();
+//                        FoodCalorieBarChartFragmenet.updateChart();
                     } else {
                         Toast.makeText(mContext, "新增失敗", Toast.LENGTH_SHORT).show();
                     }

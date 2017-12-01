@@ -94,7 +94,7 @@ public class HomePageDBHelper extends SQLiteOpenHelper implements Serializable {
     public Integer deleteData(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        return db.delete(TABLE_NAME, "ID = ?", new String[]{id});
+        return db.delete(TABLE_NAME, "ARICLE_ID = ?", new String[]{id});
     }
 
     @Override

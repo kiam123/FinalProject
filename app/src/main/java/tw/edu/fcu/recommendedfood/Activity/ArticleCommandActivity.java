@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,6 +17,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -24,10 +37,12 @@ import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
+import tw.edu.fcu.recommendedfood.Data.ArticleBlogData;
+import tw.edu.fcu.recommendedfood.Data.ArticleBlogUploadData;
+import tw.edu.fcu.recommendedfood.Data.LoginContext;
 import tw.edu.fcu.recommendedfood.ImgurLib.DocumentHelper;
 import tw.edu.fcu.recommendedfood.ImgurLib.ImageResponse;
 import tw.edu.fcu.recommendedfood.ImgurLib.ImgurService;
-import tw.edu.fcu.recommendedfood.ImgurLib.NotificationHelper;
 import tw.edu.fcu.recommendedfood.R;
 import tw.edu.fcu.recommendedfood.Widget.RichTextEditor;
 
@@ -46,12 +61,15 @@ public class ArticleCommandActivity extends AppCompatActivity {
             Environment.getExternalStorageDirectory() + "/DCIM/Camera");
     private File mCurrentPhotoFile;// 照相机拍照得到的图片
 
-    List<String> comments;
+//    List<String> comments;
+    String comments="";
+    int position =0;
 
-
+    private StorageReference mStorageRef;
     File chosenFile;
     private Uri returnUri;
     Call<ImageResponse> call;
+    boolean succuss = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,24 +77,32 @@ public class ArticleCommandActivity extends AppCompatActivity {
         setContentView(R.layout.activity_article_command);
 
         initView();
+        initData();
     }
 
     public void initView() {
         edtTitle = (EditText) findViewById(R.id.edt_title);
         edtMsg = (RichTextEditor) findViewById(R.id.edt_msg);
-        fragment_toolbar = (Toolbar)findViewById(R.id.fragment_toolbar);
+        fragment_toolbar = (Toolbar) findViewById(R.id.fragment_toolbar);
         setSupportActionBar(fragment_toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
+    private void initData() {
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+    }
+
     public void btnDoneCommand(View view) {
-        boolean succuss = false;
+
+        if(edtTitle.getText().toString().trim().equals("")){
+            return;
+        }
         String shortSentences = "";
-        comments = new ArrayList<>();
+//        comments = new ArrayList<>();
         //TODO 可能要把檔案
 
-        final NotificationHelper notificationHelper = new NotificationHelper(this.getApplicationContext());
-        notificationHelper.createUploadingNotification();
+//        final NotificationHelper notificationHelper = new NotificationHelper(this.getApplicationContext());
+//        notificationHelper.createUploadingNotification();
 
         ImgurService imgurService = ImgurService.retrofit.create(ImgurService.class);
 
@@ -84,12 +110,15 @@ public class ArticleCommandActivity extends AppCompatActivity {
             if (edtMsg.checkImageExist(i)) {
                 //TODO 可能要用File來存下uri
                 returnUri = Uri.parse(edtMsg.buildEditData().get(i).imagePath);
-                chosenFile = new File(returnUri+"");
+//                chosenFile = new File(returnUri+"");
+                uploadImg(edtMsg.buildEditData().get(i).imagePath);
+                Log.v("edit_text", "" + edtMsg.buildEditData().get(i).imagePath);
+
+//                edtMsg.dataList.get(i).imagePath = "<img src=\"http://i.imgur.com/RyFb0yU.jpg\"/>";//http://i.imgur.com/RyFb0yU.jpg
+////                Log.v("edt123",edtMsg.dataList.get(i).imagePath);
+//                comments.add("<img src=\"http://i.imgur.com/RyFb0yU.jpg\"/><br>");
 
 
-                edtMsg.dataList.get(i).imagePath = "<img src=\"http://i.imgur.com/RyFb0yU.jpg\"/>";//http://i.imgur.com/RyFb0yU.jpg
-//                Log.v("edt123",edtMsg.dataList.get(i).imagePath);
-                comments.add("<img src=\"http://i.imgur.com/RyFb0yU.jpg\"/><br>");
 //                call = imgurService.postImage("", "", "", "",
 //                        MultipartBody.Part.createFormData(
 //                                "image",
@@ -124,28 +153,89 @@ public class ArticleCommandActivity extends AppCompatActivity {
 //                        t.printStackTrace();
 //                    }
 //                });
-            }else{
-                comments.add("<p>" +edtMsg.buildEditData().get(i).inputStr+"</p><br>");
+            } else {
+                comments += "<p>" + edtMsg.buildEditData().get(i).inputStr + "</p><br>";
+//                comments.add("<p>" + edtMsg.buildEditData().get(i).inputStr + "</p><br>");
 //                edtMsg.dataList.get(i).inputStr = "<p>" +edtMsg.buildEditData().get(i).inputStr+"</p><br>";
 //                Log.v("edt123",edtMsg.dataList.get(i).inputStr);
             }
         }
-        for (int i = 0; i < comments.size(); i++) {
-//            RichTextEditor.EditData editData = edtMsg.buildEditData().get(i);
-//            Log.v("edit_text", "" + editData.toString());
-            Log.v("edit_text", "" + comments.get(i));
-        }
+//        for (int i = 0; i < comments.size(); i++) {
+////            RichTextEditor.EditData editData = edtMsg.buildEditData().get(i);
+////            Log.v("edit_text", "" + editData.toString());
+//            Log.v("edit_text", "" + comments.get(i));
+//        }
 
-
+        Log.v("edit_text", "" + succuss);
         //TODO 還沒完成短語的字串切割
-        if(succuss == true) {
-//        commitMsg(comments,shortSentences);
-//        finish();
-        }
+
     }
 
-    public void commitMsg(List<String> comments,String shortSentences) {
+    private void uploadImg(String path) {
+        Uri file = Uri.fromFile(new File(path));
+        StorageReference riversRef = mStorageRef.child(file.getLastPathSegment());
+        UploadTask uploadTask = riversRef.putFile(file);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                setSuccuss(false);
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                comments += "<br><a href=\"" + downloadUrl.toString() + "\"<br>";
+                comments += "<img src=" + downloadUrl.toString() + "/><br>";
+                Log.v("edit_text",downloadUrl.toString());
+//                comments.add("<img src=\"" + downloadUrl.toString() + "\"/><br>");
+                setSuccuss(true);
+            }
+        });
+    }
 
+    public void setSuccuss(boolean succuss) {
+        this.succuss = succuss;
+
+        if (succuss == true) {
+            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+            final DatabaseReference myRef = database.getReference().child("article_title_table");
+            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Date myDate = new Date();
+                    int thisYear = myDate.getYear() + 1900;//thisYear = 2003
+                    int thisMonth = myDate.getMonth() + 1;//thisMonth = 5
+                    int thisDate = myDate.getDate();//thisDate = 30
+
+                    final ArticleBlogUploadData articleBlogUploadData = new ArticleBlogUploadData(
+                            LoginContext.getLoginContext().getAccount(),
+                            comments,
+                            (dataSnapshot.getChildrenCount()+1)+"",
+                            "0",
+                            thisYear + "/" + thisMonth + "/" + thisDate,
+                            edtTitle.getText().toString(),
+                            getIntent().getStringExtra("Type")
+                    );
+                    myRef.child((dataSnapshot.getChildrenCount()+1)+"").setValue(articleBlogUploadData, new DatabaseReference.CompletionListener() {
+                        public void onComplete(DatabaseError error, DatabaseReference ref) {
+                            if(error == null){
+                                Toast.makeText(ArticleCommandActivity.this, "發送成功", Toast.LENGTH_LONG).show();
+                            }else {
+                                Toast.makeText(ArticleCommandActivity.this, "發送失敗", Toast.LENGTH_LONG).show();
+                            }
+                            Log.v("aaasdasdas123",error+"");
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }
+        finish();
     }
 
     public void OnGalleryClick(View view) {
@@ -168,7 +258,7 @@ public class ArticleCommandActivity extends AppCompatActivity {
             returnUri = data.getData();
             insertBitmap(getRealFilePath(returnUri));
 
-            Log.v("filePath", ""+returnUri);
+            Log.v("filePath", "" + returnUri);
             String filePath;
             filePath = DocumentHelper.getPath(this, returnUri);
             Log.v("filePath", filePath);

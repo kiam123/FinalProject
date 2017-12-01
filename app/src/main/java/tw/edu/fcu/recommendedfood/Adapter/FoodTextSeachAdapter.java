@@ -46,6 +46,10 @@ public class FoodTextSeachAdapter extends RecyclerView.Adapter<RecyclerView.View
         this.notifyDataSetChanged();
     }
 
+    public FoodTextSearchData getItem(int position){
+        return foodTextSearchDatas.get(position);
+    }
+
     public void removeItem() {
         foodTextSearchDatas.clear();
     }

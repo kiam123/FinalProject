@@ -40,6 +40,11 @@ public class ArticleAdapter extends BaseAdapter {
         this.notifyDataSetChanged();
     }
 
+    public void deleteItem(int pos){
+        itemDatas.remove(pos);
+        notifyDataSetChanged();
+    }
+
     private class ViewHolder{
         TextView count, title, content;
     }
@@ -49,8 +54,7 @@ public class ArticleAdapter extends BaseAdapter {
         return itemDatas.size();
     }
 
-    @Override
-    public Object getItem(int position) {
+    public ArticleData getItem(int position) {
         return itemDatas.get(position);
     }
 

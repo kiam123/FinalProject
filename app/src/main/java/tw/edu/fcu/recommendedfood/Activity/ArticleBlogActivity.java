@@ -34,12 +34,14 @@ import com.google.firebase.database.ValueEventListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
 import tw.edu.fcu.recommendedfood.Adapter.ArticleBlogAdapter;
 import tw.edu.fcu.recommendedfood.Data.ArticleBlogData;
 import tw.edu.fcu.recommendedfood.Data.ArticleData;
+import tw.edu.fcu.recommendedfood.Data.ArticleQuestionData;
 import tw.edu.fcu.recommendedfood.Data.LoginContext;
 import tw.edu.fcu.recommendedfood.R;
 import tw.edu.fcu.recommendedfood.Server.HomePageDBHelper;
@@ -71,6 +73,8 @@ public class ArticleBlogActivity extends AppCompatActivity {
     public static final int AdapterCommentUpdate = 2;
     public static final int Update = 5;
 
+    public static final int UpdateData = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +104,8 @@ public class ArticleBlogActivity extends AppCompatActivity {
             articleData = (ArticleData) intent.getSerializableExtra(ArticleClassificationHotFragment.ARTICLEDATA);
         }
     }
+
+
 
     public void getArticle() {
         httpCallPost = new HttpCall();
@@ -248,7 +254,7 @@ public class ArticleBlogActivity extends AppCompatActivity {
                 if (heightDiff > 100) { // 99% of the time the height diff will be due to a keyboard.
 
                     if (isOpened == true) {
-                        Toast.makeText(ArticleBlogActivity.this, "123", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(ArticleBlogActivity.this, "123", Toast.LENGTH_LONG).show();
                         //Do two things, make the view top visible and the editText smaller
                         lnLayout1.setVisibility(View.GONE);
                         lnLayout2.setVisibility(View.VISIBLE);
@@ -360,27 +366,64 @@ public class ArticleBlogActivity extends AppCompatActivity {
         int thisYear = myDate.getYear() + 1900;//thisYear = 2003
         int thisMonth = myDate.getMonth() + 1;//thisMonth = 5
         int thisDate = myDate.getDate();//thisDate = 30
-        params3.put("Query", "POST");
-        params3.put("account_id", LoginContext.getLoginContext().getAccount());
-        params3.put("article_id", articleData.getArticleId());
-        params3.put("comments", messenge);
-        params3.put("date", thisYear + "/" + thisMonth + "/" + thisDate);
-        params3.put("time", new java.text.SimpleDateFormat("HH:mm").format(myDate));
-        httpCallPost3.setParams(params3);
-        new HttpRequest() {
+//        params3.put("Query", "POST");
+//        params3.put("account_id", LoginContext.getLoginContext().getAccount());
+//        params3.put("article_id", articleData.getArticleId());
+//        params3.put("comments", messenge);
+//        params3.put("date", thisYear + "/" + thisMonth + "/" + thisDate);
+//        params3.put("time", new java.text.SimpleDateFormat("HH:mm").format(myDate));
+//        httpCallPost3.setParams(params3);
+//        new HttpRequest() {
+//            @Override
+//            public void onResponse(String response) {
+//                super.onResponse(response);
+//                final String result = response;
+//                Log.v("abcd", response);
+//                if (result.equals("ok")) {
+//                    Toast.makeText(ArticleBlogActivity.this, "發送成功", Toast.LENGTH_LONG).show();
+//                } else {
+//                    Toast.makeText(ArticleBlogActivity.this, "發送失敗", Toast.LENGTH_LONG).show();
+//                }
+//                params3.clear();
+//            }
+//        }.execute(httpCallPost3);
+        final ArticleQuestionData articleQuestionData = new ArticleQuestionData(
+                            LoginContext.getLoginContext().getAccount(),
+                            articleData.getArticleId(),
+                            messenge, thisYear + "/" + thisMonth + "/" + thisDate,
+                            new java.text.SimpleDateFormat("HH:mm").format(myDate));
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference().child("article_title_table").child(articleData.getArticleId()).child("comments");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onResponse(String response) {
-                super.onResponse(response);
-                final String result = response;
-                Log.v("abcd", response);
-                if (result.equals("ok")) {
-                    Toast.makeText(ArticleBlogActivity.this, "發送成功", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(ArticleBlogActivity.this, "發送失敗", Toast.LENGTH_LONG).show();
-                }
-                params3.clear();
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                myRef.child(dataSnapshot.getChildrenCount()+"").setValue(articleQuestionData, new DatabaseReference.CompletionListener() {
+                    public void onComplete(DatabaseError error, DatabaseReference ref) {
+                        if(error == null){
+                            Toast.makeText(ArticleBlogActivity.this, "發送成功", Toast.LENGTH_LONG).show();
+                            articleBlogAdapter.addComment(new ArticleBlogData(
+                                    1,
+                                    articleQuestionData.getAccount_id(),
+                                    articleQuestionData.getComments(),
+                                    articleQuestionData.getDate() + " " + articleQuestionData.getTime()));
+                            articleBlogAdapter.updateData();
+                            edtReply.setText("");
+                            edtReply2.setText("");
+                        }else {
+                            Toast.makeText(ArticleBlogActivity.this, "發送失敗", Toast.LENGTH_LONG).show();
+                        }
+                        Log.v("aaasdasdas123",error+"");
+                    }
+                });
             }
-        }.execute(httpCallPost3);
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 
     public class NewTextWatcher implements TextWatcher {
@@ -409,7 +452,8 @@ public class ArticleBlogActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case AdapterArticleUpdate: {
-                    String article = (String) msg.obj;
+                    String article = (String) msg.getData().getString("Message");
+//                    String article = "<img src=\"https://firebasestorage.googleapis.com/v0/b/recommendedfood-84dfb.appspot.com/o/20171115_034503.jpg?alt=media&token=9ae7a078-8dfa-4588-a702-e2f937e1ec0d.jpg\"/><br>";
                     articleData.articleBlogData.setHtmlContent(article);
                     articleBlogAdapter.addItem(new ArticleBlogData(articleData.getTitle(), articleData.articleBlogData.getAuthor(), articleData.articleBlogData.getDate(),
                             articleData.articleBlogData.getTime(), articleData.articleBlogData.getHtmlContent(), 0));
@@ -430,7 +474,7 @@ public class ArticleBlogActivity extends AppCompatActivity {
                     break;
                 }
                 case Update: {
-                    Log.v("aaccd3","Update");
+                    Log.v("aaccd3", "Update");
                     articleBlogAdapter.updateData();
                     break;
                 }
@@ -442,7 +486,7 @@ public class ArticleBlogActivity extends AppCompatActivity {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
         Log.v("ancs", articleData.getArticleId());
-        myRef.child("article_title_table").child(articleData.getArticleId()).addValueEventListener(new ValueEventListener() {
+        myRef.child("article_title_table").child(articleData.getArticleId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 new FireBaseThread(dataSnapshot).start();
@@ -470,9 +514,15 @@ public class ArticleBlogActivity extends AppCompatActivity {
                 if (ds.getKey().equals("article")) {
 //                    DataSnapshot dsArticle = ds.child(ds.getKey());
 //                    Log.v("accd",ds.getValue()+"");
+//                    <img src='https://imgur.dcard.tw/lgIFICZ.jpg' />
+                    Log.v("accd","<img src='https://firebasestorage.googleapis.com/v0/b/recommendedfood-84dfb.appspot.com/o/20171115_034503.jpg?alt=media&token=9ae7a078-8dfa-4588-a702-e2f937e1ec0d.jpg'/><br>");
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Message", ds.getValue()+"");
+//                    bundle.putString("Message", "<img src=https://firebasestorage.googleapis.com/v0/b/recommendedfood-84dfb.appspot.com/o/20171115_034503.jpg?alt=media&token=9ae7a078-8dfa-4588-a702-e2f937e1ec0d.jpg'/><br>");
+//                    bundle.putString("Message", "<img src=\"https://firebasestorage.googleapis.com/v0/b/recommendedfood-84dfb.appspot.com/o/20171115_034503.jpg?alt=media&token=9ae7a078-8dfa-4588-a702-e2f937e1ec0d.jpg\"/><br>");
                     Message msg = new Message();
                     msg.what = AdapterArticleUpdate;
-                    msg.obj = (String) ds.getValue();
+                    msg.setData(bundle);
                     handler.sendMessage(msg);
                 } else if (ds.getKey().equals("comments")) {
                     int key = 0;

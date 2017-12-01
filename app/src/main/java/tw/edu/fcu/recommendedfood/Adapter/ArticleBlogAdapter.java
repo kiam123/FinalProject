@@ -3,6 +3,7 @@ package tw.edu.fcu.recommendedfood.Adapter;
 import android.content.Context;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import java.util.Comparator;
 
 import tw.edu.fcu.recommendedfood.Data.ArticleBlogData;
 import tw.edu.fcu.recommendedfood.Photo.PicassoImageGetter;
+import tw.edu.fcu.recommendedfood.Photo.PicassoImageGetter2;
 import tw.edu.fcu.recommendedfood.R;
 
 /**
@@ -38,6 +40,7 @@ public class ArticleBlogAdapter extends BaseAdapter {
     public static final int LAYOUT_COMMENT = 1;
 
     public ArticleBlogAdapter(Context context) {
+        this.context = context;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -54,7 +57,11 @@ public class ArticleBlogAdapter extends BaseAdapter {
     }
 
     public void updateData() {
-        Log.v("length2", articleCommentDatas.size() + "");
+
+        for (int i = articleBlogDatas.size()- 1; i > 0; i--) {
+            articleBlogDatas.remove(i);
+
+        }
 
         for (int i = 0; i < articleCommentDatas.size(); i++) {
             articleBlogDatas.add(articleCommentDatas.get(i));
@@ -117,9 +124,19 @@ public class ArticleBlogAdapter extends BaseAdapter {
                     discussViewHolder.txtAuthor.setText(blogData.getAuthor());
                     discussViewHolder.txtTime.setText(blogData.getTime());
 
+
+//                    Log.v("acccda123",discussViewHolder.txtHtmlContent.getText().toString());
+//                    discussViewHolder.txtHtmlContent.setMovementMethod(new LinkMovementMethod());
+//                    discussViewHolder.txtHtmlContent.setText(Html.fromHtml(discussViewHolder.txtHtmlContent.getText().toString(),
+//                            new PicassoImageGetter2(discussViewHolder.txtHtmlContent), null));
+
+
+
                     picassoImageGetter = new PicassoImageGetter(discussViewHolder.txtHtmlContent,
                             discussViewHolder.imageView.getResources(), Picasso.with(context));
                     htmlSpan = Html.fromHtml(blogData.getHtmlContent(), picassoImageGetter, null);
+                    Log.v("Html", htmlSpan + "");
+
                     discussViewHolder.txtHtmlContent.setText(htmlSpan);
 
                     convertView.setTag(discussViewHolder);
@@ -134,7 +151,8 @@ public class ArticleBlogAdapter extends BaseAdapter {
                     commentViewHolder.txtAuthor.setText(blogData.getAuthor());
                     commentViewHolder.txtTime.setText(blogData.getTime());
 
-                    Log.v("Html", position + "");
+//                    Log.v("Html", position + "");
+                    Log.v("Html", blogData.getHtmlContent() + "");
 //                    htmlSpan = Html.fromHtml(blogData.getHtmlContent());
 //                    htmlSpan = Html.fromHtml(blogData.getHtmlContent(), picassoImageGetter, null);
 //                    commentViewHolder.txtHtmlContent.setText(htmlSpan);
@@ -155,6 +173,14 @@ public class ArticleBlogAdapter extends BaseAdapter {
                             discussViewHolder.imageView.getResources(), Picasso.with(context));
                     htmlSpan = Html.fromHtml(blogData.getHtmlContent(), picassoImageGetter, null);
                     discussViewHolder.txtHtmlContent.setText(htmlSpan);
+
+
+
+//                    discussViewHolder.txtHtmlContent.setMovementMethod(new LinkMovementMethod());
+//                    discussViewHolder.txtHtmlContent.setText(Html.fromHtml(discussViewHolder.txtHtmlContent.getText().toString(),
+//                            new PicassoImageGetter2(discussViewHolder.txtHtmlContent), null));
+//                    Log.v("acccda123",discussViewHolder.txtHtmlContent.getText().toString());
+
                     break;
                 case LAYOUT_COMMENT:
                     commentViewHolder = (CommentViewHolder) convertView.getTag();
@@ -192,7 +218,7 @@ public class ArticleBlogAdapter extends BaseAdapter {
             @Override
             public int compare(ArticleBlogData o1, ArticleBlogData o2) {
                 try {
-                    return f.parse(o2.getTime()).compareTo(f.parse(o1.getTime()));
+                    return f.parse(o1.getTime()).compareTo(f.parse(o2.getTime()));
                 } catch (ParseException e) {
                     throw new IllegalArgumentException(e);
                 }

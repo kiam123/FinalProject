@@ -178,21 +178,21 @@ public class GameFragment extends Fragment {
             @Override
             public void setOnClick(int pos) {
                 if (pos == 1 && !win) {
-                    if((index1+1) < 5) {
-                        setAdapter(simpleFragmentPagerAdapter1, viewPager1, txtTotal1, images.get(indexImage1[++index1]), 1);
-                        txtName1.setText(shopName.get(index1));
-                        Toast.makeText(getActivity(),"餐廳:"+shopName.get(index2+5)+" 勝利",Toast.LENGTH_SHORT).show();
+                    if((index2+1) < 5) {
+                        Toast.makeText(getActivity(),"餐廳:"+shopName.get(index1)+" 勝利",Toast.LENGTH_SHORT).show();
+                        setAdapter(simpleFragmentPagerAdapter2, viewPager2, txtTotal2, images.get(indexImage2[++index2]), 2);
+                        txtName2.setText(shopName.get(index2+5));
                     } else{
-                        Toast.makeText(getActivity(),"餐廳:"+shopName.get(index2+5)+" 獲得勝利",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),"餐廳:"+shopName.get(index1)+" 獲得勝利",Toast.LENGTH_SHORT).show();
                         win = true;
                     }
                 } else if (pos == 2 && !win) {
-                    if((index2+1) < 5) {
-                        setAdapter(simpleFragmentPagerAdapter2, viewPager2, txtTotal2, images.get(indexImage2[++index2]), 2);
-                        txtName2.setText(shopName.get(index2+5));
-                        Toast.makeText(getActivity(),"餐廳:"+shopName.get(index1)+" 勝利",Toast.LENGTH_SHORT).show();
+                    if((index1+1) < 5) {
+                        Toast.makeText(getActivity(),"餐廳:"+shopName.get(index2+5)+" 勝利",Toast.LENGTH_SHORT).show();
+                        setAdapter(simpleFragmentPagerAdapter1, viewPager1, txtTotal1, images.get(indexImage1[++index1]), 1);
+                        txtName1.setText(shopName.get(index1));
                     } else{
-                        Toast.makeText(getActivity(),"餐廳:"+shopName.get(index1)+" 獲得勝利",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),"餐廳:"+shopName.get(index2+5)+" 獲得勝利",Toast.LENGTH_SHORT).show();
                         win = true;
                     }
                 }

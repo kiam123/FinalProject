@@ -3,12 +3,20 @@ package tw.edu.fcu.recommendedfood.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String idField = "ID";
     private static final String secretCodeField = "CODE";
     public static final String checkboxField = "checkbox";
+    public static final int LoginUpdate = 1;
     String accountId = "";
     String name = "";
 
@@ -60,7 +69,8 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(LoginActivity.this, "帳密不能為空", Toast.LENGTH_LONG).show();
             return;
         }
-        checkAccount(account, password);
+        getFireBase(account, password);
+//        checkAccount(account, password);
     }
 
     private void checkAccount(String account, String password) {
@@ -99,6 +109,55 @@ public class LoginActivity extends AppCompatActivity {
         setLoginState();
     }
 
+    public void getFireBase(final String account, final String password) {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+        myRef.child("account_table").child(account).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(account.equals(dataSnapshot.getKey()) && password.equals(dataSnapshot.child("password").getValue()+"")) {
+                    accountId = dataSnapshot.child("account_id").getValue()+"";
+                    name = dataSnapshot.child("name").getValue()+"";
+                    setLoginState();
+                    saveData();
+                }else {
+                    Toast.makeText(LoginActivity.this, "帳號或密碼輸入有誤！！請重新輸入正確帳密", Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+//
+//    class FireBaseThread extends Thread {
+//        private DataSnapshot dataSnapshot;
+//
+//        public FireBaseThread(DataSnapshot dataSnapshot) {
+//            this.dataSnapshot = dataSnapshot;
+//        }
+//
+//        @Override
+//        public void run() {
+//            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+//                Bundle bundle = new Bundle();
+//
+//                bundle.putString("AccountId",ds.child("account_id").getValue()+"");
+//                bundle.putString("ArticleId",ds.child("article_id").getValue()+"");
+//                bundle.putInt("Click",Integer.parseInt(ds.child("click").getValue()+""));
+//                bundle.putString("Date",ds.child("date").getValue()+"");
+//                bundle.putString("Time",ds.child("time").getValue()+"");
+//                bundle.putString("Title",ds.child("title").getValue()+"");
+//
+//                Message msg = new Message();
+//                msg.what = LoginUpdate;
+//                msg.setData(bundle);
+//                handler.sendMessage(msg);
+//            }
+//        }
+//    }
+
     public void registerButton(View view) {
         Intent intent = new Intent();
         intent.setClass(LoginActivity.this, RegisterActivity.class);
@@ -122,7 +181,8 @@ public class LoginActivity extends AppCompatActivity {
         mEditPassword.setText(settings.getString(secretCodeField, "admin"));
         mCBoxPasswordRemember.setChecked(settings.getBoolean(checkboxField, false));
         if (mCBoxPasswordRemember.isChecked()) {
-            checkAccount(mEditId.getText().toString(), mEditPassword.getText().toString());
+            getFireBase(mEditId.getText().toString(), mEditPassword.getText().toString());
+//            checkAccount(mEditId.getText().toString(), mEditPassword.getText().toString());
         }
     }
 

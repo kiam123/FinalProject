@@ -165,7 +165,7 @@
                 android:id="@+id/txt_prompt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="歡迎使用飲食筆記本"
+                android:text="歡迎使用記錄食物冊"
                 android:textColor="#000000"
                 android:textSize="25dp" />
         </LinearLayout>
