@@ -67,11 +67,7 @@ public class FoodCalendarFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initFragment2();
         initView(view);
-
-//        initSpinner2(view);
-//        initSpinner(view);
     }
 
     public void initView(View rootView) {
@@ -106,11 +102,6 @@ public class FoodCalendarFragment extends Fragment {
 
             }
         });
-
-
-//        viewPager2 = (ChildViewPager) rootView.findViewById(R.id.viewpager2);
-//        viewPager2.setAdapter(new SimpleFragmentPagerAdapter(getChildFragmentManager(), fragmentArrayList));
-//        initSpinner2(viewGroup);
     }
 
     public void initSpinner(View view){
@@ -139,7 +130,6 @@ public class FoodCalendarFragment extends Fragment {
 
     private void initFragment() {
         fragmentArrayList = new ArrayList<Fragment>(4);
-//        fragmentArrayList.add(new FoodCalorieBarChartFragmenet());
         fragmentArrayList.add(new FoodCalorieBarChartFragmenet());
         fragmentArrayList.add(new FoodCalorieLineChartFragmenet());
         fragmentArrayList.add(new FoodPoisonBarChartFragmenet());
@@ -153,8 +143,17 @@ public class FoodCalendarFragment extends Fragment {
         /*---------------------------------------------↓需要用v4 lib------------------------------------------------------*/
 
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+        Log.v("mCurrentFrgment",""+mCurrentFrgment);
         //判断当前的Fragment是否为空，不为空则隐藏
         if (null != mCurrentFrgment) {
+            if(mCurrentFrgment instanceof FoodCalorieBarChartFragmenet)
+                ((FoodCalorieBarChartFragmenet) mCurrentFrgment).update();
+            else if(mCurrentFrgment instanceof FoodCalorieLineChartFragmenet)
+                ((FoodCalorieLineChartFragmenet) mCurrentFrgment).update();
+            else if(mCurrentFrgment instanceof FoodPoisonBarChartFragmenet)
+                ((FoodPoisonBarChartFragmenet) mCurrentFrgment).update();
+            else if(mCurrentFrgment instanceof FoodPoisonLineChartFragmenet)
+                ((FoodPoisonLineChartFragmenet) mCurrentFrgment).update();
             ft.hide(mCurrentFrgment);
         }
         //先根据Tag从FragmentTransaction事物获取之前添加的Fragment
@@ -202,82 +201,5 @@ public class FoodCalendarFragment extends Fragment {
         super.onResume();
         Log.v("onResume","onResume");
         initSpinner(viewGroup);
-//        changeTab(0);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-    public void initSpinner2(View view){
-        spinner = (Spinner) view.findViewById(R.id.spinner);
-        List<String> list = new ArrayList<>();
-        list.add("每週卡路里長條圖");
-        list.add("每週卡路里折線圖");
-        list.add("每週毒物長條圖");
-        list.add("每週毒物折線圖");
-        foodGraphSpinnerAdapter = new FoodGraphSpinnerAdapter(getActivity(), list);
-        spinner.setAdapter(foodGraphSpinnerAdapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                foodGraphSpinnerAdapter.setPosition(position);
-                viewPager2.setCurrentItem(position);
-//                changeTab(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
-
-    private void initFragment2() {
-        fragmentArrayList = new ArrayList<Fragment>(4);
-        FoodCalorieBarChartFragmenet foodCalorieBarChartFragmenet = new FoodCalorieBarChartFragmenet();
-        FoodCalorieLineChartFragmenet foodCalorieLineChartFragmenet = new FoodCalorieLineChartFragmenet();
-        FoodPoisonBarChartFragmenet foodPoisonBarChartFragmenet = new FoodPoisonBarChartFragmenet();
-        FoodPoisonLineChartFragmenet foodPoisonLineChartFragmenet = new FoodPoisonLineChartFragmenet();
-
-        fragmentArrayList.add(foodCalorieBarChartFragmenet);
-        fragmentArrayList.add(foodCalorieLineChartFragmenet);
-        fragmentArrayList.add(foodPoisonBarChartFragmenet);
-        fragmentArrayList.add(foodPoisonLineChartFragmenet);
-
-//        changeTab(0);
-    }
-
-    //設定viewpager的adapter
-    class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
-        ArrayList<Fragment> fragmentArrayList = new ArrayList<Fragment>();
-        String[] mTitles  = {"每週卡路里長條圖","每週卡路里折線圖","每週毒物長條圖","每週毒物折線圖"};
-
-        public SimpleFragmentPagerAdapter(FragmentManager fm, ArrayList<Fragment> fragmentArrayList) {
-            super(fm);
-            this.fragmentArrayList = fragmentArrayList;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return fragmentArrayList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return fragmentArrayList.size();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mTitles[position];
-        }
     }
 }

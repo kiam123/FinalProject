@@ -125,7 +125,7 @@ public class FoodPoisonLineChartFragmenet extends Fragment {
             yValues.add(new Entry(temp, dayOfWeek - i));
         }
 
-        LineDataSet set1 = new LineDataSet(yValues, "Data Set 1");
+        LineDataSet set1 = new LineDataSet(yValues, "毒物");
         set1.setFillAlpha(1010);
         set1.setColor(Color.RED);
         set1.setLineWidth(3f);
@@ -141,5 +141,9 @@ public class FoodPoisonLineChartFragmenet extends Fragment {
         mChart.setData(data);
         mChart.setData(data);
         mChart.setDescription("");
+    }
+
+    public void update (){
+        setChart();
     }
 }

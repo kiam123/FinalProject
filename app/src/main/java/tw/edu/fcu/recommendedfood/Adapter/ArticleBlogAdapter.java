@@ -24,6 +24,7 @@ import java.util.Comparator;
 import tw.edu.fcu.recommendedfood.Data.ArticleBlogData;
 import tw.edu.fcu.recommendedfood.Photo.PicassoImageGetter;
 import tw.edu.fcu.recommendedfood.Photo.PicassoImageGetter2;
+import tw.edu.fcu.recommendedfood.Photo.PicassoImageGetter3;
 import tw.edu.fcu.recommendedfood.R;
 
 /**
@@ -132,11 +133,15 @@ public class ArticleBlogAdapter extends BaseAdapter {
 
 
 
-                    picassoImageGetter = new PicassoImageGetter(discussViewHolder.txtHtmlContent,
-                            discussViewHolder.imageView.getResources(), Picasso.with(context));
-                    htmlSpan = Html.fromHtml(blogData.getHtmlContent(), picassoImageGetter, null);
-                    Log.v("Html", htmlSpan + "");
+//                    picassoImageGetter = new PicassoImageGetter(discussViewHolder.txtHtmlContent,
+//                            discussViewHolder.imageView.getResources(), Picasso.with(context));
+//                    htmlSpan = Html.fromHtml(blogData.getHtmlContent(), picassoImageGetter, null);
+//                    Log.v("Html", htmlSpan + "");
+//
+//                    discussViewHolder.txtHtmlContent.setText(htmlSpan);
+                    Log.v("Html", blogData.getHtmlContent() + "");
 
+                    htmlSpan = Html.fromHtml(blogData.getHtmlContent(), new PicassoImageGetter3(Picasso.with(context), discussViewHolder.txtHtmlContent), null);
                     discussViewHolder.txtHtmlContent.setText(htmlSpan);
 
                     convertView.setTag(discussViewHolder);
@@ -169,10 +174,10 @@ public class ArticleBlogAdapter extends BaseAdapter {
                     discussViewHolder.txtDate.setText(blogData.getDate());
                     discussViewHolder.txtTime.setText(blogData.getTime());
 
-                    picassoImageGetter = new PicassoImageGetter(discussViewHolder.txtHtmlContent,
-                            discussViewHolder.imageView.getResources(), Picasso.with(context));
-                    htmlSpan = Html.fromHtml(blogData.getHtmlContent(), picassoImageGetter, null);
-                    discussViewHolder.txtHtmlContent.setText(htmlSpan);
+//                    picassoImageGetter = new PicassoImageGetter(discussViewHolder.txtHtmlContent,
+//                            discussViewHolder.imageView.getResources(), Picasso.with(context));
+//                    htmlSpan = Html.fromHtml(blogData.getHtmlContent(), picassoImageGetter, null);
+//                    discussViewHolder.txtHtmlContent.setText(htmlSpan);
 
 
 
@@ -180,6 +185,10 @@ public class ArticleBlogAdapter extends BaseAdapter {
 //                    discussViewHolder.txtHtmlContent.setText(Html.fromHtml(discussViewHolder.txtHtmlContent.getText().toString(),
 //                            new PicassoImageGetter2(discussViewHolder.txtHtmlContent), null));
 //                    Log.v("acccda123",discussViewHolder.txtHtmlContent.getText().toString());
+
+                    Log.v("Html", blogData.getHtmlContent() + "");
+                    htmlSpan = Html.fromHtml(blogData.getHtmlContent(), new PicassoImageGetter3(Picasso.with(context), discussViewHolder.txtHtmlContent), null);
+                    discussViewHolder.txtHtmlContent.setText(htmlSpan);
 
                     break;
                 case LAYOUT_COMMENT:

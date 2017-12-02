@@ -84,7 +84,7 @@ public class FoodCalendarViewFragment extends Fragment {
                 df.format(date);
 
                 for (int i = 0; i < parent.getCount(); i++) {
-                    if(!(foodDBHelper.getDateData(date.getDate()+"/"+(date.getMonth()+1)+"/"+df.format(date)))) {
+                    if(!(foodDBHelper.getDateData((date.getDate())+"/"+(date.getMonth()+1)+"/"+df.format(date)))) {
                         parent.getChildAt(i).setBackgroundColor(
                                 Color.TRANSPARENT);
                     }

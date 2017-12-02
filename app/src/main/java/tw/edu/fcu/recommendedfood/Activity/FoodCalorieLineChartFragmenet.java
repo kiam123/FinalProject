@@ -17,6 +17,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
@@ -128,7 +129,7 @@ public class FoodCalorieLineChartFragmenet extends Fragment {
             yValues.add(new Entry(temp, dayOfWeek - i));
         }
 
-        LineDataSet set1 = new LineDataSet(yValues, "Data Set 1");
+        LineDataSet set1 = new LineDataSet(yValues, "卡路里");
         set1.setFillAlpha(1010);
         set1.setColor(Color.RED);
         set1.setLineWidth(3f);
@@ -144,5 +145,9 @@ public class FoodCalorieLineChartFragmenet extends Fragment {
         mChart.setData(data);
         mChart.setData(data);
         mChart.setDescription("");
+    }
+
+    public void update (){
+        setChart();
     }
 }

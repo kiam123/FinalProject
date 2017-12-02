@@ -69,6 +69,8 @@ public class ArticleCommandActivity extends AppCompatActivity {
     File chosenFile;
     private Uri returnUri;
     Call<ImageResponse> call;
+
+    boolean isImage = false;
     boolean succuss = false;
 
     @Override
@@ -108,6 +110,7 @@ public class ArticleCommandActivity extends AppCompatActivity {
 
         for (int i = 0; i < edtMsg.buildEditData().size(); i++) {
             if (edtMsg.checkImageExist(i)) {
+                isImage = true;
                 //TODO 可能要用File來存下uri
                 returnUri = Uri.parse(edtMsg.buildEditData().get(i).imagePath);
 //                chosenFile = new File(returnUri+"");
@@ -165,6 +168,13 @@ public class ArticleCommandActivity extends AppCompatActivity {
 ////            Log.v("edit_text", "" + editData.toString());
 //            Log.v("edit_text", "" + comments.get(i));
 //        }
+        if(!isImage){
+            uploadArticle();
+            finish();
+        }else {
+
+        }
+
 
         Log.v("edit_text", "" + succuss);
         //TODO 還沒完成短語的字串切割
@@ -197,45 +207,49 @@ public class ArticleCommandActivity extends AppCompatActivity {
         this.succuss = succuss;
 
         if (succuss == true) {
-            final FirebaseDatabase database = FirebaseDatabase.getInstance();
-            final DatabaseReference myRef = database.getReference().child("article_title_table");
-            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Date myDate = new Date();
-                    int thisYear = myDate.getYear() + 1900;//thisYear = 2003
-                    int thisMonth = myDate.getMonth() + 1;//thisMonth = 5
-                    int thisDate = myDate.getDate();//thisDate = 30
-
-                    final ArticleBlogUploadData articleBlogUploadData = new ArticleBlogUploadData(
-                            LoginContext.getLoginContext().getAccount(),
-                            comments,
-                            (dataSnapshot.getChildrenCount()+1)+"",
-                            "0",
-                            thisYear + "/" + thisMonth + "/" + thisDate,
-                            edtTitle.getText().toString(),
-                            getIntent().getStringExtra("Type")
-                    );
-                    myRef.child((dataSnapshot.getChildrenCount()+1)+"").setValue(articleBlogUploadData, new DatabaseReference.CompletionListener() {
-                        public void onComplete(DatabaseError error, DatabaseReference ref) {
-                            if(error == null){
-                                Toast.makeText(ArticleCommandActivity.this, "發送成功", Toast.LENGTH_LONG).show();
-                            }else {
-                                Toast.makeText(ArticleCommandActivity.this, "發送失敗", Toast.LENGTH_LONG).show();
-                            }
-                            Log.v("aaasdasdas123",error+"");
-                        }
-                    });
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
+            uploadArticle();
         }
         finish();
+    }
+
+
+    public void uploadArticle(){
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference().child("article_title_table");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Date myDate = new Date();
+                int thisYear = myDate.getYear() + 1900;//thisYear = 2003
+                int thisMonth = myDate.getMonth() + 1;//thisMonth = 5
+                int thisDate = myDate.getDate();//thisDate = 30
+
+                final ArticleBlogUploadData articleBlogUploadData = new ArticleBlogUploadData(
+                        LoginContext.getLoginContext().getAccount(),
+                        comments,
+                        (dataSnapshot.getChildrenCount()+1)+"",
+                        "0",
+                        thisYear + "/" + thisMonth + "/" + thisDate,
+                        edtTitle.getText().toString(),
+                        getIntent().getStringExtra("Type")
+                );
+                myRef.child((dataSnapshot.getChildrenCount()+1)+"").setValue(articleBlogUploadData, new DatabaseReference.CompletionListener() {
+                    public void onComplete(DatabaseError error, DatabaseReference ref) {
+                        if(error == null){
+                            Toast.makeText(ArticleCommandActivity.this, "發送成功", Toast.LENGTH_LONG).show();
+                        }else {
+                            Toast.makeText(ArticleCommandActivity.this, "發送失敗", Toast.LENGTH_LONG).show();
+                        }
+                        Log.v("aaasdasdas123",error+"");
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void OnGalleryClick(View view) {

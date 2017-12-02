@@ -53,6 +53,7 @@ public class FoodPoisonBarChartFragmenet extends Fragment {
 
         initDatebase();
         initChart(view);
+        setBarChart();
     }
 
     public void initDatebase() {
@@ -70,6 +71,10 @@ public class FoodPoisonBarChartFragmenet extends Fragment {
         xAxis.add("禮拜四");
         xAxis.add("禮拜五");
         xAxis.add("禮拜六");
+
+    }
+
+    public void setBarChart(){
         Calendar cal = Calendar.getInstance();
         int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
         cal.setTime(new Date());
@@ -117,7 +122,7 @@ public class FoodPoisonBarChartFragmenet extends Fragment {
             valueSet1.add(new BarEntry(temp, dayOfWeek-i));
         }
 
-        BarDataSet barDataSet = new BarDataSet(valueSet1, "卡路里");
+        BarDataSet barDataSet = new BarDataSet(valueSet1, "毒物");
         barDataSet.setValueTextSize(14f);
         barDataSet.setColor(Color.MAGENTA);
         dataSet.add(barDataSet);
@@ -131,5 +136,21 @@ public class FoodPoisonBarChartFragmenet extends Fragment {
         barChart.setExtraOffsets(0, 0, 0, 20);
         barChart.setData(barData);
         barChart.invalidate();
+    }
+
+    public void update (){
+        xAxis = new ArrayList<String>();
+        dataSet = new ArrayList<IBarDataSet>();
+        valueSet1 = new ArrayList<BarEntry>();
+
+        xAxis.add("禮拜日");
+        xAxis.add("禮拜一");
+        xAxis.add("禮拜二");
+        xAxis.add("禮拜三");
+        xAxis.add("禮拜四");
+        xAxis.add("禮拜五");
+        xAxis.add("禮拜六");
+
+        setBarChart();
     }
 }
