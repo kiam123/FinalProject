@@ -197,35 +197,25 @@ public class ArticleClassificationHotFragment extends Fragment implements Serial
         public void run() {
             String content = "內容";
             for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                DataSnapshot dsClick = ds.child("click");
-                DataSnapshot dsArticleId = ds.child("article_id");
-                DataSnapshot dsTitle = ds.child("title");
-                DataSnapshot dsAuthor = ds.child("account_id");
-                DataSnapshot dsDate = ds.child("date");
-                DataSnapshot dsTime = ds.child("time");
                 DataSnapshot dsType = ds.child("type");
                 String type = (String)dsType.getValue();
-//                Log.v("article123", ds.getKey());
-
                 Log.v("position11111",classofication+"");
                 if(type.equals(classofication+"") || (classofication+"").equals("0")) {
                     ArticleData tempArticleData = new ArticleData();
-                    tempArticleData.setCount(Integer.parseInt((String) dsClick.getValue()));
-                    tempArticleData.setArticleId((String) dsArticleId.getValue());
-                    tempArticleData.setTitle((String) dsTitle.getValue());
+                    tempArticleData.setCount(Integer.parseInt((String) ds.child("click").getValue()));
+                    tempArticleData.setArticleId((String) ds.child("article_id").getValue());
+                    tempArticleData.setTitle((String) ds.child("title").getValue());
                     tempArticleData.setContent(content);
-                    tempArticleData.articleBlogData.setDate((String) dsDate.getValue());
-                    tempArticleData.articleBlogData.setAuthor((String) dsAuthor.getValue());
-                    tempArticleData.articleBlogData.setTime((String) dsTime.getValue());
-                    Log.v("article123", (String) dsDate.getValue());
-
+                    tempArticleData.articleBlogData.setDate((String) ds.child("date").getValue());
+                    tempArticleData.articleBlogData.setAuthor((String) ds.child("account_id").getValue());
+                    tempArticleData.articleBlogData.setTime((String) ds.child("time").getValue());
+                    Log.v("article123", (String) ds.child("date").getValue());
 
                     Message msg = new Message();
                     msg.what = AdapterUpdate;
                     msg.obj = tempArticleData;
                     handler.sendMessage(msg);
                 }
-//                articleAdapter.addItem(tempArticleData,"hot");
             }
         }
     }

@@ -41,7 +41,7 @@ public class ArticleClassificationNewFragment extends Fragment {
     static final String ARTICLEDATA = "ARTICLEDATA";
     public static final int AdapterUpdate = 1;
     HttpCall httpCallPost;
-    int page;
+    int classofication;
 
     public static ArticleClassificationNewFragment create(int pageNumber) {
         ArticleClassificationNewFragment fragment = new ArticleClassificationNewFragment();
@@ -60,8 +60,8 @@ public class ArticleClassificationNewFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if(getArguments() != null){
-            page = getArguments().getInt(ArticleClassificationFragment.PAGE_NUMBER);
-            Log.v("PAGE_NUMBER",page+"");
+            classofication = getArguments().getInt(ArticleClassificationFragment.PAGE_NUMBER);
+            Log.v("PAGE_NUMBER", classofication +"");
         }
     }
 
@@ -116,8 +116,8 @@ public class ArticleClassificationNewFragment extends Fragment {
         httpCallPost.setMethodtype(HttpCall.POST);
         httpCallPost.setUrl("http://140.134.26.31/recommended_food_db/article_new_MySQL.php");//140.134.26.31
 
-        params.put("query_string", page+"");
-        Log.v("classofication",""+page);
+        params.put("query_string", classofication +"");
+        Log.v("classofication",""+ classofication);
         httpCallPost.setParams(params);
         postToServer(httpCallPost);
     }
@@ -194,28 +194,26 @@ public class ArticleClassificationNewFragment extends Fragment {
         public void run() {
             String content = "內容";
             for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                DataSnapshot dsClick = ds.child("click");
-                DataSnapshot dsArticleId = ds.child("article_id");
-                DataSnapshot dsTitle = ds.child("title");
-                DataSnapshot dsAuthor = ds.child("account_id");
-                DataSnapshot dsDate = ds.child("date");
-                DataSnapshot dsTime = ds.child("time");
+                DataSnapshot dsType = ds.child("type");
+                String type = (String)dsType.getValue();
+                Log.v("position11111",classofication+"");
 
-//                Log.v("article123", ds.getKey());
-                ArticleData tempArticleData = new ArticleData();
-                tempArticleData.setCount(Integer.parseInt((String) dsClick.getValue()));
-                tempArticleData.setArticleId((String) dsArticleId.getValue());
-                tempArticleData.setTitle((String) dsTitle.getValue());
-                tempArticleData.setContent(content);
-                tempArticleData.articleBlogData.setDate((String) dsDate.getValue());
-                tempArticleData.articleBlogData.setAuthor((String) dsAuthor.getValue());
-                tempArticleData.articleBlogData.setTime((String) dsTime.getValue());
+                if(type.equals(classofication+"") || (classofication+"").equals("0")) {
+                    ArticleData tempArticleData = new ArticleData();
+                    tempArticleData.setCount(Integer.parseInt((String) ds.child("click").getValue()));
+                    tempArticleData.setArticleId((String) ds.child("article_id").getValue());
+                    tempArticleData.setTitle((String) ds.child("title").getValue());
+                    tempArticleData.setContent(content);
+                    tempArticleData.articleBlogData.setDate((String) ds.child("date").getValue());
+                    tempArticleData.articleBlogData.setAuthor((String) ds.child("account_id").getValue());
+                    tempArticleData.articleBlogData.setTime((String) ds.child("time").getValue());
+                    Log.v("article123", (String) ds.child("date").getValue());
 
-
-                Message msg = new Message();
-                msg.what = AdapterUpdate;
-                msg.obj = tempArticleData;
-                handler.sendMessage(msg);
+                    Message msg = new Message();
+                    msg.what = AdapterUpdate;
+                    msg.obj = tempArticleData;
+                    handler.sendMessage(msg);
+                }
             }
         }
     }

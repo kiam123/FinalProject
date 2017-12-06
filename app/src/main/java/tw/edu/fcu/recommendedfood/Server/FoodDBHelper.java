@@ -106,7 +106,9 @@ public class FoodDBHelper extends SQLiteOpenHelper implements Serializable {
                 " where " + COL_2 + " = '" + account + "' and " +
                 COL_10 + " = '" + date + "'", null);
 
-        return res.getCount() > 0;
+        boolean flag = res.getCount() > 0;
+        res.close();
+        return flag;
     }
 
     public Cursor getAllData(String account, String date) {//取得所有資料

@@ -1,6 +1,8 @@
 package tw.edu.fcu.recommendedfood.Activity;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,11 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
@@ -67,7 +71,7 @@ public class HomePageSelfArticleFragment extends Fragment {
         articleAdapter = new ArticleAdapter(getActivity());
         listView.setAdapter(articleAdapter);
         listView.setOnItemClickListener(articleBlogOnItemClickListener);
-
+        listView.setOnItemLongClickListener(articleBlogOnItemLongClickListener);
     }
 
     //TODO 文章
@@ -128,6 +132,7 @@ public class HomePageSelfArticleFragment extends Fragment {
     private AdapterView.OnItemClickListener articleBlogOnItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
             Intent intent = new Intent();
             intent.putExtra(ARTICLEDATA, (ArticleData) articleAdapter.getItem(i));
             intent.setClass(getActivity(), ArticleBlogActivity.class);
@@ -135,27 +140,72 @@ public class HomePageSelfArticleFragment extends Fragment {
         }
     };
 
+    private AdapterView.OnItemLongClickListener articleBlogOnItemLongClickListener = new AdapterView.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("是否刪除 " + articleAdapter.getItem(position).getTitle());
+            builder.setCancelable(true);
+
+            builder.setPositiveButton(
+                    "確定",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                            Query applesQuery = ref.child("article_title_table").orderByChild("article_id").equalTo(articleAdapter.getItem(position).getArticleId());
+                            Query applesQuery2 = ref.child("account_collection_table").child(LoginContext.getLoginContext().getAccount()).
+                                    orderByChild("article_id").equalTo(articleAdapter.getItem(position).getArticleId());
+
+                            applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
+                                        appleSnapshot.getRef().removeValue();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                }
+                            });
+
+                            applesQuery2.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
+                                        appleSnapshot.getRef().removeValue();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                }
+                            });
+                            Toast.makeText(getActivity(), "刪除成功", Toast.LENGTH_SHORT).show();
+                            articleAdapter.deleteItem(position);
+                            dialog.cancel();
+                        }
+                    });
+
+            builder.setNegativeButton(
+                    "取消",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alert = builder.create();
+            alert.show();
+            return true;
+        }
+    };
+
     Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case AdapterCollectionUpdate: {
-                    int click = msg.getData().getInt("Click");
-                    String article_id = msg.getData().getString("ArticleId");
-                    String title = msg.getData().getString("Title");
-                    String content = "內容";
-                    String author = msg.getData().getString("AccountId");
-                    String date = msg.getData().getString("Date");
-                    String time = msg.getData().getString("Time");
-
-                    ArticleData tempArticleData = new ArticleData();
-                    tempArticleData.setCount(click);
-                    tempArticleData.setArticleId(article_id);
-                    tempArticleData.setTitle(title);
-                    tempArticleData.setContent(content);
-                    tempArticleData.articleBlogData.setDate(date);
-                    tempArticleData.articleBlogData.setAuthor(author);
-                    tempArticleData.articleBlogData.setTime(time);
-                    articleAdapter.addItem(tempArticleData, "hot");
+                    articleAdapter.addItem((ArticleData) msg.obj, "hot");
                     break;
                 }
 
@@ -190,18 +240,21 @@ public class HomePageSelfArticleFragment extends Fragment {
 
         @Override
         public void run() {
+            String content = "內容";
             for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                Bundle bundle = new Bundle();
-                bundle.putString("AccountId",ds.child("account_id").getValue()+"");
-                bundle.putString("ArticleId",ds.child("article_id").getValue()+"");
-                bundle.putInt("Click",Integer.parseInt(ds.child("click").getValue()+""));
-                bundle.putString("Date",ds.child("date").getValue()+"");
-                bundle.putString("Time",ds.child("time").getValue()+"");
-                bundle.putString("Title",ds.child("title").getValue()+"");
+                ArticleData tempArticleData = new ArticleData();
+                tempArticleData.setCount(Integer.parseInt((String) ds.child("click").getValue()));
+                tempArticleData.setArticleId((String) ds.child("article_id").getValue());
+                tempArticleData.setTitle((String) ds.child("title").getValue());
+                tempArticleData.setContent(content);
+                tempArticleData.articleBlogData.setDate((String) ds.child("date").getValue());
+                tempArticleData.articleBlogData.setAuthor((String) ds.child("account_id").getValue());
+                tempArticleData.articleBlogData.setTime((String) ds.child("time").getValue());
+                Log.v("article123", (String) ds.child("date").getValue());
 
                 Message msg = new Message();
                 msg.what = AdapterCollectionUpdate;
-                msg.setData(bundle);
+                msg.obj = tempArticleData;
                 handler.sendMessage(msg);
             }
         }

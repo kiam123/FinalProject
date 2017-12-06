@@ -91,6 +91,7 @@ public class FoodCalendarViewFragment extends Fragment {
                                 Color.TRANSPARENT);
                     }
                 }
+                foodDBHelper.close();
 //                view.setBackgroundColor(getActivity().getResources().getColor(
 //                        R.color.selection));
 

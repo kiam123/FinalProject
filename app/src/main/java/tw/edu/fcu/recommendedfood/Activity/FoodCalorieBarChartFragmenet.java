@@ -89,8 +89,8 @@ public class FoodCalorieBarChartFragmenet extends Fragment {
         Log.v("kkkk", dayOfWeek + "");
         int tempMonth = 0;
         int abc123 = 0;
+        Cursor res = null;
         for (int i = 1; i <= dayOfWeek; i++) {
-            Cursor res = null;
             if (day <= 0) {
                 if (month - 1 < 1) {
                     cal.set(Calendar.YEAR, cal.get( Calendar.YEAR )-1);
@@ -129,6 +129,8 @@ public class FoodCalorieBarChartFragmenet extends Fragment {
             valueSet1.add(new BarEntry(temp, dayOfWeek - i));
             res.close();
         }
+
+        foodDBHelper.close();
 
         BarDataSet barDataSet = new BarDataSet(valueSet1, "卡路里");
         barDataSet.setValueTextSize(14f);

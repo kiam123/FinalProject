@@ -84,8 +84,9 @@ public class FoodPoisonBarChartFragmenet extends Fragment {
         int day = cal.get(Calendar.DAY_OF_MONTH);
 
         int tempMonth = 0;
+        Cursor res = null;
+
         for (int i = 1; i <= dayOfWeek; i++) {
-            Cursor res = null;
             if (day <= 0) {
                 if (month - 1 < 1) {
                     cal.set(Calendar.MONTH, year - 1);
@@ -122,6 +123,7 @@ public class FoodPoisonBarChartFragmenet extends Fragment {
             Log.v("dayOfWeek", (dayOfWeek-i) + "");
             valueSet1.add(new BarEntry(temp, dayOfWeek-i));
         }
+        foodDBHelper.close();
 
         BarDataSet barDataSet = new BarDataSet(valueSet1, "毒物");
         barDataSet.setValueTextSize(14f);

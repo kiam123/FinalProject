@@ -1,6 +1,7 @@
 package tw.edu.fcu.recommendedfood.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,7 @@ public class ArticleAdapter extends BaseAdapter {
     }
 
     public ArticleData getItem(int position) {
+        Log.v("aasdasdasdasdasd",itemDatas.size()+"");
         return itemDatas.get(position);
     }
 

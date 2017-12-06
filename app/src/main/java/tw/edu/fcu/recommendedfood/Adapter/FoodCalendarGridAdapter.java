@@ -127,7 +127,6 @@ public class FoodCalendarGridAdapter extends BaseAdapter {
         txtToDay.setTextSize(9);
         txtToDay.setHeight(80);
 
-
         if (equalsDate(calToday.getTime(), myDate)) {
             // 当前日期
             iv.setBackgroundColor(resources.getColor(R.color.selection));
@@ -136,6 +135,8 @@ public class FoodCalendarGridAdapter extends BaseAdapter {
                 myDate.getDate() + "/" + (myDate.getMonth() + 1) + "/" + (myDate.getYear()+ 1900))) {
             iv.setBackgroundColor(resources.getColor(R.color.forecast_point));
         }
+
+        foodDBHelper.close();
         // 设置背景颜色结束
 
         // 日期开始

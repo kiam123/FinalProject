@@ -14,10 +14,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import tw.edu.fcu.recommendedfood.Data.OnItemClick;
+import tw.edu.fcu.recommendedfood.Data.WaitingEatData;
 import tw.edu.fcu.recommendedfood.R;
 import tw.edu.fcu.recommendedfood.Server.HttpCall;
 import tw.edu.fcu.recommendedfood.Server.HttpRequest;
@@ -45,22 +52,107 @@ public class GameFragment extends Fragment {
     TextView txtCount1, txtTotal1, txtCount2, txtTotal2;
     TextView txtName1, txtName2;
     GameBroadCast broadcast;
-    ArrayList<Integer> a = new ArrayList<Integer>(){{add(R.drawable.a1); add(R.drawable.a2); add(R.drawable.a3); add(R.drawable.a4); add(R.drawable.a5);}};
-    ArrayList<Integer> b = new ArrayList<Integer>(){{add(R.drawable.b1); add(R.drawable.b2); add(R.drawable.b3); add(R.drawable.b4); add(R.drawable.b5);}};
-    ArrayList<Integer> c = new ArrayList<Integer>(){{add(R.drawable.c1); add(R.drawable.c2); add(R.drawable.c3); add(R.drawable.c4); add(R.drawable.c5);}};
-    ArrayList<Integer> d = new ArrayList<Integer>(){{add(R.drawable.d1); add(R.drawable.d2); add(R.drawable.d3); add(R.drawable.d4); add(R.drawable.d5); add(R.drawable.d6);}};
-    ArrayList<Integer> e = new ArrayList<Integer>(){{add(R.drawable.e1); add(R.drawable.e2); add(R.drawable.e3); add(R.drawable.e4); add(R.drawable.e5);add(R.drawable.e6);add(R.drawable.e7);}};
-    ArrayList<Integer> f = new ArrayList<Integer>(){{add(R.drawable.f1); add(R.drawable.f2); add(R.drawable.f3); add(R.drawable.f4); add(R.drawable.f5);}};
-    ArrayList<Integer> g = new ArrayList<Integer>(){{add(R.drawable.g1); add(R.drawable.g2); add(R.drawable.g3); add(R.drawable.g4); add(R.drawable.g5); add(R.drawable.g6);}};
-    ArrayList<Integer> h = new ArrayList<Integer>(){{add(R.drawable.h1); add(R.drawable.h2); add(R.drawable.h3); add(R.drawable.h4); add(R.drawable.h5);}};
-    ArrayList<Integer> j = new ArrayList<Integer>(){{add(R.drawable.i1); add(R.drawable.i2); add(R.drawable.i3); add(R.drawable.i4); }};
-    ArrayList<Integer> k = new ArrayList<Integer>(){{add(R.drawable.j1); add(R.drawable.j2); add(R.drawable.j3); add(R.drawable.j4); add(R.drawable.j5); add(R.drawable.j6); add(R.drawable.j7);}};
-    ArrayList<ArrayList<Integer>> images = new ArrayList<ArrayList<Integer>>(){{add(a); add(b); add(c); add(d); add(e); add(f); add(g); add(h); add(j); add(k);}};
-    ArrayList<String> shopName = new ArrayList<String>() {{add("Fatty's義大利餐廳"); add("N.Y. BAGELS CAFE");
-                    add("小蒙牛頂級麻辣養生鍋"); add("高盧專廚法式餐廳"); add("嗆頂級麻辣鴛鴦鍋"); add("茹絲葵牛排餐廳");
-                    add("原燒優質原味燒肉"); add("真膳美饌百食匯"); add("義塔-ita義塔創意料理"); add("私房泰泰式料理");}};
-    int indexImage1[] = {0,1,2,3,4};
-    int indexImage2[] = {5,6,7,8,9};
+    ArrayList<Integer> a = new ArrayList<Integer>() {{
+        add(R.drawable.a1);
+        add(R.drawable.a2);
+        add(R.drawable.a3);
+        add(R.drawable.a4);
+        add(R.drawable.a5);
+    }};
+    ArrayList<Integer> b = new ArrayList<Integer>() {{
+        add(R.drawable.b1);
+        add(R.drawable.b2);
+        add(R.drawable.b3);
+        add(R.drawable.b4);
+        add(R.drawable.b5);
+    }};
+    ArrayList<Integer> c = new ArrayList<Integer>() {{
+        add(R.drawable.c1);
+        add(R.drawable.c2);
+        add(R.drawable.c3);
+        add(R.drawable.c4);
+        add(R.drawable.c5);
+    }};
+    ArrayList<Integer> d = new ArrayList<Integer>() {{
+        add(R.drawable.d1);
+        add(R.drawable.d2);
+        add(R.drawable.d3);
+        add(R.drawable.d4);
+        add(R.drawable.d5);
+        add(R.drawable.d6);
+    }};
+    ArrayList<Integer> e = new ArrayList<Integer>() {{
+        add(R.drawable.e1);
+        add(R.drawable.e2);
+        add(R.drawable.e3);
+        add(R.drawable.e4);
+        add(R.drawable.e5);
+        add(R.drawable.e6);
+        add(R.drawable.e7);
+    }};
+    ArrayList<Integer> f = new ArrayList<Integer>() {{
+        add(R.drawable.f1);
+        add(R.drawable.f2);
+        add(R.drawable.f3);
+        add(R.drawable.f4);
+        add(R.drawable.f5);
+    }};
+    ArrayList<Integer> g = new ArrayList<Integer>() {{
+        add(R.drawable.g1);
+        add(R.drawable.g2);
+        add(R.drawable.g3);
+        add(R.drawable.g4);
+        add(R.drawable.g5);
+        add(R.drawable.g6);
+    }};
+    ArrayList<Integer> h = new ArrayList<Integer>() {{
+        add(R.drawable.h1);
+        add(R.drawable.h2);
+        add(R.drawable.h3);
+        add(R.drawable.h4);
+        add(R.drawable.h5);
+    }};
+    ArrayList<Integer> j = new ArrayList<Integer>() {{
+        add(R.drawable.i1);
+        add(R.drawable.i2);
+        add(R.drawable.i3);
+        add(R.drawable.i4);
+    }};
+    ArrayList<Integer> k = new ArrayList<Integer>() {{
+        add(R.drawable.j1);
+        add(R.drawable.j2);
+        add(R.drawable.j3);
+        add(R.drawable.j4);
+        add(R.drawable.j5);
+        add(R.drawable.j6);
+        add(R.drawable.j7);
+    }};
+    ArrayList<ArrayList<Integer>> images = new ArrayList<ArrayList<Integer>>() {{
+        add(a);
+        add(b);
+        add(c);
+        add(d);
+        add(e);
+        add(f);
+        add(g);
+        add(h);
+        add(j);
+        add(k);
+    }};
+    ArrayList<String> shopName = new ArrayList<String>() {{
+        add("Fatty's義大利餐廳");
+        add("N.Y. BAGELS CAFE");
+        add("小蒙牛頂級麻辣養生鍋");
+        add("高盧專廚法式餐廳");
+        add("嗆頂級麻辣鴛鴦鍋");
+        add("茹絲葵牛排餐廳");
+        add("原燒優質原味燒肉");
+        add("真膳美饌百食匯");
+        add("義塔-ita義塔創意料理");
+        add("私房泰泰式料理");
+    }};
+    int indexImage1[] = {0, 1, 2, 3, 4};
+    int indexImage2[] = {5, 6, 7, 8, 9};
     int index1 = 0;
     int index2 = 0;
     boolean win = false;
@@ -69,6 +161,9 @@ public class GameFragment extends Fragment {
     public static final String CURRENT_FRAGMENT = "CURRENT_FRAGMENT";
     private int currentIndex = 0;
     private View mView;
+    Toolbar toolbar;
+    private ImageView imgDescription;
+
 
     public GameFragment() {
 
@@ -87,8 +182,7 @@ public class GameFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             ArrayList<Fragment> fragmentArrayList1 = (ArrayList<Fragment>) savedInstanceState.getSerializable("Fragment1");
             ArrayList<Fragment> fragmentArrayList2 = (ArrayList<Fragment>) savedInstanceState.getSerializable("Fragment2");
             index1 = (int) savedInstanceState.getInt("A");
@@ -96,7 +190,7 @@ public class GameFragment extends Fragment {
             initView(view);
             initAdapter(images.get(indexImage1[index2]), simpleFragmentPagerAdapter1, viewPager1, fragmentArrayList1, txtCount1, txtTotal1, 1);
             initAdapter(images.get(indexImage1[index2]), simpleFragmentPagerAdapter2, viewPager2, fragmentArrayList2, txtCount2, txtTotal2, 2);
-        }else {
+        } else {
             initView(view);
             initAdapter(images.get(indexImage1[index1]), simpleFragmentPagerAdapter1, viewPager1, fragmentArrayList1, txtCount1, txtTotal1, 1);
             initAdapter(images.get(indexImage2[index2]), simpleFragmentPagerAdapter2, viewPager2, fragmentArrayList2, txtCount2, txtTotal2, 2);
@@ -113,11 +207,13 @@ public class GameFragment extends Fragment {
         txtName2 = (TextView) view.findViewById(R.id.txt_name2);
         txtCount2 = (TextView) view.findViewById(R.id.txt_count2);
         txtTotal2 = (TextView) view.findViewById(R.id.txt_total2);
+        imgDescription = (ImageView) view.findViewById(R.id.img_description);
 
         simpleFragmentPagerAdapter1 = new SimpleFragmentPagerAdapter(getChildFragmentManager());
         simpleFragmentPagerAdapter2 = new SimpleFragmentPagerAdapter(getChildFragmentManager());
         txtName1.setText(shopName.get(index1));
-        txtName2.setText(shopName.get(index2+5));
+        txtName2.setText(shopName.get(index2 + 5));
+        imgDescription.setOnClickListener(descriptionOnClickListener);
     }
 
     //初始adapter內容
@@ -180,24 +276,24 @@ public class GameFragment extends Fragment {
             @Override
             public void setOnClick(int pos) {
                 if (pos == 1 && !win) {
-                    if((index2+1) < 5) {
-                        Toast.makeText(getActivity(),"餐廳:"+shopName.get(index1)+" 勝利",Toast.LENGTH_SHORT).show();
+                    if ((index2 + 1) < 5) {
+                        Toast.makeText(getActivity(), "餐廳:" + shopName.get(index1) + " 勝利", Toast.LENGTH_SHORT).show();
                         setAdapter(simpleFragmentPagerAdapter2, viewPager2, txtTotal2, images.get(indexImage2[++index2]), 2);
-                        txtName2.setText(shopName.get(index2+5));
-                    } else{
+                        txtName2.setText(shopName.get(index2 + 5));
+                    } else {
 //                        Toast.makeText(getActivity(),"餐廳:"+shopName.get(index1)+" 獲得勝利",Toast.LENGTH_SHORT).show();
-                        alertWinner("餐廳:"+shopName.get(index1));
+                        alertWinner("餐廳:" + shopName.get(index1));
 
                         win = true;
                     }
                 } else if (pos == 2 && !win) {
-                    if((index1+1) < 5) {
-                        Toast.makeText(getActivity(),"餐廳:"+shopName.get(index2+5)+" 勝利",Toast.LENGTH_SHORT).show();
+                    if ((index1 + 1) < 5) {
+                        Toast.makeText(getActivity(), "餐廳:" + shopName.get(index2 + 5) + " 勝利", Toast.LENGTH_SHORT).show();
                         setAdapter(simpleFragmentPagerAdapter1, viewPager1, txtTotal1, images.get(indexImage1[++index1]), 1);
                         txtName1.setText(shopName.get(index1));
-                    } else{
+                    } else {
 //                        Toast.makeText(getActivity(),"餐廳:"+shopName.get(index2+5)+" 獲得勝利",Toast.LENGTH_SHORT).show();
-                        alertWinner("餐廳:"+shopName.get(index2+5));
+                        alertWinner("餐廳:" + shopName.get(index2 + 5));
                         win = true;
                     }
                 }
@@ -256,9 +352,9 @@ public class GameFragment extends Fragment {
 ////        mFragmentManager.popBackStack();
 //    }
 
-    public void alertWinner(String winner){
+    public void alertWinner(String winner) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("最終 "+winner +" 獲得勝利");
+        builder.setMessage("最終 " + winner + " 獲得勝利");
         builder.setCancelable(true);
 
         builder.setPositiveButton(
@@ -320,7 +416,27 @@ public class GameFragment extends Fragment {
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             super.destroyItem(container, position, object);
-            Log.v("destroyItem123","destroyItem");
+            Log.v("destroyItem123", "destroyItem");
         }
     }
+
+    View.OnClickListener descriptionOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("點選看起來喜歡的餐廳，滑動圖片可以看更多，我們將為您挑選出最喜歡的餐廳");
+            builder.setCancelable(true);
+
+            builder.setPositiveButton(
+                    "確定",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+    };
 }

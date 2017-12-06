@@ -84,9 +84,10 @@ public class FoodPoisonLineChartFragmenet extends Fragment {
 //        if(dayOfWeek == 7){
 //            dayOfWeek -= 1;
 //        }
+        Cursor res = null;
+
         int tempMonth = 0;
         for (int i = 1; i <= dayOfWeek; i++) {
-            Cursor res = null;
             if (day <= 0) {
                 if (month - 1 < 1) {
                     cal.set(Calendar.MONTH, year - 1);
@@ -124,7 +125,9 @@ public class FoodPoisonLineChartFragmenet extends Fragment {
                 res.moveToNext();
             }
             yValues.add(new Entry(temp, dayOfWeek - i));
+            res.close();
         }
+        foodDBHelper.close();
 
         LineDataSet set1 = new LineDataSet(yValues, "毒物");
         set1.setFillAlpha(1010);

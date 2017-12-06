@@ -89,8 +89,8 @@ public class FoodCalorieLineChartFragmenet extends Fragment {
 //            dayOfWeek -= 1;
 //        }
         int tempMonth = 0;
+        Cursor res = null;
         for (int i = 1; i <= dayOfWeek; i++) {
-            Cursor res = null;
             if (day <= 0) {
                 if (month - 1 < 1) {
                     cal.set(Calendar.MONTH, year - 1);
@@ -128,7 +128,10 @@ public class FoodCalorieLineChartFragmenet extends Fragment {
                 res.moveToNext();
             }
             yValues.add(new Entry(temp, dayOfWeek - i));
+            res.close();
         }
+
+        foodDBHelper.close();
 
         LineDataSet set1 = new LineDataSet(yValues, "卡路里");
         set1.setFillAlpha(1010);

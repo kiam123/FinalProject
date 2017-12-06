@@ -90,8 +90,8 @@ public class ArticleClassificationFragment extends Fragment {
 
 //        if (getArguments() != null) {
 //            txtClassificationSet.setText(getArguments().getString(ArticleFragment.KEY_CLASSIFICATION));
-//            page = getArguments().getInt(ArticleFragment.PAGE_NUMBER);
-//            Log.v("papapa",page+"");
+//            classofication = getArguments().getInt(ArticleFragment.PAGE_NUMBER);
+//            Log.v("papapa",classofication+"");
 //        }
     }
 
