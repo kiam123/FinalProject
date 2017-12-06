@@ -172,6 +172,7 @@ public class ArticleClassificationNewFragment extends Fragment {
         myRef.child("article_title_table").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                articleAdapter.clearItem();
                 new FireBaseThread(dataSnapshot).start();
             }
 

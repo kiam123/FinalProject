@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -24,6 +25,7 @@ import tw.edu.fcu.recommendedfood.Adapter.FoodDetailsAdapter;
 import tw.edu.fcu.recommendedfood.Adapter.FoodNoteAdapter;
 import tw.edu.fcu.recommendedfood.Data.FoodDetailData;
 import tw.edu.fcu.recommendedfood.Data.FoodNoteData;
+import tw.edu.fcu.recommendedfood.Data.LoginContext;
 import tw.edu.fcu.recommendedfood.Data.OnItemClickLitener;
 import tw.edu.fcu.recommendedfood.R;
 import tw.edu.fcu.recommendedfood.Server.FoodDBHelper;
@@ -145,7 +147,7 @@ public class FoodRecorderActivity extends AppCompatActivity {
                 txtDlgCount.setText(foodDetailsAdapter.getItem(pos).getQuantity());
                 foodDetailData = foodDetailsAdapter.getItem(pos);
 
-                Cursor cursor = foodDBHelper.getData(foodDetailData.getId());
+                Cursor cursor = foodDBHelper.getData(LoginContext.getLoginContext().getAccount(),foodDetailData.getId());
                 cursor.moveToFirst();
                 price = Integer.parseInt(cursor.getString(3));
                 calorie = Integer.parseInt(cursor.getString(4));
@@ -197,21 +199,22 @@ public class FoodRecorderActivity extends AppCompatActivity {
     }
 
     public void setDadabase() {
-        Cursor res = foodDBHelper.getAllData(date);
+        Log.v("aaacoount",LoginContext.getLoginContext().getAccount());
+        Cursor res = foodDBHelper.getAllData(LoginContext.getLoginContext().getAccount(),date);
         if (res.getCount() != 0) {
             res.moveToFirst();
 
-            int calorie = Integer.parseInt(res.getString(8)) * Integer.parseInt(res.getString(4));
-            int price = Integer.parseInt(res.getString(3)) * Integer.parseInt(res.getString(8));
+            int calorie = Integer.parseInt(res.getString(7)) * Integer.parseInt(res.getString(5));
+            int price = Integer.parseInt(res.getString(4)) * Integer.parseInt(res.getString(7));
 
-            foodDetailsAdapter.addItem(new FoodDetailData(res.getString(0), res.getString(1),res.getString(2),
-                    price + "", calorie + "", res.getString(5), res.getString(8)));
+            foodDetailsAdapter.addItem(new FoodDetailData(res.getString(0), res.getString(2),res.getString(3),
+                    price + "", calorie + "", res.getString(6), res.getString(7)));
 
             while (res.moveToNext()) {
-                calorie = Integer.parseInt(res.getString(8)) * Integer.parseInt(res.getString(4));
-                price = Integer.parseInt(res.getString(3)) * Integer.parseInt(res.getString(8));
-                foodDetailsAdapter.addItem(new FoodDetailData(res.getString(0), res.getString(1),res.getString(2),
-                        price + "", calorie + "", res.getString(5), res.getString(8)));
+                calorie = Integer.parseInt(res.getString(7)) * Integer.parseInt(res.getString(5));
+                price = Integer.parseInt(res.getString(4)) * Integer.parseInt(res.getString(7));
+                foodDetailsAdapter.addItem(new FoodDetailData(res.getString(0), res.getString(2),res.getString(3),
+                        price + "", calorie + "", res.getString(6), res.getString(7)));
             }
         }
     }

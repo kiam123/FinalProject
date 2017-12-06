@@ -515,9 +515,9 @@ public class ArticleBlogActivity extends AppCompatActivity {
 //                    DataSnapshot dsArticle = ds.child(ds.getKey());
 //                    Log.v("accd",ds.getValue()+"");
 //                    <img src='https://imgur.dcard.tw/lgIFICZ.jpg' />
-                    Log.v("accd","<img src='https://firebasestorage.googleapis.com/v0/b/recommendedfood-84dfb.appspot.com/o/20171115_034503.jpg?alt=media&token=9ae7a078-8dfa-4588-a702-e2f937e1ec0d.jpg'/><br>");
                     Bundle bundle = new Bundle();
                     bundle.putString("Message", ds.getValue()+"");
+                    bundle.putString("Time", ds.getValue()+"");
 //                    bundle.putString("Message", "<img src=https://firebasestorage.googleapis.com/v0/b/recommendedfood-84dfb.appspot.com/o/20171115_034503.jpg?alt=media&token=9ae7a078-8dfa-4588-a702-e2f937e1ec0d.jpg'/><br>");
 //                    bundle.putString("Message", "<img src=\"https://firebasestorage.googleapis.com/v0/b/recommendedfood-84dfb.appspot.com/o/20171115_034503.jpg?alt=media&token=9ae7a078-8dfa-4588-a702-e2f937e1ec0d.jpg\"/><br>");
                     Message msg = new Message();

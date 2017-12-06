@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import tw.edu.fcu.recommendedfood.Data.LoginContext;
 import tw.edu.fcu.recommendedfood.R;
 import tw.edu.fcu.recommendedfood.Server.FoodDBHelper;
 
@@ -131,7 +132,8 @@ public class FoodCalendarGridAdapter extends BaseAdapter {
             // 当前日期
             iv.setBackgroundColor(resources.getColor(R.color.selection));
             txtToDay.setText("TODAY!");
-        } else if (foodDBHelper.getDateData(myDate.getDate() + "/" + (myDate.getMonth() + 1) + "/" + (myDate.getYear()+ 1900))) {
+        } else if (foodDBHelper.getDateData(LoginContext.getLoginContext().getAccount(),
+                myDate.getDate() + "/" + (myDate.getMonth() + 1) + "/" + (myDate.getYear()+ 1900))) {
             iv.setBackgroundColor(resources.getColor(R.color.forecast_point));
         }
         // 设置背景颜色结束

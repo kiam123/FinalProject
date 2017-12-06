@@ -170,6 +170,7 @@ public class HomePageSelfArticleFragment extends Fragment {
         myRef.child("account_collection_table").child(LoginContext.getLoginContext().getAccount()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                articleAdapter.clearItem();
                 new FireBaseThread(dataSnapshot).start();
             }
 
@@ -189,11 +190,8 @@ public class HomePageSelfArticleFragment extends Fragment {
 
         @Override
         public void run() {
-            String content = "內容";
-
             for (DataSnapshot ds : dataSnapshot.getChildren()) {
                 Bundle bundle = new Bundle();
-
                 bundle.putString("AccountId",ds.child("account_id").getValue()+"");
                 bundle.putString("ArticleId",ds.child("article_id").getValue()+"");
                 bundle.putInt("Click",Integer.parseInt(ds.child("click").getValue()+""));

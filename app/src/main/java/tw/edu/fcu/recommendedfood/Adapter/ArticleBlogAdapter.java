@@ -48,8 +48,6 @@ public class ArticleBlogAdapter extends BaseAdapter {
     public void addItem(ArticleBlogData articleBlogData) {
         articleBlogDatas.add(articleBlogData);
         notifyDataSetChanged();
-
-//        Log.v("length", articleBlogDatas.size() + "");
     }
 
     public void addComment(ArticleBlogData articleCommentData) {
@@ -123,6 +121,7 @@ public class ArticleBlogAdapter extends BaseAdapter {
 
                     discussViewHolder.txtTitle.setText(blogData.getTitle());
                     discussViewHolder.txtAuthor.setText(blogData.getAuthor());
+                    discussViewHolder.txtDate.setText(blogData.getDate());
                     discussViewHolder.txtTime.setText(blogData.getTime());
 
 

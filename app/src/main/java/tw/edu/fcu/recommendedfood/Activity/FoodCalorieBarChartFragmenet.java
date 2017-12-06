@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import tw.edu.fcu.recommendedfood.Data.LoginContext;
 import tw.edu.fcu.recommendedfood.R;
 import tw.edu.fcu.recommendedfood.Server.FoodDBHelper;
 
@@ -102,17 +103,17 @@ public class FoodCalorieBarChartFragmenet extends Fragment {
                 }
                 day = cal.getActualMaximum(Calendar.DATE);
 
-                res = foodDBHelper.getAllData(day + "/" + tempMonth + "/" + year);
+                res = foodDBHelper.getAllData(LoginContext.getLoginContext().getAccount(),day + "/" + tempMonth + "/" + year);
                 Log.v("tempMonth1", day + "/" + tempMonth + "/" + year+ "  1");
                 day -= 1;
                 abc123 = 1;
             } else if (tempMonth == 0) {
-                res = foodDBHelper.getAllData((day) + "/" + month + "/" + year);
+                res = foodDBHelper.getAllData(LoginContext.getLoginContext().getAccount(),(day) + "/" + month + "/" + year);
                 Log.v("tempMonth2", (day) + "/" + month + "/" + year+ "  2");
                 day -= 1;
                 abc123 = 2;
             } else {
-                res = foodDBHelper.getAllData(day + "/" + tempMonth + "/" + year);
+                res = foodDBHelper.getAllData(LoginContext.getLoginContext().getAccount(),day + "/" + tempMonth + "/" + year);
                 Log.v("tempMonth3", day + "/" + tempMonth + "/" + year+ "  3");
                 day -= 1;
                 abc123 = 3;
@@ -121,7 +122,7 @@ public class FoodCalorieBarChartFragmenet extends Fragment {
             float temp = 0;
 
             for (int j = 0; j < res.getCount(); j++) {
-                temp = temp + Float.parseFloat(res.getString(4)) * Float.parseFloat(res.getString(8));
+                temp = temp + Float.parseFloat(res.getString(5)) * Float.parseFloat(res.getString(7));
                 res.moveToNext();
             }
             Log.v("dayOfWeek", (dayOfWeek - i) + "  "  +temp+" "+abc123);

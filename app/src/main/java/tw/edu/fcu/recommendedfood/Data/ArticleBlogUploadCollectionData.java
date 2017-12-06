@@ -1,12 +1,11 @@
 package tw.edu.fcu.recommendedfood.Data;
 
 /**
- * Created by kiam on 2017/11/20.
+ * Created by kiam on 2017/12/6.
  */
 
-public class ArticleBlogUploadData {
+public class ArticleBlogUploadCollectionData {
     String account_id;
-    String article;
     String article_id;
     String click;
     String date;
@@ -14,25 +13,19 @@ public class ArticleBlogUploadData {
     String type;
     String time;
 
-    public ArticleBlogUploadData(String account_id, String article, String article_id,String click,
-                                 String date, String title, String type) {
+    public ArticleBlogUploadCollectionData(String account_id, String article_id,String click,
+                                 String date, String time, String title, String type) {
         this.account_id = account_id;
-        this.article = article;
         this.article_id = article_id;
         this.click = click;
         this.date = date;
         this.title = title;
         this.type = type;
+        this.time = time;
     }
-
-
 
     public String getAccount_id() {
         return account_id;
-    }
-
-    public String getArticle() {
-        return article;
     }
 
     public String getArticle_id() {

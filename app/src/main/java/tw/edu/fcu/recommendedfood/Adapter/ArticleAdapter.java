@@ -49,6 +49,10 @@ public class ArticleAdapter extends BaseAdapter {
         TextView count, title, content;
     }
 
+    public void clearItem(){
+        itemDatas.clear();
+    }
+
     @Override
     public int getCount() {
         return itemDatas.size();

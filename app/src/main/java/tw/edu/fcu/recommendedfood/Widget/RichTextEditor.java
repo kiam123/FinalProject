@@ -51,6 +51,7 @@ public class RichTextEditor extends ScrollView {
     public EditText firstEdit;
     public List<EditData> dataList;
     Context context;
+    public int imgCount = 0;
 
     public RichTextEditor(Context context) {
         this(context, null);
@@ -207,6 +208,7 @@ public class RichTextEditor extends ScrollView {
         if (!mTransitioner.isRunning()) {
             disappearingImageIndex = allLayout.indexOfChild(view);
             allLayout.removeView(view);
+            imgCount--;
         }
     }
 
@@ -332,6 +334,8 @@ public class RichTextEditor extends ScrollView {
                 allLayout.addView(imageLayout, index);
             }
         }, 200);
+        imgCount++;
+        Log.v("count123",imgCount+"");
     }
 
     /**
@@ -440,6 +444,7 @@ public class RichTextEditor extends ScrollView {
                 DataImageView item = (DataImageView) itemView
                         .findViewById(R.id.edit_imageView);
                 itemData.imagePath = item.getAbsolutePath();
+
                 itemData.bitmap = item.getBitmap();
                 dataList.add(itemData);
             }

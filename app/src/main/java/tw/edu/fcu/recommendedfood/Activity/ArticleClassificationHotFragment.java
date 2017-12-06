@@ -175,6 +175,7 @@ public class ArticleClassificationHotFragment extends Fragment implements Serial
         myRef.child("article_title_table").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                articleAdapter.clearItem();
                 new FireBaseThread(dataSnapshot).start();
             }
 
@@ -204,7 +205,7 @@ public class ArticleClassificationHotFragment extends Fragment implements Serial
                 DataSnapshot dsTime = ds.child("time");
                 DataSnapshot dsType = ds.child("type");
                 String type = (String)dsType.getValue();
-                Log.v("article123", ds.getKey());
+//                Log.v("article123", ds.getKey());
 
                 Log.v("position11111",classofication+"");
                 if(type.equals(classofication+"") || (classofication+"").equals("0")) {
@@ -216,6 +217,7 @@ public class ArticleClassificationHotFragment extends Fragment implements Serial
                     tempArticleData.articleBlogData.setDate((String) dsDate.getValue());
                     tempArticleData.articleBlogData.setAuthor((String) dsAuthor.getValue());
                     tempArticleData.articleBlogData.setTime((String) dsTime.getValue());
+                    Log.v("article123", (String) dsDate.getValue());
 
 
                     Message msg = new Message();

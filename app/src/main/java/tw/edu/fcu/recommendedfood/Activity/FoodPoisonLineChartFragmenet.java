@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import tw.edu.fcu.recommendedfood.Data.LoginContext;
 import tw.edu.fcu.recommendedfood.R;
 import tw.edu.fcu.recommendedfood.Server.FoodDBHelper;
 
@@ -97,18 +98,18 @@ public class FoodPoisonLineChartFragmenet extends Fragment {
                 }
                 cal.set(Calendar.MONTH, 0);
                 day = cal.getActualMaximum(Calendar.DATE);
-                res = foodDBHelper.getAllPoisonData(day + "/" + tempMonth + "/" + year);
+                res = foodDBHelper.getAllPoisonData(LoginContext.getLoginContext().getAccount(),day + "/" + tempMonth + "/" + year);
                 Log.v("tempMonth1", day + "/" + tempMonth + "/" + year);
                 day -= 1;
             } else if (tempMonth == 0){
 //                Log.v("tempMonth123123", tempMonth + "");
-                res = foodDBHelper.getAllPoisonData((day) + "/" + month + "/" + year);
+                res = foodDBHelper.getAllPoisonData(LoginContext.getLoginContext().getAccount(),(day) + "/" + month + "/" + year);
                 Log.v("tempMonth2", (day) + "/" + month + "/" + year);
                 day -= 1;
             } else{
                 Log.v("tempMonth", tempMonth + "");
                 Log.v("tempMonth", day + "");
-                res = foodDBHelper.getAllPoisonData(day + "/" + tempMonth + "/" + year);
+                res = foodDBHelper.getAllPoisonData(LoginContext.getLoginContext().getAccount(),day + "/" + tempMonth + "/" + year);
                 Log.v("tempMonth3", day + "/" + tempMonth + "/" + year);
                 day -= 1;
             }

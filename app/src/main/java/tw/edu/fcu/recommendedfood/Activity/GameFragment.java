@@ -1,8 +1,10 @@
 package tw.edu.fcu.recommendedfood.Activity;
 
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -183,7 +185,9 @@ public class GameFragment extends Fragment {
                         setAdapter(simpleFragmentPagerAdapter2, viewPager2, txtTotal2, images.get(indexImage2[++index2]), 2);
                         txtName2.setText(shopName.get(index2+5));
                     } else{
-                        Toast.makeText(getActivity(),"餐廳:"+shopName.get(index1)+" 獲得勝利",Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getActivity(),"餐廳:"+shopName.get(index1)+" 獲得勝利",Toast.LENGTH_SHORT).show();
+                        alertWinner("餐廳:"+shopName.get(index1));
+
                         win = true;
                     }
                 } else if (pos == 2 && !win) {
@@ -192,7 +196,8 @@ public class GameFragment extends Fragment {
                         setAdapter(simpleFragmentPagerAdapter1, viewPager1, txtTotal1, images.get(indexImage1[++index1]), 1);
                         txtName1.setText(shopName.get(index1));
                     } else{
-                        Toast.makeText(getActivity(),"餐廳:"+shopName.get(index2+5)+" 獲得勝利",Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getActivity(),"餐廳:"+shopName.get(index2+5)+" 獲得勝利",Toast.LENGTH_SHORT).show();
+                        alertWinner("餐廳:"+shopName.get(index2+5));
                         win = true;
                     }
                 }
@@ -232,23 +237,40 @@ public class GameFragment extends Fragment {
 //        getChildFragmentManager().putFragment(outState, "Fragment1", this);
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.v("onPause","onPause");
-        FragmentManager mFragmentManager = getChildFragmentManager();
-        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-        for (Fragment f : fragmentArrayList1) {
-            Log.v("onPause","1");
-            fragmentTransaction.remove(f);
-        }
-        for (Fragment f : fragmentArrayList2) {
-            Log.v("onPause","2");
-            fragmentTransaction.remove(f);
-        }
-        fragmentTransaction.commitAllowingStateLoss();
-        mFragmentManager.executePendingTransactions();
-//        mFragmentManager.popBackStack();
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        Log.v("onPause","onPause");
+//        FragmentManager mFragmentManager = getChildFragmentManager();
+//        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+//        for (Fragment f : fragmentArrayList1) {
+//            Log.v("onPause","1");
+//            fragmentTransaction.remove(f);
+//        }
+//        for (Fragment f : fragmentArrayList2) {
+//            Log.v("onPause","2");
+//            fragmentTransaction.remove(f);
+//        }
+//        fragmentTransaction.commitAllowingStateLoss();
+//        mFragmentManager.executePendingTransactions();
+////        mFragmentManager.popBackStack();
+//    }
+
+    public void alertWinner(String winner){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("最終 "+winner +" 獲得勝利");
+        builder.setCancelable(true);
+
+        builder.setPositiveButton(
+                "確定",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.setCanceledOnTouchOutside(false);
+        alert.show();
     }
 
     //設定viewpager的adapter

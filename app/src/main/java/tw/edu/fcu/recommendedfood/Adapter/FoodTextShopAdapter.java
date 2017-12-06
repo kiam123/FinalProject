@@ -14,6 +14,7 @@ import tw.edu.fcu.recommendedfood.Activity.FoodCalorieBarChartFragmenet;
 import tw.edu.fcu.recommendedfood.Activity.FoodGpsDialogShopActivity;
 import tw.edu.fcu.recommendedfood.Activity.FoodTextSeachActivity;
 import tw.edu.fcu.recommendedfood.Data.FoodTextSearchData;
+import tw.edu.fcu.recommendedfood.Data.LoginContext;
 import tw.edu.fcu.recommendedfood.Data.OnItemClickLitener;
 import tw.edu.fcu.recommendedfood.R;
 import tw.edu.fcu.recommendedfood.Server.FoodDBHelper;
@@ -90,13 +91,15 @@ public class FoodTextShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     date = ((FoodGpsDialogShopActivity) mContext).date;
                 }
 
-                boolean flag = foodDBHelper.isDataExist(shopName, foodName, date);
+                boolean flag = foodDBHelper.isDataExist(LoginContext.getLoginContext().getAccount(),
+                        shopName, foodName, date);
 
                 if (!flag) {
                     Toast.makeText(mContext, "已存在", Toast.LENGTH_SHORT).show();
                 } else {
-                    boolean isInsert = foodDBHelper.insertData(shopName, foodName, price, calorie, plasticizer, count, date);
-                    Log.v("asdasdasd",price);
+                    boolean isInsert = foodDBHelper.insertData(LoginContext.getLoginContext().getAccount(),
+                            shopName, foodName, price, calorie, plasticizer, count, date);
+                    Log.v("asdasdasd",LoginContext.getLoginContext().getAccount());
                     if (isInsert) {
                         Toast.makeText(mContext, "新增成功", Toast.LENGTH_SHORT).show();
 //                        FoodCalorieBarChartFragmenet.updateChart();

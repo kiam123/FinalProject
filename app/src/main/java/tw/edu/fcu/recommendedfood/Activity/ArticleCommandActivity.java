@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -31,13 +32,17 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.lang.reflect.Array;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
 import tw.edu.fcu.recommendedfood.Data.ArticleBlogData;
+import tw.edu.fcu.recommendedfood.Data.ArticleBlogUploadCollectionData;
 import tw.edu.fcu.recommendedfood.Data.ArticleBlogUploadData;
 import tw.edu.fcu.recommendedfood.Data.LoginContext;
 import tw.edu.fcu.recommendedfood.ImgurLib.DocumentHelper;
@@ -50,10 +55,9 @@ import tw.edu.fcu.recommendedfood.Widget.RichTextEditor;
 public class ArticleCommandActivity extends AppCompatActivity {
     private EditText edtTitle;
     private RichTextEditor edtMsg;
-    private String arr[];
     String title;
-    String msg = "";
     Toolbar fragment_toolbar;
+    Button command;
 
     private static final int REQUEST_CODE_PICK_IMAGE = 1023;
     private static final int REQUEST_CODE_CAPTURE_CAMEIA = 1022;
@@ -61,17 +65,17 @@ public class ArticleCommandActivity extends AppCompatActivity {
             Environment.getExternalStorageDirectory() + "/DCIM/Camera");
     private File mCurrentPhotoFile;// 照相机拍照得到的图片
 
-//    List<String> comments;
     String comments="";
     int position =0;
 
     private StorageReference mStorageRef;
     File chosenFile;
     private Uri returnUri;
-    Call<ImageResponse> call;
 
     boolean isImage = false;
     boolean succuss = false;
+    int imgCount = 0;
+    ArrayList<Data> stringArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +90,8 @@ public class ArticleCommandActivity extends AppCompatActivity {
         edtTitle = (EditText) findViewById(R.id.edt_title);
         edtMsg = (RichTextEditor) findViewById(R.id.edt_msg);
         fragment_toolbar = (Toolbar) findViewById(R.id.fragment_toolbar);
+        command = (Button) findViewById(R.id.command);
+        command.setOnClickListener(commandOnClickListener);
         setSupportActionBar(fragment_toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
@@ -94,111 +100,90 @@ public class ArticleCommandActivity extends AppCompatActivity {
         mStorageRef = FirebaseStorage.getInstance().getReference();
     }
 
-    public void btnDoneCommand(View view) {
-
-        if(edtTitle.getText().toString().trim().equals("")){
-            return;
-        }
-        String shortSentences = "";
-//        comments = new ArrayList<>();
-        //TODO 可能要把檔案
-
-//        final NotificationHelper notificationHelper = new NotificationHelper(this.getApplicationContext());
-//        notificationHelper.createUploadingNotification();
-
-        ImgurService imgurService = ImgurService.retrofit.create(ImgurService.class);
-
-        for (int i = 0; i < edtMsg.buildEditData().size(); i++) {
-            if (edtMsg.checkImageExist(i)) {
-                isImage = true;
-                //TODO 可能要用File來存下uri
-                returnUri = Uri.parse(edtMsg.buildEditData().get(i).imagePath);
-//                chosenFile = new File(returnUri+"");
-                uploadImg(edtMsg.buildEditData().get(i).imagePath);
-                Log.v("edit_text", "" + edtMsg.buildEditData().get(i).imagePath);
-
-//                edtMsg.dataList.get(i).imagePath = "<img src=\"http://i.imgur.com/RyFb0yU.jpg\"/>";//http://i.imgur.com/RyFb0yU.jpg
-////                Log.v("edt123",edtMsg.dataList.get(i).imagePath);
-//                comments.add("<img src=\"http://i.imgur.com/RyFb0yU.jpg\"/><br>");
-
-
-//                call = imgurService.postImage("", "", "", "",
-//                        MultipartBody.Part.createFormData(
-//                                "image",
-//                                chosenFile.getName(),
-//                                RequestBody.create(MediaType.parse("image/*"), chosenFile)
-//                        ));
-//
-//                final int temp = i;
-//                call.enqueue(new Callback<ImageResponse>() {
-//                    @Override
-//                    public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
-//                        if (response == null) {
-//                            notificationHelper.createFailedUploadNotification();
-//                            return;
-//                        }
-//                        if (response.isSuccessful()) {
-//                            succuss = true;
-//                            Toast.makeText(ArticleCommandActivity.this, "http://imgur.com/" + response.body().data.id, Toast.LENGTH_SHORT)
-//                                    .show();
-//                            Log.v("Picture", "http://imgur.com/" + response.body().data.id);
-////                              下面有錯
-//                            edtMsg.dataList.get(temp).imagePath = <img src="http://imgur.com/" + response.body().data.id"/>;
-//                            notificationHelper.createUploadedNotification(response.body());
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<ImageResponse> call, Throwable t) {
-//                        Toast.makeText(ArticleCommandActivity.this, "An unknown error has occured.", Toast.LENGTH_SHORT)
-//                                .show();
-//                        notificationHelper.createFailedUploadNotification();
-//                        t.printStackTrace();
-//                    }
-//                });
-            } else {
-                comments += "<p>" + edtMsg.buildEditData().get(i).inputStr + "</p><br>";
-//                comments.add("<p>" + edtMsg.buildEditData().get(i).inputStr + "</p><br>");
-//                edtMsg.dataList.get(i).inputStr = "<p>" +edtMsg.buildEditData().get(i).inputStr+"</p><br>";
-//                Log.v("edt123",edtMsg.dataList.get(i).inputStr);
+    View.OnClickListener commandOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(edtTitle.getText().toString().trim().equals("")){
+                Toast.makeText(ArticleCommandActivity.this,"請輸入標題",Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            stringArrayList = new ArrayList<>();
+
+            Log.v("edit_text", "" + edtMsg.buildEditData().size());
+            for (int i = 0; i < edtMsg.buildEditData().size(); i++) {
+                if (edtMsg.checkImageExist(i)) {
+                    stringArrayList.add(new Data("",edtMsg.buildEditData().get(i).imagePath));
+                    Log.v("edit_text", "11 " + stringArrayList.get(stringArrayList.size()-1).getImagePath());
+                } else {
+                    Log.v("edit_text", "yyyy   " );
+                    stringArrayList.add(new Data("<p>" +edtMsg.buildEditData().get(i).inputStr+"</p><br>",""));
+                    Log.v("edit_text", "yyyy   " + stringArrayList.get(stringArrayList.size()-1).getInputStr());
+                }
+            }
+
+            for (int i = 0; i < stringArrayList.size(); i++) {
+                if(!stringArrayList.get(i).getImagePath().equals("")){
+                    isImage = true;
+                    uploadImg(stringArrayList.get(i).getImagePath(), i);
+                }
+            }
+
+            if(!isImage){
+                for (int i = 0; i < stringArrayList.size(); i++) {
+                    comments = comments + stringArrayList.get(i).getInputStr();
+                    Log.v("edit_text", "" + comments);
+                }
+                uploadArticle();
+                finish();
+            }else {
+
+            }
+            Log.v("edit_text", "" + succuss);
+            //TODO 還沒完成短語的字串切割
         }
-//        for (int i = 0; i < comments.size(); i++) {
-////            RichTextEditor.EditData editData = edtMsg.buildEditData().get(i);
-////            Log.v("edit_text", "" + editData.toString());
-//            Log.v("edit_text", "" + comments.get(i));
-//        }
-        if(!isImage){
-            uploadArticle();
-            finish();
-        }else {
+    };
 
+    public class Data {
+        public String inputStr = "";
+        public String imagePath = "";
+
+        public Data(String inputStr, String imagePath) {
+            this.inputStr = inputStr;
+            this.imagePath = imagePath;
         }
 
+        public String getInputStr() {
+            return inputStr;
+        }
 
-        Log.v("edit_text", "" + succuss);
-        //TODO 還沒完成短語的字串切割
-
+        public String getImagePath() {
+            return imagePath;
+        }
     }
 
-    private void uploadImg(String path) {
+    private void uploadImg(String path, final int i) {
         Uri file = Uri.fromFile(new File(path));
         StorageReference riversRef = mStorageRef.child(file.getLastPathSegment());
         UploadTask uploadTask = riversRef.putFile(file);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                setSuccuss(false);
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                comments += "<br><a href=\"" + downloadUrl.toString() + "\"<br>";
-                comments += "<img src=" + downloadUrl.toString() + "/><br>";
-                Log.v("edit_text",downloadUrl.toString());
-//                comments.add("<img src=\"" + downloadUrl.toString() + "\"/><br>");
-                setSuccuss(true);
+                Log.v("edit_text123",stringArrayList.get(i).imagePath);
+
+                stringArrayList.get(i).imagePath = "<br><a href=\"" + downloadUrl.toString() +"\">"+downloadUrl.toString()+"</a><br>";
+                stringArrayList.get(i).imagePath += "<img src='" + downloadUrl.toString() + "'/><br>";
+                imgCount++;
+
+                Log.v("edit_text",edtMsg.imgCount+" "+imgCount);
+                if(edtMsg.imgCount == imgCount){
+                    setSuccuss(true);
+                }
             }
         });
     }
@@ -207,6 +192,13 @@ public class ArticleCommandActivity extends AppCompatActivity {
         this.succuss = succuss;
 
         if (succuss == true) {
+            for(int i = 0;i < stringArrayList.size();i++){
+                if(!stringArrayList.get(i).getImagePath().equals("")){
+                    comments += stringArrayList.get(i).imagePath;
+                } else {
+                    comments += stringArrayList.get(i).inputStr;
+                }
+            }
             uploadArticle();
         }
         finish();
@@ -219,11 +211,14 @@ public class ArticleCommandActivity extends AppCompatActivity {
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Calendar c = Calendar.getInstance();
+                DateFormat dateFormat = new SimpleDateFormat("hh:mm");
                 Date myDate = new Date();
                 int thisYear = myDate.getYear() + 1900;//thisYear = 2003
                 int thisMonth = myDate.getMonth() + 1;//thisMonth = 5
                 int thisDate = myDate.getDate();//thisDate = 30
 
+                final String articleCount = (dataSnapshot.getChildrenCount()+1)+"";
                 final ArticleBlogUploadData articleBlogUploadData = new ArticleBlogUploadData(
                         LoginContext.getLoginContext().getAccount(),
                         comments,
@@ -233,7 +228,28 @@ public class ArticleCommandActivity extends AppCompatActivity {
                         edtTitle.getText().toString(),
                         getIntent().getStringExtra("Type")
                 );
-                myRef.child((dataSnapshot.getChildrenCount()+1)+"").setValue(articleBlogUploadData, new DatabaseReference.CompletionListener() {
+
+                final ArticleBlogUploadCollectionData articleBlogUploadCollectionData = new ArticleBlogUploadCollectionData(
+                        LoginContext.getLoginContext().getAccount(),
+                        articleCount,
+                        "0",
+                        thisYear + "/" + thisMonth + "/" + thisDate,
+                        dateFormat.format(myDate),
+                        edtTitle.getText().toString(),
+                        getIntent().getStringExtra("Type")
+                );
+                myRef.child(articleCount).setValue(articleBlogUploadData, new DatabaseReference.CompletionListener() {
+                    public void onComplete(DatabaseError error, DatabaseReference ref) {
+                        if(error == null){
+                            Toast.makeText(ArticleCommandActivity.this, "發送成功", Toast.LENGTH_LONG).show();
+                        }else {
+                            Toast.makeText(ArticleCommandActivity.this, "發送失敗", Toast.LENGTH_LONG).show();
+                        }
+                        Log.v("aaasdasdas123",error+"");
+                    }
+                });
+                final DatabaseReference myRef2 = database.getReference().child("account_collection_table").child(LoginContext.getLoginContext().getAccount());
+                myRef2.child(articleCount).setValue(articleBlogUploadCollectionData, new DatabaseReference.CompletionListener() {
                     public void onComplete(DatabaseError error, DatabaseReference ref) {
                         if(error == null){
                             Toast.makeText(ArticleCommandActivity.this, "發送成功", Toast.LENGTH_LONG).show();
@@ -338,10 +354,6 @@ public class ArticleCommandActivity extends AppCompatActivity {
             }
         }
         return data;
-    }
-
-    public void imgBackAtivity(View view) {
-        finish();
     }
 
     @Override
