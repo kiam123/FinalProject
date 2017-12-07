@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">cmu</string>
+    <string name="app_name">膳食資料收集App</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <!-- 星期 -->

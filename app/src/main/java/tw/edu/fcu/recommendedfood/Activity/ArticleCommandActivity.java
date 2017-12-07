@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import retrofit2.Call;
 import tw.edu.fcu.recommendedfood.Data.ArticleBlogData;
@@ -212,12 +213,12 @@ public class ArticleCommandActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Calendar c = Calendar.getInstance();
-                DateFormat dateFormat = new SimpleDateFormat("hh:mm");
+                DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
                 Date myDate = new Date();
                 int thisYear = myDate.getYear() + 1900;//thisYear = 2003
                 int thisMonth = myDate.getMonth() + 1;//thisMonth = 5
                 int thisDate = myDate.getDate();//thisDate = 30
-
                 final String articleCount = (dataSnapshot.getChildrenCount()+1)+"";
                 final ArticleBlogUploadData articleBlogUploadData = new ArticleBlogUploadData(
                         LoginContext.getLoginContext().getAccount(),
@@ -226,7 +227,8 @@ public class ArticleCommandActivity extends AppCompatActivity {
                         "0",
                         thisYear + "/" + thisMonth + "/" + thisDate,
                         edtTitle.getText().toString(),
-                        getIntent().getStringExtra("Type")
+                        getIntent().getStringExtra("Type"),
+                        dateFormat.format(myDate)
                 );
 
                 final ArticleBlogUploadCollectionData articleBlogUploadCollectionData = new ArticleBlogUploadCollectionData(

@@ -23,7 +23,7 @@
 
         <activity
             android:name=".Activity.LoginActivity"
-            android:label="美食推薦"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

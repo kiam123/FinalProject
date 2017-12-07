@@ -15,7 +15,7 @@ public class ArticleBlogUploadData {
     String time;
 
     public ArticleBlogUploadData(String account_id, String article, String article_id,String click,
-                                 String date, String title, String type) {
+                                 String date, String title, String type, String time) {
         this.account_id = account_id;
         this.article = article;
         this.article_id = article_id;
@@ -23,6 +23,7 @@ public class ArticleBlogUploadData {
         this.date = date;
         this.title = title;
         this.type = type;
+        this.time = time;
     }
 
 
